@@ -1,4 +1,4 @@
-package beans;
+package team47pack.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
