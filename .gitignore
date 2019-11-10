@@ -1,7 +1,7 @@
 
 # Created by https://www.gitignore.io/api/java,maven,eclipse,java-web
 # Edit at https://www.gitignore.io/?templates=java,maven,eclipse,java-web
-
+application.properties
 ### Eclipse ###
 .metadata
 bin/
@@ -61,7 +61,7 @@ local.properties
 
 ### Eclipse Patch ###
 # Eclipse Core
-#.project
+.project
 
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
