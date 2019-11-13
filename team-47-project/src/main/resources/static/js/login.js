@@ -1,7 +1,7 @@
 Vue.component("login",{
     data: function(){
         return{
-            email: "",
+            email:"",
             password:"",
         }
     },
@@ -9,16 +9,33 @@ Vue.component("login",{
         register: function(){
             router.push("/register")
         },
-        validation: function() {
+        validation: function(e) {
+            //let email = document.getElementById("email").val
+            e.preventDefault()
+            if((this.email=="") || (this.password=="")){
+                alert("Please fill out all the fileds")
+                return
+            }
+            alert(this.email + this.password)
+            let rr = document.getElementById("password").value
+            console.log("Pass jeK"+ rr)
+            console.log("Email:"+this.email)
             axios
-                .get('/home/test')
+                .post('/login', {
+                        "email": this.email,
+                        "password": this.password
+                    })
                 .then(response=>{
-                    alert("nakacen");
-                    this.email = response._data;
-                    alert(this.email)
+                    if (response.data == null){
+                        alert['error']("user not found")
+                        return
+                    }
+                    toast("successfully logged in");
+                    router.push("/register")
                 })
                 .catch(error=>{
                     alert("Neuspesno");
+                    return
                 });
         }
     },
@@ -39,15 +56,15 @@ Vue.component("login",{
 			    		    <input class="form-control" placeholder="Email.." name="email" v-model="email" type="text">
 			    		</div>
 			    		<div class="form-group">
-			    			<input class="form-control" placeholder="Password" name="password" v-model="password" type="password" value="">
+			    			<input class="form-control"  id="password" placeholder="Password" name="password" v-model="password" type="password">
 			    		</div>
 			    		
-			    		<input class="btn btn-lg btn-success btn-block" v-on:click="validation" type="submit" value="Login">
+			    		<input class="btn btn-lg btn-success btn-block" @click.prevent="validation" type="submit" value="Login">
 			    	</fieldset>
 			      	</form>
                       <hr/>
                     <center><h4>OR</h4></center>
-                    <input class="btn btn-lg btn-facebook btn-block" type="submit" v-on:click="register" value="Register">
+                    <input class="btn btn-lg btn-facebook btn-block" type="submit" v-on:click="validation($event)" value="Register">
 			    </div>
 			</div>
 		</div>
