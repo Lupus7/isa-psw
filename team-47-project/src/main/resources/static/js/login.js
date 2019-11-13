@@ -9,8 +9,17 @@ Vue.component("login",{
         register: function(){
             router.push("/register")
         },
-        validation:function () {
-
+        validation: function() {
+            axios
+                .get('/home/test')
+                .then(response=>{
+                    alert("nakacen");
+                    this.email = response._data;
+                    alert(this.email)
+                })
+                .catch(error=>{
+                    alert("Neuspesno");
+                });
         }
     },
 
