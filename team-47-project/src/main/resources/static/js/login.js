@@ -1,3 +1,4 @@
+
 Vue.component("login",{
     data: function(){
         return{
@@ -30,14 +31,21 @@ Vue.component("login",{
                         alert['error']("user not found")
                         return
                     }
+                    
                     toast("successfully logged in");
-                    router.push("/register")
+                    document.getElementById("log").innerHTML="";
+                    document.getElementById("reg").innerHTML="";
+                    document.getElementById("logo").innerHTML="Logout";
+                    document.getElementById("buttLg").innerHTML="User: "+this.email;
+                    
+                    router.push("/")
                 })
                 .catch(error=>{
                     alert("Neuspesno");
                     return
                 });
-        }
+        },
+        
     },
 
     template:`
