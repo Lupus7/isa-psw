@@ -1,13 +1,6 @@
 package team47pack.controllers;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.apache.catalina.connector.Response;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONStringer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,18 +22,16 @@ public class LoginController {
     @PostMapping(value="/login", produces = "application/json", consumes = "application/json")
     public ResponseEntity<String> login(@RequestBody LoginRequest request){
         //ret = );
-        ObjectMapper obj = new ObjectMapper();
-      //  User u = loginservice.login(request.getEmail(),request.getPassword();
-        JSONStringer json = new JSONStringer();
-        JSONObject jobj = new JSONObject();
-        try {
-             jobj = new JSONObject(obj.writeValueAsString(loginservice.login(request.getEmail(),request.getPassword())));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(jobj.toString(),HttpStatus.OK);
+        User u = loginservice.login(request.getEmail(),request.getPassword());
+
+        String response = "";
+
+        if (u == null)
+            response = "null";
+        else
+            response = "{\"email\":\"" + u.getEmail() + "\"}";
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
 }
