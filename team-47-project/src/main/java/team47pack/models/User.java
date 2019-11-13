@@ -42,4 +42,8 @@ public abstract class User {
 	
 	@Column(name="uniqueNum", unique=true, nullable=false)
 	protected String uniqueNum;
+
+	public String getEmail() {
+		return email;
+	}
 }
