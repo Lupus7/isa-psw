@@ -11,4 +11,11 @@ public class Patient extends User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "file_id", referencedColumnName = "id")
     private MedicalFile medicalFile;
+
+
+    @Column(name="isAccepted", unique=false, nullable=false)
+    private boolean isAccepted;
+
+    public boolean getIsAccepted() { return isAccepted; }
+    public void setIsAccepted(boolean isAccepted) { this.isAccepted = isAccepted; }
 }

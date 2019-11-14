@@ -18,7 +18,7 @@ public class Doctor extends MedicalStaff {
 		this.lastName = lastName;
 		this.password = password;
 		this.email = email;
-		this.adress = adress;
+		this.address = adress;
 		this.city = city;
 		this.state = state;
 		this.telephone = telephone;
