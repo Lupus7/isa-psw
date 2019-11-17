@@ -76,7 +76,17 @@ export default {
                     alert("Neuspesno");
                     return
                 });*/
-        },   
-    }
+        }
+    },
+    mounted:function(){
+            axios
+            .get("http://localhost:8080/home/test")
+            .then(response=>{
+                alert(response.data)
+            })
+            .catch(error=>{
+                alert("Neuspesno" +error )
+            })
+        },
 }
 </script>
