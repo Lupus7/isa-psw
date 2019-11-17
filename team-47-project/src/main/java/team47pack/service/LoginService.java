@@ -6,6 +6,7 @@ import team47pack.models.ClinicAdmin;
 import team47pack.models.Doctor;
 import team47pack.models.Patient;
 import team47pack.models.User;
+import team47pack.models.dto.RegisterRequest;
 import team47pack.repository.ClinicAdminRepo;
 import team47pack.repository.DoctorRepo;
 import team47pack.repository.PatientRepo;
@@ -22,6 +23,9 @@ public class LoginService {
     public User login(String email, String password){
         System.out.println("Email:" + email+"   pass: "+password);
        Patient patient = patientrepo.findByEmail(email);
+       if(patient.getIsAccepted() == false){
+           return null;
+       }
        if (patient != null){
            System.out.println("Patient: " + patient);
            return patient;
@@ -35,5 +39,23 @@ public class LoginService {
            return clinicadmin;
        }
        return null;
+    }
+
+    public Boolean register(RegisterRequest req) {
+        Patient patient = patientrepo.findByEmail(req.getEmail());
+        if(patient != null){
+            return  false;
+        }
+        Doctor doc = doctorepo.findByEmail(req.getEmail());
+        if(patient != null){
+            return  false;
+        }
+        ClinicAdmin admin = clinicadminrepo.findByEmail(req.getEmail());
+        if(admin != null){
+            return  false;
+        }
+        Patient p = new Patient(req);
+        patientrepo.save(p);
+        return true;
     }
 }
