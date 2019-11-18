@@ -21,15 +21,4 @@ public class PatientService {
     public void insert(Patient patient) {
         patientRepository.save(patient);
     }
-
-    public List<Patient> getRegRequest() {
-        List<Patient> retVal = new ArrayList<Patient>();
-        for (Patient p : patientRepository.findAll()) {
-            if (!p.getIsAccepted()) {
-                retVal.add(p);
-            }
-        }
-
-        return retVal;
-    }
 }
