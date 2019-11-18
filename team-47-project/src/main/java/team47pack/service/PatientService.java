@@ -25,7 +25,7 @@ public class PatientService {
     public List<Patient> getRegRequest() {
         List<Patient> retVal = new ArrayList<Patient>();
         for (Patient p : patientRepository.findAll()) {
-            if (!p.getIsAccepted()) {
+            if (!p.isAccepted()) {
                 retVal.add(p);
             }
         }
