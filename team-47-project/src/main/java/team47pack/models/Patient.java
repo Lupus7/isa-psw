@@ -3,6 +3,8 @@ package team47pack.models;
 import team47pack.models.dto.RegisterRequest;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "patient")
@@ -12,29 +14,23 @@ public class Patient extends User {
     @JoinColumn(name = "file_id", referencedColumnName = "id", nullable = true)
     private MedicalFile medicalFile;
 
-
-    @Column(name="isAccepted", unique=false, nullable=false)
-    private boolean isAccepted;
-
-    public boolean getIsAccepted() { return isAccepted; }
-    public void setIsAccepted(boolean isAccepted) { this.isAccepted = isAccepted; }
-
     public Patient() {
     }
 
     public Patient(RegisterRequest req){
-        this.firstName = req.firstName;
-        this.lastName = req.lastName;
-        this.password = req.password;
-        this.email = req.email;
-        this.address = req.address;
-        this.city = req.city;
-        this.state = req.state;
-        this.telephone = req.telephone;
-        this.uniqueNum = req.uniqueNum;
-        this.isAccepted = false;
+        this.firstName = req.getFirstName();
+        this.lastName = req.getLastName();
+        this.password = req.getPassword();
+        this.email = req.getEmail();
+        this.address = req.getAddress();
+        this.city = req.getCity();
+        this.state = req.getState();
+        this.telephone = req.getTelephone();
+        this.uniqueNum = req.getUniqueNum();
+        this.accepted = false;
         this.medicalFile = null;
-
+        this.enabled = true;
+        this.lastPasswordResetDate = Timestamp.valueOf(LocalDateTime.now());
     }
 
 }

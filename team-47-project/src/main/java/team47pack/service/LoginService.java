@@ -10,52 +10,30 @@ import team47pack.models.dto.RegisterRequest;
 import team47pack.repository.ClinicAdminRepo;
 import team47pack.repository.DoctorRepo;
 import team47pack.repository.PatientRepo;
+import team47pack.repository.UserRepo;
 
 @Service
 public class LoginService {
+
     @Autowired
-    private PatientRepo patientrepo;
+    private UserRepo userRepo;
     @Autowired
-    private DoctorRepo doctorepo;
-    @Autowired
-    ClinicAdminRepo clinicadminrepo;
+    private PatientRepo patientRepo;
 
     public User login(String email, String password){
         System.out.println("Email:" + email+"   pass: "+password);
-       Patient patient = patientrepo.findByEmail(email);
-       if(patient.getIsAccepted() == false){
-           return null;
-       }
-       if (patient != null){
-           System.out.println("Patient: " + patient);
-           return patient;
-       }
-       Doctor doctor = doctorepo.findByEmail(email);
-       if (doctor != null){
-           return doctor;
-       }
-        ClinicAdmin clinicadmin=clinicadminrepo.findByEmail(email);
-       if(clinicadmin != null){
-           return clinicadmin;
-       }
-       return null;
+        return userRepo.findByEmail(email);
     }
 
     public Boolean register(RegisterRequest req) {
-        Patient patient = patientrepo.findByEmail(req.getEmail());
-        if(patient != null){
+        User u = userRepo.findByEmail(req.getEmail());
+        if(u != null){
             return  false;
         }
-        Doctor doc = doctorepo.findByEmail(req.getEmail());
-        if(patient != null){
-            return  false;
-        }
-        ClinicAdmin admin = clinicadminrepo.findByEmail(req.getEmail());
-        if(admin != null){
-            return  false;
-        }
+
         Patient p = new Patient(req);
-        patientrepo.save(p);
+        userRepo.save(p);
+
         return true;
     }
 }

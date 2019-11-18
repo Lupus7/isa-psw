@@ -12,7 +12,6 @@ import team47pack.models.dto.LoginRequest;
 import team47pack.models.dto.RegisterRequest;
 import team47pack.service.LoginService;
 
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200", "http://localhost:8081" })
 @RestController
 public class LoginController {
 
@@ -21,11 +20,11 @@ public class LoginController {
 
     @PostMapping(value="/register", produces = "application/json", consumes = "application/json")
     public ResponseEntity<String> register(@RequestBody RegisterRequest req){
-       boolean b = loginservice.register(req);
-       if (b==true){
-           return ResponseEntity.ok("Successful");
-       }
-       return ResponseEntity.status(400).body("Invalid information");
+        boolean b = loginservice.register(req);
+        if (b==true){
+            return ResponseEntity.ok("Successful");
+        }
+        return ResponseEntity.status(400).body("Invalid information");
     }
 
     @PostMapping(value="/login", produces = "application/json", consumes = "application/json")
