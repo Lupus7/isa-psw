@@ -1,28 +1,35 @@
 <template>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>E-Mail</th>
-                <th>Phone Number</th>
-                <th>Unique Number</th>
-                <th>Adress</th>
-                <th>City</th>
-                <th>Country</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(row, index) in rows" :key="index">
-                <td>{{row.firstName}} {{row.lastName}}</td>
-                <td>{{row.email}}</td>
-                <td>{{row.telephone}}</td>
-                <td>{{row.uniqueNum}}</td>
-                <td>{{row.address}}</td>
-                <td>{{row.city}}</td>
-                <td>{{row.state}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>E-Mail</th>
+                    <th>Phone Number</th>
+                    <th>Unique Number</th>
+                    <th>Adress</th>
+                    <th>City</th>
+                    <th>Country</th>
+                    <th>Accept?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(row, index) in rows" :key="index">
+                    <td>{{row.firstName}} {{row.lastName}}</td>
+                    <td>{{row.email}}</td>
+                    <td>{{row.telephone}}</td>
+                    <td>{{row.uniqueNum}}</td>
+                    <td>{{row.address}}</td>
+                    <td>{{row.city}}</td>
+                    <td>{{row.state}}</td>
+                    <td style="max-width: 115px">
+                        <button type="button" class="btn btn-success" v-on:click="accept(row.email, index)">Accept</button>
+                        <button type="button" class="btn btn-danger" v-on:click="reject(row.email, index)">Reject</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -37,8 +44,18 @@ export default {
     methods: { 
         getReqList() {
             axios
-                .get('http://localhost:8080/request-list')
+                .get('http://localhost:8080/cca/request-list')
                 .then(response => { this.rows = response.data })
+        },
+        accept(email, index) {
+            let url = 'http://localhost:8080/cca/request-list/accept/' + email
+            axios.post(url)
+            this.rows.splice(index, 1)
+        },
+        reject(email, index) {
+            let url = 'http://localhost:8080/cca/request-list/reject/' + email
+            axios.post(url)
+            this.rows.splice(index, 1)
         }
     },
     created() {
@@ -48,34 +65,11 @@ export default {
 </script>
 
 <style scoped>
-    table {
-    font-family: 'Open Sans', sans-serif;
-    width: 750px;
-    border-collapse: collapse;
-    border: 3px solid #44475C;
-    margin: 10px 10px 0 10px;
+    div {
+        max-width: 1200px;
+        margin: 10px
     }
-
-    table th {
-    text-transform: uppercase;
-    text-align: left;
-    background: #44475C;
-    color: #FFF;
-    padding: 8px;
-    min-width: 30px;
-    }
-
-    table td {
-    text-align: left;
-    padding: 8px;
-    border-right: 2px solid #7D82A8;
-    }
-
-    table td:last-child {
-    border-right: none;
-    }
-
-    table tbody tr:nth-child(2n) td {
-    background: #D4D8F9;
+    button {
+        margin-left: 5px
     }
 </style>

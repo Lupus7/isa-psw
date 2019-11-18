@@ -22,6 +22,7 @@ public class PatientService {
         patientRepository.save(patient);
     }
 
+
     public List<Patient> getRegRequest() {
         List<Patient> retVal = new ArrayList<Patient>();
         for (Patient p : patientRepository.findAll()) {
@@ -32,4 +33,5 @@ public class PatientService {
 
         return retVal;
     }
+
 }

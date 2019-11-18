@@ -10,4 +10,7 @@ import team47pack.models.Patient;
 @Repository
 public interface PatientRepo extends JpaRepository<Patient,Long> {
 
+
 }
+
+

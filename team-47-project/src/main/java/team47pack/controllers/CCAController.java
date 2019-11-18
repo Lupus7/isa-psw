@@ -3,6 +3,7 @@ package team47pack.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import team47pack.models.User;
 import team47pack.service.CCAService;
 
@@ -14,7 +15,9 @@ public class CCAController {
     private CCAService ccaService;
 
     @GetMapping(value="/cca/request-list")
+
     public List<User> reqList() {
+
         return ccaService.getRegRequest();
     }
 
