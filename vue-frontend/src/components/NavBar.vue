@@ -3,7 +3,7 @@
         <button type="button" class="btn btn-primary" :style="userButton" disabled >
             {{ userEmail }}
         </button>
-        <a class="navbar-brand" v-on:click="homepage">Home</a>
+        <a class="navbar-brand" v-on:click="homepage" href="#">Home</a>
         <a class="navbar-brand" v-on:click="profile" href="#" :style="userButton">Profile</a>
         <a class="navbar-brand" v-on:click="login" href="#"  :style="guestButton">Log in</a>
         <a class="navbar-brand" v-on:click="register" href="#"  :style="guestButton">Register</a>
@@ -27,15 +27,8 @@ export default {
         }
         
     },
-    created(){
-        /*axios.post('http://localhost:8080/refresh').then(response=>{
-           
-            localStorage.setItem("user",JSON.stringify(response.data));
-            
-        })*/
-
-        this.refresh()
-       
+    created(){       
+        this.refresh()     
     },
    
     methods:{
@@ -72,12 +65,30 @@ export default {
                 this.guestButton = "visibility:visible";
                 this.userButton=  "visibility:hidden";
                 this.userEmail="";
-            
+                             
             })
            
             
         },
+        returnToken(){
+            let user = JSON.parse(localStorage.getItem('user'));
+
+            if (user && user.accessToken) {
+                console.log(user.accessToken)
+                return { Authorization: 'Bearer ' + user.accessToken };
+            } else {
+                return {};
+            }
+        },
+
         refresh(){
+            
+            axios.post('http://localhost:8080/refresh',
+                null,{ 
+                    headers: this.returnToken()
+                }).then(response=>{})
+               
+         
             if(localStorage.getItem("user") != null){
                 const token = jwt_decode(localStorage.getItem("user"));
                 this.userEmail = token.sub;
@@ -94,3 +105,8 @@ export default {
     }
 }
 </script>
+
+<style >
+
+
+</style>

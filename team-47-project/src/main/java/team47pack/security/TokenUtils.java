@@ -12,6 +12,7 @@ import team47pack.models.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Enumeration;
 
 @Component
 public class TokenUtils {

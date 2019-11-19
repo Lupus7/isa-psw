@@ -75,13 +75,22 @@ public class LoginController {
 	@RequestMapping(value = "/refresh", method = RequestMethod.POST)
 	public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request) {
 
+		System.out.println("--------otvorio-------: "+ tokenUtils.getAuthHeaderFromHeader(request));
+
 		String token = tokenUtils.getToken(request);
 		String username = this.tokenUtils.getUsernameFromToken(token);
 		User user = (User) this.userDetailsService.loadUserByUsername(username);
 
+		System.out.println("--------token-------:  "+token);
+		System.out.println("--------username-------: "+ username);
+
+		
 		if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
 			String refreshedToken = tokenUtils.refreshToken(token);
 			int expiresIn = tokenUtils.getExpiredIn();
+
+			System.out.println("---------token: " + refreshedToken);
+			System.out.println("---------exp: " + expiresIn);
 
 			return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
 		} else {
