@@ -1,45 +1,58 @@
 <template>
-    <form id="forma">
-		<table>
-		<div class="form-group">
-            <tr><td><label for="exampleInputEmail1">First name</label></td><td><input type="text" class="form-control" id="firstname" aria-describedby="emailHelp" placeholder="Enter first name" required></td></tr>
-		</div>
-        <div class="form-group">
-            <tr><td><label for="exampleInputEmail1">Last name</label></td><td><input type="text" class="form-control" id="lastname" aria-describedby="emailHelp" placeholder="Enter last name" required></td></tr>
-		</div>
-		<div class="form-group">
-			<tr><td><label for="exampleInputPassword1">Password</label></td><td><input type="password" id="password" class="form-control" placeholder="Password" required></td></tr>
-		</div>
-        <div class="form-group">
-			<tr><td><label for="exampleInputPassword1">Retype Password</label></td><td><input type="password" id="password1" class="form-control" placeholder="Password" required></td></tr>
-		</div>
-        <div class="form-group">
-            <tr><td><label for="exampleInputEmail1">Email</label></td><td><input type="text" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" required></td></tr>
-		</div>
-		<div class="form-group">
-			<tr><td><label>Adress</label></td><td><input type="text" id="adress" class="form-control" required aria-describedby="emailHelp" placeholder="Enter adress" ></td></tr>
-		</div>
-        <div class="form-group">
-			<tr><td><label>City</label></td><td><input type="text" class="form-control" id="city" required aria-describedby="emailHelp" placeholder="Enter city" ></td></tr>
-		</div>	
-		<div class="form-group">
-			<tr><td><label>State</label></td><td><input type="text" class="form-control" id="state" required></td></tr>
-		</div>
-		
-		<div class="form-group">
-			<tr><td><label>Phone number</label></td><td><input type="text" class="form-control" id="phone" required aria-describedby="emailHelp" placeholder="Enter phone"></td></tr>
-		</div>
-		
-		<div class="form-group">
-			<tr><td><label>Unique number</label></td><td><input type="number" class="form-control" id="uniqnum" required aria-describedby="emailHelp" placeholder="Enter your unique number"></td></tr>
-		</div>
-		</table>
-	
-		<p id="error" hidden="true"></p>
-		<p id="success" hidden="true"></p>
-       	<button type="submit" v-on:click="register" class="btn btn-primary">Register</button>
 
-	</form>
+    <div class = "container">
+        
+         <div class="modal-header">
+            <h3 >Register</h3>
+        </div>
+            
+
+        <div class="panel-body">
+            <br>
+            <form id="forma">
+                 <fieldset>
+                <div class="form-group">
+                   <input type="text" class="form-control" id="firstname" aria-describedby="emailHelp" placeholder="Enter First Name..." required>
+                </div>
+                <div class="form-group">
+                   <input type="text" class="form-control" id="lastname" aria-describedby="emailHelp" placeholder="Enter Last Name..." required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" class="form-control" placeholder="Password..." required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password1" class="form-control" placeholder="Retype Password..." required>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="adress" class="form-control" required aria-describedby="emailHelp" placeholder="Enter Adress" >
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="city" required aria-describedby="emailHelp" placeholder="Enter City" >
+                </div>	
+                <div class="form-group">
+                    <input type="text" class="form-control" id="state" required placeholder="Enter State">
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" class="form-control" id="phone" required aria-describedby="emailHelp" placeholder="Enter Phone">
+                </div>
+                
+                <div class="form-group">
+                    <input type="number" class="form-control" id="uniqnum" required aria-describedby="emailHelp" placeholder="Enter Unique Number">
+                </div>
+
+            
+                <p id="error" hidden="true"></p>
+                <p id="success" hidden="true"></p>
+                <button type="submit" v-on:click="register" class="btn btn-lg btn-primary btn-block">Register</button>
+                 </fieldset>
+
+            </form>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -116,3 +129,44 @@ export default {
     //         });
 }
 </script>
+
+<style scoped>
+.container{
+    margin-top: 5vh;
+    max-width: 25vw;
+    padding: 40px;
+    background: #f1f1f1;
+    border-radius: 10px;
+    align-self: center;
+    border: 1px dotted grey;
+ }
+
+.form {
+    display: block !important;
+    align-items: stretch;
+    padding-top: 20px;
+      
+ }
+.input {
+    display: block;
+    padding: 15px 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+.panel-heading{
+    width: 100%;
+}
+
+.modal-header{
+
+  border-bottom: 2px solid #2c2c2c;
+  width: 100%;
+  padding: 15px;
+  font-size: 20px;
+  font-size: 3vh
+}
+
+
+</style>

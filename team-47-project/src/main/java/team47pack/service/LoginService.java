@@ -2,13 +2,10 @@ package team47pack.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team47pack.models.ClinicAdmin;
-import team47pack.models.Doctor;
+
 import team47pack.models.Patient;
 import team47pack.models.User;
 import team47pack.models.dto.RegisterRequest;
-import team47pack.repository.ClinicAdminRepo;
-import team47pack.repository.DoctorRepo;
 import team47pack.repository.PatientRepo;
 import team47pack.repository.UserRepo;
 

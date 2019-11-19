@@ -1,31 +1,30 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Login via site</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form accept-charset="UTF-8" role="form">
-                        <fieldset>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Email.." name="email" v-model="email" type="text">
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control"  id="password" placeholder="Password" name="password" v-model="password" type="password">
-                            </div>
-                            
-                            <input class="btn btn-lg btn-success btn-block" @click.prevent="validation" type="submit" value="Login">
-                        </fieldset>
-                        </form>
-                        <hr/>
-                        <center><h4>OR</h4></center>
-                        <input class="btn btn-lg btn-facebook btn-block" type="submit" v-on:click="validation($event)" value="Register">
-                    </div>
-                </div>
-            </div>
+
+    <div class="container"  >
+         <div class="modal-header">
+            <h3>Login</h3>
         </div>
+            
+            <div class="panel-body">
+                <br>
+                <form accept-charset="UTF-8" role="form">
+                <fieldset>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Email.." name="email" v-model="email" type="text">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control"  id="password" placeholder="Password..." name="password" v-model="password" type="password">
+                    </div>
+                    
+                    <center> <input class="btn btn-lg btn-success btn-block" @click.prevent="validation" type="submit" value="Login"> </center>
+                </fieldset>
+                </form>
+                <hr/>
+                <center><h4>OR</h4></center>
+                <input class="btn btn-lg btn-primary btn-block" type="submit" v-on:click="validation($event)" value="Register">
+            </div>
+
+      
 	</div>
 </template>
 
@@ -50,27 +49,18 @@ export default {
                 alert("Please fill out all the fileds")
                 return
             }
-            alert(this.email + this.password)
-            let rr = document.getElementById("password").value
-            console.log("Pass jeK"+ rr)
-            console.log("Email:"+this.email)
+         
             axios
                 .post('http://localhost:8080/login', {
-                        "email": this.email,
+                        "username": this.email,
                         "password": this.password
                     })
                 .then(response=>{
-                    if (response.data == null){
-                        alert['error']("user not found")
-                        return
+                    if (response.data.accessToken){
+                        localStorage.setItem("user",JSON.stringify(response.data));                      
                     }
-                    
-                    document.getElementById("log").innerHTML="";
-                    document.getElementById("reg").innerHTML="";
-                    document.getElementById("logo").innerHTML="Logout";
-                    document.getElementById("buttLg").innerHTML="User: "+this.email;
-                    
-                    this.$router.push("/")
+                                        
+                    this.$router.go("/")
                 })
                 /*.catch(error=>function() {
                     alert("Neuspesno");
@@ -78,15 +68,48 @@ export default {
                 });*/
         }
     },
-    mounted:function(){
-            axios
-            .get("http://localhost:8080/home/test")
-            .then(response=>{
-                alert(response.data)
-            })
-            .catch(error=>{
-                alert("Neuspesno" +error )
-            })
-        },
+    
 }
 </script>
+
+<style scoped>
+
+
+ .container{
+    margin-top: 5vh;
+    max-width: 25vw;
+    padding: 40px;
+    background: #f1f1f1;
+    border-radius: 10px;
+    align-self: center;
+    border: 1px dotted grey;
+ }
+
+.form {
+    display: block !important;
+    align-items: stretch;
+    padding-top: 20px;
+      
+ }
+.input {
+    display: block;
+    padding: 15px 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+.panel-heading{
+    width: 100%;
+}
+
+.modal-header{
+
+  border-bottom: 2px solid #2c2c2c;
+  width: 100%;
+  padding: 15px;
+  font-size: 20px;
+  font-size: 3vh
+}
+
+</style>

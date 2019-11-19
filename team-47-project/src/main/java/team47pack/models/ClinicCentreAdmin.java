@@ -19,4 +19,8 @@ public class ClinicCentreAdmin extends User {
 		this.telephone = telephone;
 		this.uniqueNum = uniqueNum;
 	}
+	
+	public ClinicCentreAdmin() {
+		
+	}
 }

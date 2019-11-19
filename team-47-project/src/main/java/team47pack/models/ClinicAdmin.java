@@ -25,5 +25,9 @@ public class ClinicAdmin extends User{
 		this.uniqueNum = uniqueNum;
 		this.clinic = clinic;
 	}
+	
+	public ClinicAdmin() {
+		
+	}
 
 }
