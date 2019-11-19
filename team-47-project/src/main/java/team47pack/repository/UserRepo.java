@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team47pack.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepo extends JpaRepository<User,Long> {
     User findByEmail(String email);
@@ -22,5 +23,7 @@ public interface UserRepo extends JpaRepository<User,Long> {
     int rejectUser(String mail);
 
     List<User> findByAccepted(boolean accepted);
+    Boolean existsByEmail(String email);
+
 }
 

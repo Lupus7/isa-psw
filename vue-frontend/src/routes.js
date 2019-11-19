@@ -28,6 +28,13 @@ const router = new Router({
             name: "Register",
             component: () =>
                 import ("./components/Register")
+        },
+        {
+            path:"/userprofile",
+            name:"Userprofile",
+            component:()=>{
+                import("./components/Profile")
+            }
         }
     ]
 });

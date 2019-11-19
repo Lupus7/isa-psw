@@ -39,6 +39,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
+    public User save(User u){
+        userRepo.save(u);
+        return u;
+    }
+
     public void changePassword(String oldPassword, String newPassword) {
 
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();

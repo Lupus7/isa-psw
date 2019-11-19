@@ -28,3 +28,6 @@ insert into users (is_accepted, address, city, email, enabled, first_name, last_
             values(false,'test','test','test6',true,'test','test','2019-11-18 20:56:47.814768','test','test','test','test6',6);
 insert into patient values (6, 6);
 
+SELECT setval('hibernate_id_seq"', 21, true);
+ALTER SEQUENCE hibernate_id_seq RESTART WITH 22;
+

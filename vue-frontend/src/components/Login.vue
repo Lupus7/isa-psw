@@ -31,10 +31,11 @@
 
 <script>
 import axios from 'axios'
-
+import User from '../models/user'
 export default {
     data: function(){
         return{
+            user: new User('', ''),
             email:"",
             password:"",
         }
@@ -54,14 +55,13 @@ export default {
             let rr = document.getElementById("password").value
             console.log("Pass jeK"+ rr)
             console.log("Email:"+this.email)
+            this.user.email = this.email
+            this.user.password=this.password
             axios
-                .post('http://localhost:8080/login', {
-                        "email": this.email,
-                        "password": this.password
-                    })
+                .post('http://localhost:8080/auth/login', this.user)
                 .then(response=>{
                     if (response.data == null){
-                        alert['error']("user not found")
+                        alert("user not found")
                         return
                     }
                     
@@ -80,7 +80,7 @@ export default {
     },
     mounted:function(){
             axios
-            .get("http://localhost:8080/home/test")
+            .get("http://localhost:8080/auth/test")
             .then(response=>{
                 alert(response.data)
             })

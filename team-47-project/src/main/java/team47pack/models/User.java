@@ -18,7 +18,8 @@ import java.util.List;
 public class User implements UserDetails {
 
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "hibernate_id_seq", sequenceName = "hibernate_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hibernate_id_seq")
 	protected Long id;
 
 	@Column(name = "firstName", unique = false, nullable = false)
