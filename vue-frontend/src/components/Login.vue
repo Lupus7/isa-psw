@@ -50,27 +50,19 @@ export default {
                 alert("Please fill out all the fileds")
                 return
             }
-            alert(this.email + this.password)
-            let rr = document.getElementById("password").value
-            console.log("Pass jeK"+ rr)
-            console.log("Email:"+this.email)
+         
             axios
                 .post('http://localhost:8080/login', {
-                        "email": this.email,
+                        "username": this.email,
                         "password": this.password
                     })
                 .then(response=>{
-                    if (response.data == null){
-                        alert['error']("user not found")
-                        return
+                    if (response.data.accessToken){
+                        localStorage.setItem("user",JSON.stringify(response.data));
+                       
                     }
-                    
-                    document.getElementById("log").innerHTML="";
-                    document.getElementById("reg").innerHTML="";
-                    document.getElementById("logo").innerHTML="Logout";
-                    document.getElementById("buttLg").innerHTML="User: "+this.email;
-                    
-                    this.$router.push("/")
+                                        
+                    this.$router.go("/")
                 })
                 /*.catch(error=>function() {
                     alert("Neuspesno");
@@ -78,15 +70,6 @@ export default {
                 });*/
         }
     },
-    mounted:function(){
-            axios
-            .get("http://localhost:8080/home/test")
-            .then(response=>{
-                alert(response.data)
-            })
-            .catch(error=>{
-                alert("Neuspesno" +error )
-            })
-        },
+    
 }
 </script>

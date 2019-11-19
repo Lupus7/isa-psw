@@ -20,4 +20,8 @@ public class Nurse extends MedicalStaff {
 		this.uniqueNum = uniqueNum;
 		this.onVacation = onVacation;
 	}
+	
+	public Nurse() {
+		
+	}
 }

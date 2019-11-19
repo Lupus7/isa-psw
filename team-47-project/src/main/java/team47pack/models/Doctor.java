@@ -27,4 +27,7 @@ public class Doctor extends MedicalStaff {
 		this.specialization = specialization;
 	}
 
+	public Doctor() {
+		
+	}
 }
