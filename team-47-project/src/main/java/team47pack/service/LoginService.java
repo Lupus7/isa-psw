@@ -1,6 +1,8 @@
 package team47pack.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import team47pack.models.Patient;
@@ -29,6 +31,9 @@ public class LoginService {
         }
 
         Patient p = new Patient(req);
+        BCryptPasswordEncoder enc = new BCryptPasswordEncoder();
+        String hash = enc.encode(p.getPassword());
+        p.setPassword(hash);
         userRepo.save(p);
 
         return true;

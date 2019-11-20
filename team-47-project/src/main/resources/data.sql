@@ -46,6 +46,8 @@ insert into users (is_accepted, address, city, email, enabled, first_name, last_
             values(true,'test','test','test10',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test10',10);
 insert into clinic_centre_admin (id) values (10);
 
+SELECT setval('hibernate_id_seq"', 21, true);
+ALTER SEQUENCE hibernate_id_seq RESTART WITH 22;
 
 insert into authority (name) values ('ROLE_PATIENT');
 insert into authority (name) values ('ROLE_DOCTOR');

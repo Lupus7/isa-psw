@@ -11,6 +11,7 @@ import team47pack.common.TimeProvider;
 import team47pack.models.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 
@@ -39,10 +40,11 @@ public class TokenUtils {
 
     private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String roles) {
         return Jwts.builder()
                 .setIssuer(APP_NAME)
                 .setSubject(username)
+                .claim("roles",roles)
                 .setAudience(generateAudience())
                 .setIssuedAt(timeProvider.now())
                 .setExpiration(generateExpirationDate())

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.jsonwebtoken.io.IOException;
+import team47pack.models.Authority;
 import team47pack.models.User;
 import team47pack.models.UserTokenState;
 import team47pack.models.dto.RegisterRequest;
@@ -65,7 +66,8 @@ public class LoginController {
 
 		// Kreiraj token
 		User user = (User) authentication.getPrincipal();
-		String jwt = tokenUtils.generateToken(user.getUsername());
+		System.out.println(((Authority)user.getAuthorities().toArray()[0]).getName());
+		String jwt = tokenUtils.generateToken(user.getUsername(),((Authority)user.getAuthorities().toArray()[0]).getName());
 		int expiresIn = tokenUtils.getExpiredIn();
 
 		// Vrati token kao odgovor na uspesno autentifikaciju
