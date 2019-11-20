@@ -25,7 +25,7 @@ export default {
         .catch(error=>{
             alert(error)
         })
-        alert("Welcome "+this.userEmail)
+        
     }
 }
 
