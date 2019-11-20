@@ -34,6 +34,12 @@ const router = new Router({
             name: "PatientProfile",
             component:()=>
                 import("./components/PatientProfile")
+        },
+        {
+            path:"/doctorProfile",
+            name: "DoctorProfile",
+            component:()=>
+                import("./components/DoctorProfile")
         }
     ]
 });
