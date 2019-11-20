@@ -9,13 +9,13 @@ const router = new Router({
             path: "/",
             name: "Home",
             component: () =>
-                import ("./components/RequestList")
+                import ("./components/CCAProfileComp/ReqListTab")
         },
         {
             path: "/profile",
             name: "Profile",
             component: () =>
-                import ("./components/RequestList")
+                import ("./components/CCAProfileComp/ReqListTab")
         },
         {
             path: "/login",
@@ -30,16 +30,16 @@ const router = new Router({
                 import ("./components/Register")
         },
         {
-            path:"/patientProfile",
+            path: "/patientProfile",
             name: "PatientProfile",
-            component:()=>
-                import("./components/PatientProfile")
+            component: () =>
+                import ("./components/PatientProfile")
         },
         {
-            path:"/doctorProfile",
+            path: "/doctorProfile",
             name: "DoctorProfile",
-            component:()=>
-                import("./components/DoctorProfile")
+            component: () =>
+                import ("./components/DoctorProfile")
         }
     ]
 });
