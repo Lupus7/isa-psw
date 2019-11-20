@@ -34,6 +34,7 @@
 
 <script>
 import axios from 'axios'
+import {returnToken} from '../token.js'
 
 export default {
     data() {
@@ -43,8 +44,11 @@ export default {
     },
     methods: { 
         getReqList() {
+
             axios
-                .get('http://localhost:8080/cca/request-list')
+                .get('http://localhost:8080/cca/request-list',{
+                     headers: returnToken()
+                 })
                 .then(response => { this.rows = response.data })
         },
         accept(email, index) {

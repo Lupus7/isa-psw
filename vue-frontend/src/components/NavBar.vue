@@ -15,6 +15,7 @@
 <script>
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
+import {returnToken} from '../token.js'
 export default {
 
     data(){
@@ -80,22 +81,13 @@ export default {
            
             
         },
-        returnToken(){
-            let user = JSON.parse(localStorage.getItem('user'));
-
-            if (user && user.accessToken) {
-                console.log(user.accessToken)
-                return { Authorization: 'Bearer ' + user.accessToken };
-            } else {
-                return {};
-            }
-        },
+        
 
         refresh(){
             
             axios.post('http://localhost:8080/refresh',
                 null,{ 
-                    headers: this.returnToken()
+                    headers: returnToken()
                 }).then(response=>{})
                
          
