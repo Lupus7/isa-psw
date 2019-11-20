@@ -51,7 +51,8 @@ export default {
             const route = "/profile"
             if (this.role == "ROLE_PATIENT")
                 this.$router.push("/patientProfile")
-            
+            else if(this.role == "ROLE_DOCTOR")
+                 this.$router.push("/doctorProfile")
             else{
                 this.shouldChange(route)
                 this.$router.push(route)

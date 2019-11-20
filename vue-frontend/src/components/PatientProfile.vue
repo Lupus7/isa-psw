@@ -18,7 +18,7 @@ export default {
         this.userEmail = token.sub
         this.role = token.roles
         Axios
-        .get('http://localhost:8080/getUser/{email')
+        .get('http://localhost:8080/getUser')
         .then(response=>{
             this.user = response.data
         })
