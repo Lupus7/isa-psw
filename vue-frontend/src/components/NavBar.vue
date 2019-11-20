@@ -21,8 +21,10 @@ export default {
         return{
             userButton : "visibility:hidden",
             guestButton: "visibility:visible",
-            userEmail : ""
-
+            userEmail : "",
+            role:'',
+            doctor: false,
+            patient: false,
 
         }
         
@@ -40,11 +42,19 @@ export default {
             if(this.shouldChange(route))
                 this.$router.push(route)
         },
+        patientprofile:function(){
+            this.$router.push("/patientProfile")
+        },
 
         profile: function(){
             const route = "/profile"
-            if(this.shouldChange(route))
+            if (this.role == "ROLE_PATIENT")
+                this.$router.push("/patientProfile")
+            
+            else{
+                this.shouldChange(route)
                 this.$router.push(route)
+            }
         },
         login: function(){
             const route = "/login"
@@ -91,6 +101,8 @@ export default {
          
             if(localStorage.getItem("user") != null){
                 const token = jwt_decode(localStorage.getItem("user"));
+                console.log(token)
+                this.role = token.roles
                 this.userEmail = token.sub;
                 this.userButton = "visibility:visible";
                 this.guestButton=  "visibility:hidden";
