@@ -38,8 +38,17 @@ const router = new Router({
         {
             path: "/doctorProfile",
             name: "DoctorProfile",
-            component: () =>
-                import ("./components/DoctorProfile")
+
+            component:()=>
+                import("./components/DoctorProfile")
+        },
+        {
+            path:"/changeData",
+            name: "ChangeData",
+            component:()=>
+                import("./components/ChangeData")
+
+  
         }
     ]
 });
