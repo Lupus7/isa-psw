@@ -9,13 +9,13 @@ const router = new Router({
             path: "/",
             name: "Home",
             component: () =>
-                import ("./components/CCAProfileComp/ReqListTab")
+                import ("./components/Home")
         },
         {
             path: "/profile",
             name: "Profile",
             component: () =>
-                import ("./components/CCAProfileComp/ReqListTab")
+                import ("./components/CCAProfileComp/CCAProfile")
         },
         {
             path: "/login",

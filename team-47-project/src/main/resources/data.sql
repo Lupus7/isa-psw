@@ -43,7 +43,7 @@ insert into users (is_accepted, address, city, email, enabled, first_name, last_
 insert into clinic_admin (id,clinic) values (9, 1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
-            values(true,'test','test','test10',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test10',10);
+            values(true,'SECRET','Novi Sad','admin@team47.com',true,'SECRET','SECRET','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','Serbia','SECRET','0000',10);
 insert into clinic_centre_admin (id) values (10);
 
 SELECT setval('hibernate_id_seq"', 21, true);

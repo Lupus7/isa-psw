@@ -27,7 +27,7 @@
                     <td>{{row.address}}</td>
                     <td>{{row.city}}</td>
                     <td>{{row.state}}</td>
-                    <td style="max-width: 115px">
+                    <td style="max-width: 150px">
                         <button type="button" class="btn btn-success" v-on:click="accept(row.email, index)">Accept</button>
                         <button type="button" class="btn btn-danger" v-on:click="fillReject(row.email, index)">Reject</button>
                     </td>

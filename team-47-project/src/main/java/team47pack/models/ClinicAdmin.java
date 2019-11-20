@@ -1,8 +1,12 @@
 package team47pack.models;
 
+import team47pack.models.dto.RegisterRequest;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -27,7 +31,22 @@ public class ClinicAdmin extends User{
 	}
 	
 	public ClinicAdmin() {
-		
+
 	}
 
+	public ClinicAdmin(RegisterRequest req, int i) {
+		this.firstName = req.getFirstName();
+		this.lastName = req.getLastName();
+		this.password = req.getPassword();
+		this.email = req.getEmail();
+		this.address = req.getAddress();
+		this.city = req.getCity();
+		this.state = req.getState();
+		this.telephone = req.getTelephone();
+		this.uniqueNum = req.getUniqueNum();
+		this.accepted = false;
+		this.enabled = true;
+		this.lastPasswordResetDate = Timestamp.valueOf(LocalDateTime.now());
+		this.clinic = i;
+	}
 }
