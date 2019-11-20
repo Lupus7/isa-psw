@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import team47pack.models.ClinicAdmin;
 import team47pack.models.Patient;
 import team47pack.models.User;
 import team47pack.models.dto.RegisterRequest;
@@ -35,6 +36,21 @@ public class LoginService {
         String hash = enc.encode(p.getPassword());
         p.setPassword(hash);
         userRepo.save(p);
+
+        return true;
+    }
+
+    public Boolean registerAdmin(RegisterRequest req) {
+        User u = userRepo.findByEmail(req.getEmail());
+        if(u != null){
+            return  false;
+        }
+
+        ClinicAdmin ca = new ClinicAdmin(req, 1);
+        BCryptPasswordEncoder enc = new BCryptPasswordEncoder();
+        String hash = enc.encode(ca.getPassword());
+        ca.setPassword(hash);
+        userRepo.save(ca);
 
         return true;
     }
