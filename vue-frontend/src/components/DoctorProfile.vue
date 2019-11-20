@@ -1,5 +1,9 @@
 <template>
+
+    
+
    <div class="container">
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -8,10 +12,9 @@
                         <div class="card-title mb-4">
                             <div class="d-flex justify-content-start">
                                 <div class="image-container">
-                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" style="width: 150px; height: 150px" class="img-thumbnail" />
                                     <div class="middle">
-                                        <input type="button" class="btn btn-secondary btn-block" id="btnChangePicture" value="Change data" />
-                                        <input type="file" style="display: none;" id="profilePicture" name="file" />
+                                        <button type="button" class="btn btn-secondary btn-block" v-on:click="changeD">Change data </button>
                                     </div>
                                 </div>
                                 <div class="userData ml-3">
@@ -125,11 +128,15 @@
 import axios from 'axios'
 import {returnToken} from '../token.js'
 
+
 export default {
+
+
    data() {
         return {
             user : [],
-            holiday : ""
+            holiday : "",
+           
             
         }
     },
@@ -138,7 +145,11 @@ export default {
             axios.get('http://localhost:8080/doctor/getInfo',{ 
                 headers: returnToken()
             }).then(response => { this.user = response.data; })
+        },
+        changeD(event){
+            this.$router.push("/changeData");
         }
+       
 
     },
     created(){
@@ -165,6 +176,8 @@ export default {
         border-radius: 10px;
         align-self: center;
         border: 1px dotted grey;
- }
+    }
+
+    
 
 </style>

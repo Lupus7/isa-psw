@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import team47pack.models.Doctor;
+import team47pack.models.User;
+import team47pack.models.dto.DoctorInfoRequest;
 import team47pack.repository.DoctorRepo;
 import team47pack.repository.MedicalStaffRepo;
 import team47pack.repository.UserRepo;
@@ -27,6 +29,30 @@ public class DoctorService {
 	    	d.setOnVacation(d1.getOnVacation());
 	    	
 	        return d;
+	    }
+	    
+	    public boolean updateDoctorInfo(DoctorInfoRequest req) {
+	    	User u = userRepo.findByEmail(req.getEmail());
+	    	
+	    	if(u == null || !(u instanceof Doctor))
+	    		return false;
+	    	
+	    	Doctor d = (Doctor) u;
+	    	u.setFirstName(req.getFirstName());
+	    	u.setLastName(req.getLastName());
+	    	u.setAddress(req.getAddress());
+	    	u.setState(req.getState());
+	    	u.setCity(req.getCity());
+	    	u.setTelephone(req.getTelephone());
+	    	u.setUniqueNum(req.getUniqueNum());
+	    	d.setSpecialization(req.getSpecialization());
+	    	
+	    	userRepo.save(u);
+	    	doctorRepo.save(d);
+	    	
+
+	    	
+	        return true;
 	    }
 
 	    

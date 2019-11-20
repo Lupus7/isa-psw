@@ -40,6 +40,12 @@ const router = new Router({
             name: "DoctorProfile",
             component:()=>
                 import("./components/DoctorProfile")
+        },
+        {
+            path:"/changeData",
+            name: "ChangeData",
+            component:()=>
+                import("./components/ChangeData")
         }
     ]
 });
