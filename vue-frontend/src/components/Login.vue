@@ -59,7 +59,7 @@ export default {
                     if (response.data.accessToken){
                         localStorage.setItem("user",JSON.stringify(response.data));                      
                     }
-                                        
+                    this.$router.push("/")        
                     this.$router.go("/")
                 })
                 /*.catch(error=>function() {

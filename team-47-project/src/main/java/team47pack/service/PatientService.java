@@ -34,4 +34,15 @@ public class PatientService {
         return retVal;
     }
 
+    public Patient getPatient(String email){
+        Patient ret = new Patient();
+        for(Patient p: patientRepository.findAll()){
+            if(p.getEmail().equals(email)){
+                ret = p;
+                break;
+            }
+        }
+        return ret;
+    }
+
 }

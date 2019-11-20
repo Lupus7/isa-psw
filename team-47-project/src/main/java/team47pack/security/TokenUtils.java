@@ -168,6 +168,9 @@ public class TokenUtils {
 			}
 		}
 
+		//funkcija za preuzimanje celog usera
+
+
 		return role;
 	}
 
