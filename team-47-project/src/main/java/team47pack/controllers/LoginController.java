@@ -90,11 +90,6 @@ public class LoginController {
 		}
 	}
 
-	@GetMapping(value = "/logout")
-	public ResponseEntity<?> logout() {
-		UserTokenState userTokenState = new UserTokenState();
-		return ResponseEntity.ok(userTokenState);
-	}
 
 	@GetMapping(value = "/test")
 	public String test() {

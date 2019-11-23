@@ -142,9 +142,7 @@ export default {
     },
     methods:{
         getDoctor(){
-            axios.get('http://localhost:8080/doctor/getInfo',{ 
-                headers: returnToken()
-            }).then(response => { this.user = response.data; })
+            axios.get('http://localhost:8080/doctor/getInfo').then(response => { this.user = response.data; })
         },
         changeD(event){
             this.$router.push("/changeData");
