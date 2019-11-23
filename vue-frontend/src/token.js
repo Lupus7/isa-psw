@@ -3,13 +3,16 @@ import LocalStorageService from "./LocalStorageService";
 
 const localStorageService = LocalStorageService.getService();
 
+/*export default axios.create({
+    baseURL: "http://localhost:8080"
+});*/
+
 axios.interceptors.request.use(
     config => {
         const token = localStorageService.getAccessToken();
         if (token) {
             config.headers['Authorization'] = 'Bearer ' + token;
         }
-        // config.headers['Content-Type'] = 'application/json';
         console.log(config);
         return config;
     },

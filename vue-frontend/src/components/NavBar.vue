@@ -1,13 +1,13 @@
 <template>
     <nav class="navbar navbar-dark bg-dark">
-        <button type="button" class="btn btn-primary" :style="userButton" disabled >
+        <button v-if=" this.userEmail !='' " type="button" class="btn btn-primary"  disabled >
             {{ userEmail }}
         </button>
         <a class="navbar-brand" v-on:click="homepage" href="#">Home</a>
-        <a class="navbar-brand" v-on:click="profile" href="#" :style="userButton">Profile</a>
-        <a class="navbar-brand" v-on:click="login" href="#"  :style="guestButton">Log in</a>
-        <a class="navbar-brand" v-on:click="register" href="#"  :style="guestButton">Register</a>
-        <a class="navbar-brand" v-on:click="logout" href="#"  :style="userButton">Log out</a>
+        <a v-if=" this.userEmail !='' " class="navbar-brand" v-on:click="profile" href="#" >Profile</a>
+        <a v-if=" this.userEmail ==='' " class="navbar-brand" v-on:click="login" href="#"  >Log in</a>
+        <a v-if=" this.userEmail ==='' "  class="navbar-brand" v-on:click="register" href="#"  >Register</a>
+        <a v-if=" this.userEmail !='' " class="navbar-brand" v-on:click="logout" href="#"  >Log out</a>
         <label></label>
     </nav>
 </template>
@@ -20,11 +20,8 @@ export default {
 
     data(){
         return{
-            userButton : "visibility:hidden",
-            guestButton: "visibility:visible",
             userEmail : "",
             role:'',
-            doctor: false,
             patient: false,
 
         }
@@ -51,8 +48,8 @@ export default {
             const route = "/profile"
             if (this.role == "ROLE_PATIENT")
                 this.$router.push("/patientProfile")
-            else if(this.role == "ROLE_DOCTOR")
-                 this.$router.push("/doctorProfile")
+            else if(this.role === "ROLE_DOCTOR" || this.role === "ROLE_NURSE")
+                 this.$router.push("/userProfile")
             else{
                 this.shouldChange(route)
                 this.$router.push(route)
@@ -62,6 +59,7 @@ export default {
             const route = "/login"
             if(this.shouldChange(route))
                 this.$router.push(route)
+                     
         },
         register: function(){
             const route = "/register"
@@ -84,18 +82,12 @@ export default {
             if(lss.getAccessToken() != undefined && lss.getAccessToken() != null){
                 
                 const token = jwt_decode(lss.getAccessToken());
-                console.log(token)
-                this.role = token.roles // nepotrebno
-                this.userEmail = token.sub;
-                this.userButton = "visibility:visible";
-                this.guestButton=  "visibility:hidden";
-                console.log(this.userEmail);
+                this.role = token.roles 
+                this.userEmail = token.sub;          
                 
-            }else{
-                this.guestButton = "visibility:visible";
-                this.userButton=  "visibility:hidden";
-                this.userEmail="";
-            }
+            }else
+                 this.userEmail="";
+            
         }
         
     }
