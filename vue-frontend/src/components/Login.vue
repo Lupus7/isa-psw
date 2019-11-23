@@ -30,6 +30,8 @@
 
 <script>
 import axios from 'axios'
+import LocalStorageService from "../LocalStorageService";
+const localStorageService = LocalStorageService.getService();
 
 export default {
     data: function(){
@@ -56,8 +58,10 @@ export default {
                         "password": this.password
                     })
                 .then(response=>{
-                    if (response.data.accessToken){
-                        localStorage.setItem("user",JSON.stringify(response.data));                      
+                    console.log('asdf: ' + response)
+                    if (response.data){
+                        const lss = LocalStorageService.getService();
+                        lss.setToken(response.data);
                     }
                     this.$router.push("/")        
                     this.$router.go("/")

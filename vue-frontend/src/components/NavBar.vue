@@ -15,7 +15,7 @@
 <script>
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
-import {returnToken} from '../token.js'
+import LocalStorageService from "../LocalStorageService";
 export default {
 
     data(){
@@ -70,36 +70,27 @@ export default {
         },
         logout: function(){
                 
-            axios.get('http://localhost:8080/logout').then(response=>{
-               
-               
-                localStorage.setItem("user",JSON.stringify(response.data));
-                this.guestButton = "visibility:visible";
-                this.userButton=  "visibility:hidden";
-                this.userEmail="";
-                             
-            })
-           
+            LocalStorageService.getService().clearToken();
+            this.$router.push("/login")
+            this.refresh();          
             
         },
         
 
         refresh(){
             
-            axios.post('http://localhost:8080/refresh',
-                null,{ 
-                    headers: returnToken()
-                }).then(response=>{})
-               
-         
-            if(localStorage.getItem("user") != null){
-                const token = jwt_decode(localStorage.getItem("user"));
+           const lss = LocalStorageService.getService();
+
+            if(lss.getAccessToken() != undefined && lss.getAccessToken() != null){
+                
+                const token = jwt_decode(lss.getAccessToken());
                 console.log(token)
-                this.role = token.roles
+                this.role = token.roles // nepotrebno
                 this.userEmail = token.sub;
                 this.userButton = "visibility:visible";
                 this.guestButton=  "visibility:hidden";
                 console.log(this.userEmail);
+                
             }else{
                 this.guestButton = "visibility:visible";
                 this.userButton=  "visibility:hidden";
