@@ -19,7 +19,9 @@
                                 </div>
                                 <div class="userData ml-3">
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.email}}</h2>
-                                    <h4 class="d-block" style="font-size: 1.5rem; font-weight: bold">Doctor</h4>
+                                    <h4 v-if=" this.role === 'ROLE_DOCTOR'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Doctor</h4>
+                                    <h4 v-else-if=" this.role === 'ROLE_NURSE'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Nurse</h4>
+
                                     <h6 class="d-block" style="font-size: 1rem; font-weight: bold"> {{this.holiday}} </h6>
                                 </div>
                                 <div class="ml-auto">
@@ -96,7 +98,7 @@
                                             </div>
                                         </div>
                                         <hr />
-                                         <div class="row">
+                                         <div v-if=" this.role === 'ROLE_DOCTOR'" class="row">
                                             <div class="col-sm-3 col-md-2 col-5">
                                                 <label style="font-weight:bold;">Specialization</label>
                                             </div>
@@ -126,8 +128,8 @@
 
 <script>
 import axios from 'axios'
-import {returnToken} from '../token.js'
-
+import jwt_decode from 'jwt-decode'
+import LocalStorageService from "../LocalStorageService";
 
 export default {
 
@@ -136,27 +138,49 @@ export default {
         return {
             user : [],
             holiday : "",
-           
-            
+            role: ""
+                   
         }
     },
     methods:{
         getDoctor(){
             axios.get('http://localhost:8080/doctor/getInfo').then(response => { this.user = response.data; })
         },
+
+        getNurse(){
+            axios.get('http://localhost:8080/nurse/getInfo').then(response => { this.user = response.data; })
+        },
+
         changeD(event){
             this.$router.push("/changeData");
-        }
+        },
+        
+        getRole(){
+
+           const lss = LocalStorageService.getService();
+
+            if(lss.getAccessToken() != undefined && lss.getAccessToken() != null){          
+                const token = jwt_decode(lss.getAccessToken());           
+                this.role = token.roles;  
+            }
+            
+        },
        
 
     },
     created(){
+
+        this.getRole();
+
+        if(this.role === "ROLE_DOCTOR")
+            this.getDoctor();
+        else if(this.role === "ROLE_NURSE")
+            this.getNurse();
       
-       this.getDoctor();
-       if(this.user.onVacation === true)
-        this.holiday = "On holiday";
-       else
-       this.holiday = "Not On holiday";
+        if(this.user.onVacation === true)
+            this.holiday = "On holiday";
+        else
+            this.holiday = "Not On holiday";
      
     }
 

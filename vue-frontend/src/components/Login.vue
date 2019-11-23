@@ -31,6 +31,7 @@
 <script>
 import axios from 'axios'
 import LocalStorageService from "../LocalStorageService";
+import {funToastr} from "../toastr.js"
 const localStorageService = LocalStorageService.getService();
 
 export default {
@@ -58,18 +59,20 @@ export default {
                         "password": this.password
                     })
                 .then(response=>{
-                    console.log('asdf: ' + response)
+
                     if (response.data){
                         const lss = LocalStorageService.getService();
                         lss.setToken(response.data);
-                    }
-                    this.$router.push("/")        
-                    this.$router.go("/")
+                    }               
+                   
                 })
-                /*.catch(error=>function() {
-                    alert("Neuspesno");
-                    return
-                });*/
+               
+               funToastr("s","Successfuly logged in!","Login!");
+               setTimeout(() =>{
+                    this.$router.push("/");       
+                    this.$router.go("/");
+               },1500);
+               
         }
     },
     

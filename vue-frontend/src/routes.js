@@ -4,7 +4,7 @@ import Router from "vue-router";
 Vue.use(Router);
 
 const router = new Router({
-    mode: "history",
+    mode: "hash",
     routes: [{
             path: "/",
             name: "Home",
@@ -36,11 +36,11 @@ const router = new Router({
                 import ("./components/PatientProfile")
         },
         {
-            path: "/doctorProfile",
-            name: "DoctorProfile",
+            path: "/userProfile",
+            name: "UserProfile",
 
             component:()=>
-                import("./components/DoctorProfile")
+                import("./components/UserProfile")
         },
         {
             path:"/changeData",
