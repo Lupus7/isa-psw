@@ -11,7 +11,6 @@ import java.util.List;
 public class Clinic {
 
     @Id
-    @Column(name="id")
     @SequenceGenerator(name = "clinic_id_seq", sequenceName = "clinic_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clinic_id_seq")
     Long id;
@@ -22,7 +21,7 @@ public class Clinic {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "desc", nullable = false)
+    @Column(name = "description", nullable = false)
     private String description;
 
     // TODO : private List<Appointment> appointmens;

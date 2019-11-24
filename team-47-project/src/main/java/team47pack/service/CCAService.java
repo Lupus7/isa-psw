@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import team47pack.models.Clinic;
 import team47pack.models.ClinicCentreAdmin;
 import team47pack.models.User;
+import team47pack.models.dto.ClinicRegister;
 import team47pack.repository.CCARepo;
 import team47pack.repository.ClinicRepo;
 import team47pack.repository.UserRepo;
@@ -45,11 +46,7 @@ public class CCAService {
         return (ClinicCentreAdmin) userRepo.findByEmail(email);
     }
 
-    public boolean registerClinic(Clinic c) {
-        if (clinicRepo.findById(c.getId()) != null)
-            return false;
-
-        clinicRepo.save(c);
-        return true;
+    public void registerClinic(ClinicRegister reg) {
+        clinicRepo.save(new Clinic(reg));
     }
 }

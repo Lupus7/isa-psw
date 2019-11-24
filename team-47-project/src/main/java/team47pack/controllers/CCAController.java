@@ -91,8 +91,7 @@ public class CCAController {
     @PostMapping(value="/reg_clinic")
     @PreAuthorize("hasRole('CCADMIN')")
     public ResponseEntity<String> registerClinic(@RequestBody ClinicRegister req) {
-        if (ccaService.registerClinic(new Clinic(req)))
-            return ResponseEntity.ok("Successful");
-        return ResponseEntity.status(400).body("Invalid information");
+        ccaService.registerClinic(req);
+        return ResponseEntity.ok("Successful");
     }
 }
