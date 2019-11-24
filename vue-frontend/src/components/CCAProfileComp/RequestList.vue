@@ -55,20 +55,18 @@ export default {
     methods: { 
         getReqList() {
             axios
-                .get('http://localhost:8080/cca/request-list',{
-                     headers: returnToken()
-                 })
+                .get('http://localhost:8080/cca/request-list')
                 .then(response => { this.rows = response.data })
         },
         accept(email, index) {
             let url = 'http://localhost:8080/cca/request-list/accept'
-            axios.post(url, {"mail": email}, {headers: returnToken()})
+            axios.post(url, {"mail": email})
             this.rows.splice(index, 1)
             this.fillReject("", index)
         },
         reject(email, index) {
             let url = 'http://localhost:8080/cca/request-list/reject'
-            axios.post(url, { "mail": email, "expl": this.explanation }, { headers: returnToken()})
+            axios.post(url, { "mail": email, "expl": this.explanation })
             this.rows.splice(index, 1)
             this.selectedUser = ""
         },
