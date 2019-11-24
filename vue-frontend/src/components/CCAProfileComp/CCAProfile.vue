@@ -28,16 +28,16 @@
                             <div class="col-12">
                                 <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" v-on:click="activateProf()" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
+                                        <a class="nav-link active" v-on:click="activateProf()" id="basicInfo-tab" data-toggle="tab" href="#profile/basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" v-on:click="activateList()" id="regReq-tab" data-toggle="tab" href="#regReq" role="tab" aria-controls="regReq">Registration Requests</a>
+                                        <a class="nav-link" v-on:click="activateList()" id="regReq-tab" data-toggle="tab" href="#profile/regReq" role="tab" aria-controls="regReq">Registration Requests</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" v-on:click="activateAdd()" id="addAdmin-tab" data-toggle="tab" href="#addAdmin" role="tab" aria-controls="addAdmin">Add Administrators / Clinics</a>
+                                        <a class="nav-link" v-on:click="activateAdd()" id="addAdmin-tab" data-toggle="tab" href="#profile/addAdmin" role="tab" aria-controls="addAdmin">Add Administrators / Clinics</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" v-on:click="activateCode()" id="codebook-tab" data-toggle="tab" href="#codebook" role="tab" aria-controls="codebook">Codebook</a>
+                                        <a class="nav-link" v-on:click="activateCode()" id="codebook-tab" data-toggle="tab" href="#profile/codebook" role="tab" aria-controls="codebook">Codebook</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content ml-1" id="myTabContent">

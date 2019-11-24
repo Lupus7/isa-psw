@@ -77,6 +77,11 @@ public class LoginController {
 
 		String token = tokenUtils.getToken(request);
 		String username = this.tokenUtils.getUsernameFromToken(token);
+		if (username == null) {
+			UserTokenState userTokenState = new UserTokenState();
+			return ResponseEntity.badRequest().body(userTokenState);
+		}
+
 		User user = (User) this.userDetailsService.loadUserByUsername(username);
 
 		if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {

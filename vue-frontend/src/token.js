@@ -13,7 +13,6 @@ axios.interceptors.request.use(
         if (token) {
             config.headers['Authorization'] = 'Bearer ' + token;
         }
-        console.log(config);
         return config;
     },
     error => {
@@ -21,25 +20,31 @@ axios.interceptors.request.use(
     });
 
 axios.interceptors.response.use((response) => {
-    console.log("response=> " + JSON.stringify(response.data))
     return response
 }, function(error) {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && originalRequest.endsWith('/refresh')) {
-        this.$router.push('/login');
+    console.log("-->TOKEN EXPIRED<--");
+
+    if (error.response.status === 401 && originalRequest.url.endsWith('/refresh')) {
+        console.log("-->DELETE TOKEN<--");
+        localStorageService.clearToken();
+        // this.$router.push('/login');
+        // this.$router.go('/login');
         return Promise.reject(error);
     }
 
     if (error.response.status === 401 && !originalRequest._retry) {
+        console.log("-->TRY REFRESH<--");
 
         originalRequest._retry = true;
         const accessToken = localStorageService.getAccessToken();
-        return axios.post('/refresh', {
+        return axios.post('http://localhost:8080/refresh', {
                 "accessToken": accessToken
             })
             .then(res => {
-                if (res.status === 201) {
+                if (res.status === 200) {
+                    console.log("-->REFRESH SUCCESS<--");
                     localStorageService.setToken(res.data);
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorageService.getAccessToken();
                     return axios(originalRequest);
