@@ -39,6 +39,7 @@ export default {
         return{
             email:"",
             password:"",
+            
         }
     },
     methods:{
@@ -63,17 +64,22 @@ export default {
                     if (response.data){
                         const lss = LocalStorageService.getService();
                         lss.setToken(response.data);
-                    }               
+                    }
+                  
                    
                 })
-               
-               funToastr("s","Successfuly logged in!","Login!");
-               setTimeout(() =>{
+
+                funToastr("s","Successfuly logged in!","Login!");
+                setTimeout(() =>{ 
+
                     this.$router.push("/");       
                     this.$router.go("/");
-               },1500);
+            
+                },1500);
+                   
                
-        }
+        },
+        
     },
     
 }

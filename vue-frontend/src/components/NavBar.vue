@@ -1,14 +1,15 @@
 <template>
+
     <nav class="navbar navbar-dark bg-dark">
         <button v-if=" this.userEmail !='' " type="button" class="btn btn-primary"  disabled >
             {{ userEmail }}
         </button>
         <a class="navbar-brand" v-on:click="homepage" href="#">Home</a>
-        <a v-if=" this.userEmail !='' " class="navbar-brand" v-on:click="profile" href="#" >Profile</a>
-        <a v-if=" this.userEmail ==='' " class="navbar-brand" v-on:click="login" href="#"  >Log in</a>
+        <a v-if=" this.userEmail !='' || this.firstLogin " class="navbar-brand" v-on:click="profile" href="#" >Profile</a>
+        <a v-if=" this.userEmail ===''  " class="navbar-brand" v-on:click="login" href="#"  >Log in</a>
         <a v-if=" this.userEmail ==='' "  class="navbar-brand" v-on:click="register" href="#"  >Register</a>
-        <a v-if=" this.userEmail !='' " class="navbar-brand" v-on:click="logout" href="#"  >Log out</a>
-        <label></label>
+        <a v-if=" this.userEmail !=''  " class="navbar-brand" v-on:click="logout" href="#"  >Log out</a>
+       
     </nav>
 </template>
 
@@ -23,12 +24,15 @@ export default {
             userEmail : "",
             role:'',
             patient: false,
+            firstLogin: false,
 
         }
         
+        
     },
+   
     created(){       
-        this.refresh()     
+        this.refresh()   
     },
    
     methods:{
@@ -83,12 +87,16 @@ export default {
                 
                 const token = jwt_decode(lss.getAccessToken());
                 this.role = token.roles 
-                this.userEmail = token.sub;          
-                
+                this.userEmail = token.sub; 
+                axios.get('http://localhost:8080/user/firstLogin').then(response => {                    
+                    this.firstLogin=response.data;
+                });       
+                          
             }else
                  this.userEmail="";
             
-        }
+        },
+        
         
     }
 }

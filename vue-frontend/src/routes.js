@@ -49,6 +49,14 @@ const router = new Router({
                 import("./components/ChangeData")
 
   
+        },
+        {
+            path:"/passwordChange",
+            name: "PasswordChange",
+            component:()=>
+                import("./components/PasswordChange")
+
+  
         }
     ]
 });
