@@ -2,7 +2,9 @@ package team47pack.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team47pack.models.Clinic;
 import team47pack.models.Patient;
+import team47pack.repository.ClinicRepo;
 import team47pack.repository.PatientRepo;
 
 import java.util.ArrayList;
@@ -12,10 +14,14 @@ import java.util.List;
 public class PatientService {
     @Autowired
     private PatientRepo patientRepository;
+    @Autowired
+    private ClinicRepo clinicRepository;
+
 
     public List<Patient> getAllPatients(){
         return patientRepository.findAll();
     }
+    public List<Clinic> getAllClinics(){return clinicRepository.findAll();}
 
     public void insert(Patient patient) {
         patientRepository.save(patient);

@@ -53,6 +53,8 @@ insert into nurse values (11);
 
 SELECT setval('hibernate_id_seq"', 21, true);
 ALTER SEQUENCE hibernate_id_seq RESTART WITH 22;
+SELECT setval('clinic_id_seq"', 21, true);
+ALTER SEQUENCE clinic_id_seq RESTART WITH 10;
 
 insert into authority (name) values ('ROLE_PATIENT');
 insert into authority (name) values ('ROLE_DOCTOR');
@@ -70,6 +72,10 @@ insert into user_authority (user_id, authority_id) values (7,3);
 insert into user_authority (user_id, authority_id) values (8,2);
 insert into user_authority (user_id, authority_id) values (9,4);
 insert into user_authority (user_id, authority_id) values (10,5); 
-insert into user_authority (user_id, authority_id) values (11,3); 
+insert into user_authority (user_id, authority_id) values (11,3);
+
+insert into clinic(id,address,description,name) values (1,'klinika1','dr.andre','lepa bas onako');
+insert into clinic(id,address,description,name) values (2,'klinika2','Ulica 2','nije najsrecnija');
+insert into clinic(id,address,description,name) values (3,'klinika3','Ulica 3','odlicna');
 
 
