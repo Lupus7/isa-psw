@@ -52,7 +52,7 @@ public class User implements UserDetails {
 	@Column(name = "enabled")
 	protected boolean enabled;
 
-	@Column(name = "last_password_reset_date")
+	@Column(name = "last_password_reset_date", nullable=true)
 	protected Timestamp lastPasswordResetDate;
 
 	@Column(name="isAccepted", unique=false, nullable=false)
