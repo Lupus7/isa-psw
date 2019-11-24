@@ -88,6 +88,8 @@ export default {
                 const token = jwt_decode(lss.getAccessToken());
                 this.role = token.roles 
                 this.userEmail = token.sub; 
+
+                // znaci ako je firstLogin true prebacivanje na formu za promenu
                 axios.get('http://localhost:8080/user/firstLogin').then(response => {                    
                     this.firstLogin=response.data;
                 });       
