@@ -74,7 +74,7 @@ export default {
                         this.$router.push("/");       
                         this.$router.go("/");
                              
-                    },1500);
+                    },1600);
 
                 });           
                    

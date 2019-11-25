@@ -8,15 +8,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import team47pack.models.Authority;
 import team47pack.models.User;
+import team47pack.models.UserTokenState;
 import team47pack.models.dto.PasswordRequest;
 import team47pack.repository.UserRepo;
+import team47pack.security.TokenUtils;
 
 @Service
 public class UserPasswordService {
 
 	@Autowired
 	private UserRepo userRepo;
+	
+	@Autowired
+	TokenUtils tokenUtils;
 
 	public boolean getFirstLogin(String email) {
 		User u = (User) userRepo.findByEmail(email);
@@ -26,7 +32,7 @@ public class UserPasswordService {
 		return true;
 	}
 
-	public ResponseEntity<String> updatePasswordFL(PasswordRequest req) {
+	public ResponseEntity<?> updatePasswordFL(PasswordRequest req) {
 		User u = userRepo.findByEmail(req.getEmail());
 		if (u == null)
 			return ResponseEntity.badRequest().body("Unsuccessful!");
@@ -43,11 +49,15 @@ public class UserPasswordService {
 		u.setPassword(hash);
 		u.setLastPasswordResetDate(Timestamp.valueOf(LocalDateTime.now()));
 		userRepo.save(u);
+		
+		String jwt = tokenUtils.generateToken(u.getUsername(),((Authority)u.getAuthorities().toArray()[0]).getName());
+		int expiresIn = tokenUtils.getExpiredIn();
 
-		return ResponseEntity.ok("You have successfuly changed your password!");
+		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+
 	}
 
-	public ResponseEntity<String> updatePassword(PasswordRequest req) {
+	public ResponseEntity<?> updatePassword(PasswordRequest req) {
 		User u = userRepo.findByEmail(req.getEmail());
 		if (u == null)
 			return ResponseEntity.badRequest().body("Unsuccessful!");
@@ -68,7 +78,11 @@ public class UserPasswordService {
 				u.setPassword(hashPass);
 				u.setLastPasswordResetDate(Timestamp.valueOf(LocalDateTime.now()));
 				userRepo.save(u);
-				return ResponseEntity.ok("You have successfuly changed your password!");
+				
+				String jwt = tokenUtils.generateToken(u.getUsername(),((Authority)u.getAuthorities().toArray()[0]).getName());
+				int expiresIn = tokenUtils.getExpiredIn();
+
+				return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
 			}
 		}
 	}

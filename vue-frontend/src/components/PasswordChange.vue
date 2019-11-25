@@ -77,7 +77,13 @@ import LocalStorageService from "../LocalStorageService";
                         "passwordCurr" : "Nothing",
                     }).then(response=>{
                         if(response.status == 200)
-                            funToastr("s",response.data,"Password Change!");
+
+                            if (response.data){
+                                const lss = LocalStorageService.getService();
+                                lss.setToken(response.data);
+                                funToastr("s","You have changed your password successfuly!","Login!");
+                            }
+
                         else
                             funToastr("d",response.data,"Password Change!");
 
@@ -104,7 +110,11 @@ import LocalStorageService from "../LocalStorageService";
                         "email" : this.email,
                     }).then(response=>{
                         if(response.status == 200)
-                            funToastr("s",response.data,"Password Change!");
+                            if (response.data){
+                                const lss = LocalStorageService.getService();
+                                lss.setToken(response.data);
+                                funToastr("s","You have changed your password successfuly!","Login!");
+                            }
                         else
                             funToastr("d",response.data,"Password Change!");
 
