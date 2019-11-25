@@ -50,7 +50,7 @@ insert into users (is_accepted, address, city, email, enabled, first_name, last_
 insert into clinic_centre_admin (id) values (10);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
-            values(true,'test','test','test11',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test11',11);
+            values(true,'test','test','test11',true,'test','test',null,'$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test11',11);
 insert into medical_staff (id,on_vacation) values (11,false);            
 insert into nurse values (11);
 
@@ -64,6 +64,7 @@ insert into authority (name) values ('ROLE_DOCTOR');
 insert into authority (name) values ('ROLE_NURSE');
 insert into authority (name) values ('ROLE_CADMIN');
 insert into authority (name) values ('ROLE_CCADMIN');
+insert into authority (name) values ('ROLE_USER');
 
 insert into user_authority (user_id, authority_id) values (1,1);
 insert into user_authority (user_id, authority_id) values (2,1);
@@ -80,6 +81,19 @@ insert into user_authority (user_id, authority_id) values (11,3);
 insert into clinic(id,address,description,name) values (1,'klinika1','dr.andre','lepa bas onako');
 insert into clinic(id,address,description,name) values (2,'klinika2','Ulica 2','nije najsrecnija');
 insert into clinic(id,address,description,name) values (3,'klinika3','Ulica 3','odlicna');
+
+--- all users 
+insert into user_authority (user_id, authority_id) values (1,6);
+insert into user_authority (user_id, authority_id) values (2,6);
+insert into user_authority (user_id, authority_id) values (3,6); 
+insert into user_authority (user_id, authority_id) values (4,6);
+insert into user_authority (user_id, authority_id) values (5,6); 
+insert into user_authority (user_id, authority_id) values (6,6);
+insert into user_authority (user_id, authority_id) values (7,6); 
+insert into user_authority (user_id, authority_id) values (8,6);
+insert into user_authority (user_id, authority_id) values (9,6);
+insert into user_authority (user_id, authority_id) values (10,6); 
+insert into user_authority (user_id, authority_id) values (11,6); 
 
 
 insert into examination(id,type,date,patient_id) values(1,'obican pregled','04.09.2020 15:24',2);

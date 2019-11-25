@@ -5,6 +5,7 @@
 </template>
 
 <script>
+
 import patientHome from './PatientHome'
 import jwt_decode from 'jwt-decode'
 import LocalStorageService from "../LocalStorageService";
@@ -33,5 +34,8 @@ export default {
     components:{
         patientHome
     }
+
 }
+
+
 </script>
