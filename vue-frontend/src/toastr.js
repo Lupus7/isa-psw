@@ -26,13 +26,13 @@ const options = window.toastr.options = {
 }
 
 export function funToastr(type,message,title){
-    if (type == "s")
+    if (type === "s")
         window.toastr.success(message, title, options);
-    else if(type == "w")
+    else if(type === "w")
         window.toastr.warning(message, title, options);
-    else if(type == "i")
+    else if(type === "i")
         window.toastr.info(message, title, options);
-    else if(type == "d")
+    else if(type === "d")
         window.toastr.danger(message, title, options);
       
 }

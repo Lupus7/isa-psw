@@ -139,6 +139,8 @@ export default {
     border-radius: 10px;
     align-self: center;
     border: 1px dotted grey;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+
  }
 
 .form {
