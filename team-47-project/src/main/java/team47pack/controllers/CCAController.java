@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import team47pack.models.Clinic;
 import team47pack.models.ClinicCentreAdmin;
 import team47pack.models.User;
+import team47pack.models.dto.CAdminRegReq;
+import team47pack.models.dto.ClinicAndAdmin;
 import team47pack.models.dto.ClinicRegister;
 import team47pack.models.dto.RegisterRequest;
 import team47pack.security.TokenUtils;
@@ -76,7 +78,7 @@ public class CCAController {
     }
 
     @PostMapping(value="/reg_admin")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest req) {
+    public ResponseEntity<String> register(@RequestBody CAdminRegReq req) {
         if (loginService.registerAdmin(req)) {
             return ResponseEntity.ok("Successful");
         }
@@ -95,7 +97,7 @@ public class CCAController {
     }
 
     @GetMapping(value="/get_clinics")
-    public List<Clinic> getClinics() {
+    public List<ClinicAndAdmin> getClinics() {
         return clinicService.getClinics();
     }
 }

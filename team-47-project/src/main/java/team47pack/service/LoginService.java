@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import team47pack.models.ClinicAdmin;
 import team47pack.models.Patient;
 import team47pack.models.User;
+import team47pack.models.dto.CAdminRegReq;
 import team47pack.models.dto.RegisterRequest;
 import team47pack.repository.PatientRepo;
 import team47pack.repository.UserRepo;
@@ -40,13 +41,13 @@ public class LoginService {
         return true;
     }
 
-    public Boolean registerAdmin(RegisterRequest req) {
+    public Boolean registerAdmin(CAdminRegReq req) {
         User u = userRepo.findByEmail(req.getEmail());
         if(u != null){
             return  false;
         }
 
-        ClinicAdmin ca = new ClinicAdmin(req, 1);
+        ClinicAdmin ca = new ClinicAdmin(req, req.getClinic());
         BCryptPasswordEncoder enc = new BCryptPasswordEncoder();
         String hash = enc.encode(ca.getPassword());
         ca.setPassword(hash);

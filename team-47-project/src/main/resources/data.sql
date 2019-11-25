@@ -44,7 +44,7 @@ insert into clinic_admin (id,clinic) values (9, 1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'SECRET','Novi Sad','admin@team47.com',true,'SECRET','SECRET','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','Serbia','SECRET','0000',10);
-insert into clinic_centre_admin (id) values (10);
+insert into clinic_centre_admin (id) values (1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','test11',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test11',11);
@@ -72,4 +72,8 @@ insert into user_authority (user_id, authority_id) values (9,4);
 insert into user_authority (user_id, authority_id) values (10,5); 
 insert into user_authority (user_id, authority_id) values (11,3); 
 
+insert into clinic (id, address, description, name) values (1, 'test', 'test', 'test1');
+insert into clinic (id, address, description, name) values (2, 'test', 'test', 'test2');
+insert into clinic (id, address, description, name) values (3, 'test', 'test', 'test3');
+insert into clinic (id, address, description, name) values (4, 'test', 'test', 'test4');
 
