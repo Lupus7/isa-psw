@@ -47,7 +47,7 @@ insert into clinic_admin (id,clinic) values (9, 1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'SECRET','Novi Sad','admin@team47.com',true,'SECRET','SECRET','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','Serbia','SECRET','0000',10);
-insert into clinic_centre_admin (id) values (10);
+insert into clinic_centre_admin (id) values (1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','test11',true,'test','test',null,'$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test11',11);
@@ -95,6 +95,10 @@ insert into user_authority (user_id, authority_id) values (9,6);
 insert into user_authority (user_id, authority_id) values (10,6); 
 insert into user_authority (user_id, authority_id) values (11,6); 
 
+insert into clinic (id, address, description, name) values (1, 'test', 'test', 'test1');
+insert into clinic (id, address, description, name) values (2, 'test', 'test', 'test2');
+insert into clinic (id, address, description, name) values (3, 'test', 'test', 'test3');
+insert into clinic (id, address, description, name) values (4, 'test', 'test', 'test4');
 
 insert into examination(id,type,date,patient_id) values(1,'obican pregled','04.09.2020 15:24',2);
 insert into examination(id,type,date,patient_id) values(2,'operacija','07.10.2019 15:24',3);

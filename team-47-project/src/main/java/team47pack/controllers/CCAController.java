@@ -13,15 +13,19 @@ import org.springframework.web.bind.annotation.*;
 import team47pack.models.Clinic;
 import team47pack.models.ClinicCentreAdmin;
 import team47pack.models.User;
+import team47pack.models.dto.CAdminRegReq;
+import team47pack.models.dto.ClinicAndAdmin;
 import team47pack.models.dto.ClinicRegister;
 import team47pack.models.dto.RegisterRequest;
 import team47pack.security.TokenUtils;
 import team47pack.service.CCAService;
+import team47pack.service.ClinicService;
 import team47pack.service.EmailService;
 import team47pack.service.LoginService;
 
 @RestController
 @RequestMapping(value="/cca")
+@PreAuthorize("hasRole('CCADMIN')")
 public class CCAController {
     @Autowired
     private CCAService ccaService;
@@ -33,16 +37,17 @@ public class CCAController {
     private LoginService loginService;
 
     @Autowired
+    private ClinicService clinicService;
+
+    @Autowired
     private TokenUtils tokenUtils;
 
     @GetMapping(value="/request-list")
-    @PreAuthorize("hasRole('CCADMIN')")
     public List<User> reqList() {
         return ccaService.getRegRequest();
     }
 
     @PostMapping(value="/request-list/accept")
-    @PreAuthorize("hasRole('CCADMIN')")
     public ResponseEntity<String> acceptRequest(@RequestBody String mail) throws JSONException {
         JSONObject obj = new JSONObject(mail);
         if (obj == null || obj.get("mail") == null || obj.get("mail") == "")
@@ -58,7 +63,6 @@ public class CCAController {
     }
 
     @PostMapping(value="request-list/reject")
-    @PreAuthorize("hasRole('CCADMIN')")
     public ResponseEntity<String> rejectRequest(@RequestBody String expl) throws JSONException {
         JSONObject obj = new JSONObject(expl);
         if (obj == null || obj.get("expl") == null || obj.get("expl") == "" || obj.get("mail") == null || obj.get("mail") == "")
@@ -74,8 +78,7 @@ public class CCAController {
     }
 
     @PostMapping(value="/reg_admin")
-    @PreAuthorize("hasRole('CCADMIN')")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest req) {
+    public ResponseEntity<String> register(@RequestBody CAdminRegReq req) {
         if (loginService.registerAdmin(req)) {
             return ResponseEntity.ok("Successful");
         }
@@ -83,15 +86,18 @@ public class CCAController {
     }
 
     @GetMapping(value="/getInfo")
-    @PreAuthorize("hasRole('CCADMIN')")
     public ClinicCentreAdmin getInfo(Principal user) {
         return ccaService.findByEmail(user.getName());
     }
 
     @PostMapping(value="/reg_clinic")
-    @PreAuthorize("hasRole('CCADMIN')")
     public ResponseEntity<String> registerClinic(@RequestBody ClinicRegister req) {
         ccaService.registerClinic(req);
         return ResponseEntity.ok("Successful");
+    }
+
+    @GetMapping(value="/get_clinics")
+    public List<ClinicAndAdmin> getClinics() {
+        return clinicService.getClinics();
     }
 }

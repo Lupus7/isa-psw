@@ -43,7 +43,10 @@ public class CCAService {
     }
 
     public ClinicCentreAdmin findByEmail(String email) {
-        return (ClinicCentreAdmin) userRepo.findByEmail(email);
+        User u = userRepo.findByEmail(email);
+        if (u == null)
+            return null;
+        return new ClinicCentreAdmin(u);
     }
 
     public void registerClinic(ClinicRegister reg) {

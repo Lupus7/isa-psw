@@ -1,4 +1,3 @@
-
 const LocalStorageService = (function() {
     var _service;
 
@@ -15,7 +14,6 @@ const LocalStorageService = (function() {
     }
 
     function _getAccessToken() {
-        console.log(localStorage.getItem('access_token'))
         return localStorage.getItem('access_token');
     }
 

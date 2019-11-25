@@ -4,15 +4,15 @@ import team47pack.models.User;
 
 public class RegisterRequest {
 
-    private String firstName;
-    private String lastName;
-    private String password;
-    private String email;
-    private String address;
-    private String city;
-    private String state;
-    private String telephone;
-    private String uniqueNum;
+    protected String firstName;
+    protected String lastName;
+    protected String password;
+    protected String email;
+    protected String address;
+    protected String city;
+    protected String state;
+    protected String telephone;
+    protected String uniqueNum;
 
     public RegisterRequest() {
 
