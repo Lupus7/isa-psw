@@ -1,7 +1,8 @@
 <script>
 import jwt_decode from 'jwt-decode'
 import axios from 'axios';
-import {returnToken} from '../token.js'
+
+import LocalStorageService from "../LocalStorageService";
 export default {
     data() {
         return {
@@ -13,17 +14,32 @@ export default {
     },
     methods:{
 		getPatient(){
-            axios.get('http://localhost:8080/patient/getInfo',{ 
-                headers: returnToken()
-            }).then(response => { this.user = response.data; })
-		},
+            axios.get('http://localhost:8080/patient/getInfo').then(response => { this.user = response.data;})
+        },
 		checkMedicalFile(){
 
-		}
+		},
+		getRole(){
+
+           const lss = LocalStorageService.getService();
+
+            if(lss.getAccessToken() != undefined && lss.getAccessToken() != null){          
+                const token = jwt_decode(lss.getAccessToken());           
+                this.role = token.roles;  
+            }
+            
+		},
+		changeD(){
+
+		},
     },
     created(){
-		this.getPatient()
-        const token = jwt_decode(localStorage.getItem("user"));
+		this.getRole()
+		alert(this.role)
+		if(this.role === "ROLE_PATIENT")
+            this.getPatient()
+		
+       /* const token = jwt_decode(localStorage.getItem("user"));
         this.userEmail = token.sub
         this.role = token.roles
         axios
@@ -31,7 +47,7 @@ export default {
         .then(response=>{
             this.user = response.data
         })
-        
+        */
         
     }
 }
@@ -41,75 +57,118 @@ export default {
 </script>
 
 <template>
-    <div id="user-profile-2" class="user-profile">
-		<div class="tabbable">
+     <div class="container">
 
-			<div class="tab-content no-border padding-24">
-				<div id="home" class="tab-pane in active">
-					<div class="row">
-						<div class="col-xs-12 col-sm-3 center">
-							<span class="profile-picture">
-								<img class="editable img-responsive" alt=" Avatar" id="avatar2" src="http://bootdey.com/img/Content/avatar/avatar6.png">
-                            </span>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
 
-							<div class="space space-4"></div>
+                    <div class="card-body">
+                        <div class="card-title mb-4">
+                            <div class="d-flex justify-content-start">
+                                <div class="image-container">
+                                    <img class="editable img-responsive" alt=" Avatar" id="avatar2" src="http://bootdey.com/img/Content/avatar/avatar6.png">
+                                    <div class="middle">
+                                        <button type="button" class="btn btn-secondary btn-block" v-on:click="changeD">Change data </button>
+                                    </div>
+                                </div>
+                                <div class="userData ml-3">
+                                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.email}}</h2>
+                                    <h4 v-if=" this.role === 'ROLE_DOCTOR'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Doctor</h4>
+                                    <h4 v-else-if=" this.role === 'ROLE_NURSE'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Nurse</h4>
 
-						</div><!-- /.col -->
+                                </div>
+                                <div class="ml-auto">
+                                    <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
+                                </div>
+                            </div>
+                        </div>
 
-						<div class="col-xs-12 col-sm-9">
-							<h4 class="blue">
-								<span class="middle"><b>{{this.userEmail}}</b></span>
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content ml-1" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+                                        
 
-								<span class="label label-purple arrowed-in-right">
-									<i class="ace-icon fa fa-circle smaller-80 align-middle"></i>
-								Role:	{{this.role}}
-								</span>
-							</h4>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">Full Name</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                {{user.firstName +" "+ user.lastName}}
+                                            </div>
+                                        </div>
+                                        <hr />
 
-							<div class="profile-user-info">
-								
-								<div>
-									<table>
- 										 <tr>
-											<th>Name</th>
-											<td>{{this.user.firstName}}</td>
-										</tr>
-										<tr>
-											<th>Lastname</th>
-											<td>{{this.user.lastName}}</td>
-										</tr>
-										<tr>
-											<th>Email</th>
-											<td>{{this.user.email}}</td>
-										</tr>
-										<tr>
-											<th>Adress</th>
-											<td>{{this.user.address}}</td>
-										</tr>
-										<tr>
-											<th>City</th>
-											<td>{{this.user.city}}</td>
-										</tr>
-										<tr>
-											<th>State</th>
-											<td>{{this.user.state}}</td>
-										</tr>
-										<tr>
-											<th>Telephone</th>
-											<td>{{this.user.telephone}}</td>
-										</tr>
-										<tr>
-											<th>UniqueNum</th>
-											<td>{{this.user.uniqueNum}}</td>
-										</tr>
-										</table>
-								</div>
-							</div>
-						</div><!-- /.col -->
-					</div><!-- /.row -->
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">Address</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                               {{user.address}}
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        
+                                        
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">City</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                 {{user.city}}
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">State</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                 {{user.state}}
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">Telephone</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                 {{user.telephone}}
+                                            </div>
+                                        </div>
+                                        <hr />
+                                         <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">Unique Number</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                 {{user.uniqueNum}}
+                                            </div>
+                                        </div>
+                                        <hr />
+                                         
+                                       
 
-				</div><!-- /#pictures -->
-			</div>
-		</div>
-	</div>
+                                    </div>
+                                    <div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
+                                        Facebook, Google, Twitter Account that are connected to this account
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </template>
