@@ -32,6 +32,7 @@
 import axios from 'axios'
 import LocalStorageService from "../LocalStorageService";
 import {funToastr} from "../toastr.js"
+import { async } from 'q';
 const localStorageService = LocalStorageService.getService();
 
 export default {
@@ -46,36 +47,36 @@ export default {
         register: function(){
             this.$router.push("/register")
         },
-        validation: function(e) {
-            //let email = document.getElementById("email").val
+        validation: async function(e) {
             e.preventDefault()
             if((this.email=="") || (this.password=="")){
                 alert("Please fill out all the fileds")
                 return
             }
          
-            axios
-                .post('http://localhost:8080/login', {
+            axios.post('http://localhost:8080/login', {
                         "username": this.email,
                         "password": this.password
-                    })
-                .then(response=>{
+
+                }).then(response=>{
 
                     if (response.data){
                         const lss = LocalStorageService.getService();
                         lss.setToken(response.data);
+                        funToastr("s","Successfuly logged in!","Login!");
                     }
                   
                    
-                })
+                }).finally(()=>{ 
 
-                funToastr("s","Successfuly logged in!","Login!");
-                setTimeout(() =>{ 
+                     setTimeout(() =>{                    
+                 
+                        this.$router.push("/");       
+                        this.$router.go("/");
+                             
+                    },1500);
 
-                    this.$router.push("/");       
-                    this.$router.go("/");
-            
-                },1500);
+                });           
                    
                
         },
@@ -96,6 +97,8 @@ export default {
     border-radius: 10px;
     align-self: center;
     border: 1px dotted grey;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+
  }
 
 .form {

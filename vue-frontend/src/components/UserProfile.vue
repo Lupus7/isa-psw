@@ -13,19 +13,22 @@
                             <div class="d-flex justify-content-start">
                                 <div class="image-container">
                                     <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" style="width: 150px; height: 150px" class="img-thumbnail" />
-                                    <div class="middle">
-                                        <button type="button" class="btn btn-secondary btn-block" v-on:click="changeD">Change data </button>
-                                    </div>
                                 </div>
                                 <div class="userData ml-3">
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.email}}</h2>
                                     <h4 v-if=" this.role === 'ROLE_DOCTOR'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Doctor</h4>
                                     <h4 v-else-if=" this.role === 'ROLE_NURSE'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Nurse</h4>
-
                                     <h6 class="d-block" style="font-size: 1rem; font-weight: bold"> {{this.holiday}} </h6>
                                 </div>
                                 <div class="ml-auto">
-                                    <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
+                                    <div class="middle">
+                                        <br>
+                                        <button type="button" class="btn btn-success btn-block btn-lg" @click="changeD" style=" border-radius: 6px; ">Change data </button>
+                                    </div>
+                                    <div class="middle">
+                                        <br>
+                                        <button type="button" class="btn btn-dark btn-block btn-lg" @click="changePassword" style=" border-radius: 6px;  color: white;" >Change password </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -151,8 +154,14 @@ export default {
             axios.get('http://localhost:8080/nurse/getInfo').then(response => { this.user = response.data; })
         },
 
-        changeD(event){
+        changeD(e){
+            e.preventDefault()
             this.$router.push("/changeData");
+        },
+
+         changePassword(e){
+            e.preventDefault()
+            this.$router.push("/passwordChange");
         },
         
         getRole(){
@@ -190,16 +199,19 @@ export default {
 
 <style scoped>
 
+
     .container{
         margin-top: 5vh;
         max-width: auto;
         padding: 40px;
         background: #f1f1f1;
-        border-radius: 10px;
+        border-radius: 8px;
         align-self: center;
         border: 1px dotted grey;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+
     }
 
-    
+   
 
 </style>

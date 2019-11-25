@@ -163,7 +163,8 @@ export default {
            
         },
 
-        cancel(event){
+        cancel(e){
+            e.preventDefault()
             this.$router.push("/userProfile");
         },
         
@@ -197,8 +198,15 @@ export default {
                         "specialization" : this.specialization
                     }).then(response => { 
                         
-                    })
+                    }).finally(()=>{
 
+                        funToastr("s","Data successfuly updated!","Data Updated!");
+                            setTimeout(() =>{
+                            this.$router.push("/userProfile");
+                        },1500);
+           
+
+                    })
                     
                 } 
             }else if(this.role === "ROLE_NURSE"){
@@ -219,15 +227,19 @@ export default {
                      
                     }).then(response => { 
                         
+                    }).finally(()=>{
+
+                        funToastr("s","Data successfuly updated!","Data Updated!");
+                            setTimeout(() =>{
+                            this.$router.push("/userProfile");
+                        },1500);
+           
+
                     })
 
             }
 
-                funToastr("s","Data successfuly updated!","Data Updated!");
-                    setTimeout(() =>{
-                        this.$router.push("/userProfile");
-                },1500);
-           
+
         },
 
         getRole(){
@@ -258,5 +270,10 @@ export default {
 </script>
 
 <style scoped>
+
+.container{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+
+}
 
 </style>

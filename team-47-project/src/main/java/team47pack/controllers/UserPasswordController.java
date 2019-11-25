@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import team47pack.models.dto.PasswordRequest;
-import team47pack.models.dto.RegisterRequest;
 import team47pack.service.UserPasswordService;
 
 @Controller
@@ -28,21 +27,16 @@ public class UserPasswordController {
 
 	@PostMapping(value = "/user/updatePasswordFLogin", produces = "application/json", consumes = "application/json")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> updatePasswordFirstLogin(@RequestBody RegisterRequest req) {
+	public ResponseEntity<?> updatePasswordFirstLogin(@RequestBody PasswordRequest req) {
 
-		boolean check = userPService.updatePasswordFL(req);
-		if (!check) {
-			return ResponseEntity.badRequest().body("Unsuccessful");
-		}
-
-		return ResponseEntity.ok("You have successfuly changed your password!");
+		return userPService.updatePasswordFL(req);
 	}
 
 	@PostMapping(value = "/user/updatePassword", produces = "application/json", consumes = "application/json")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> updatePassword(@RequestBody PasswordRequest req) {
 
-		return ResponseEntity.ok(userPService.updatePassword(req));
+		return userPService.updatePassword(req);
 	}
 
 }

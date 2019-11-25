@@ -4,12 +4,12 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import team47pack.models.User;
 import team47pack.models.dto.PasswordRequest;
-import team47pack.models.dto.RegisterRequest;
 import team47pack.repository.UserRepo;
 
 @Service
@@ -26,41 +26,49 @@ public class UserPasswordService {
 		return true;
 	}
 
-	public boolean updatePasswordFL(RegisterRequest req) {
-		User u = userRepo.findByEmail(req.getEmail());
-		if (u == null || req.getPassword().equals("") || req.getPassword() == null)
-			return false;
-
-		BCryptPasswordEncoder enc = new BCryptPasswordEncoder();
-		String hash = enc.encode(req.getPassword());
-		u.setPassword(hash);
-		userRepo.save(u);
-
-		return true;
-	}
-
-	public String updatePassword(PasswordRequest req) {
+	public ResponseEntity<String> updatePasswordFL(PasswordRequest req) {
 		User u = userRepo.findByEmail(req.getEmail());
 		if (u == null)
-			return "Unsuccessful!";
+			return ResponseEntity.badRequest().body("Unsuccessful!");
 
-		if (req.getPasswordCurr().equals("") || req.getPasswordNew().equals("") || req.getPasswordConf().equals("")
-				|| req.getPasswordCurr() == null || req.getPasswordNew() == null || req.getPasswordConf() == null)
-			return "Fill all the fields";
+		if (req.getPasswordConf() == null || req.getPasswordNew() == null || req.getPasswordConf().equals("")
+				|| req.getPasswordNew().equals(""))
+			return ResponseEntity.badRequest().body("Fill all the fields");
+
+		if (!req.getPasswordConf().equals(req.getPasswordNew()))
+			return ResponseEntity.badRequest().body("Your password and confirmation password do not match!");
 
 		BCryptPasswordEncoder enc = new BCryptPasswordEncoder();
-		
+		String hash = enc.encode(req.getPasswordNew());
+		u.setPassword(hash);
+		u.setLastPasswordResetDate(Timestamp.valueOf(LocalDateTime.now()));
+		userRepo.save(u);
+
+		return ResponseEntity.ok("You have successfuly changed your password!");
+	}
+
+	public ResponseEntity<String> updatePassword(PasswordRequest req) {
+		User u = userRepo.findByEmail(req.getEmail());
+		if (u == null)
+			return ResponseEntity.badRequest().body("Unsuccessful!");
+
+		if (req.getPasswordCurr() == null || req.getPasswordNew() == null || req.getPasswordConf() == null
+				|| req.getPasswordCurr().equals("") || req.getPasswordNew().equals("") || req.getPasswordConf().equals(""))
+			return ResponseEntity.badRequest().body("Fill all the fields");
+
+		BCryptPasswordEncoder enc = new BCryptPasswordEncoder();
+
 		if (!enc.matches(req.getPasswordCurr(), u.getPassword()))
-			return "Wrong password!";
+			return ResponseEntity.badRequest().body("Wrong password!");
 		else {
 			if (!req.getPasswordNew().equals(req.getPasswordConf()))
-				return "Your password and confirmation password do not match!";
+				return ResponseEntity.badRequest().body("Your password and confirmation password do not match!");
 			else {
 				String hashPass = enc.encode(req.getPasswordNew());
 				u.setPassword(hashPass);
 				u.setLastPasswordResetDate(Timestamp.valueOf(LocalDateTime.now()));
 				userRepo.save(u);
-				return "You have successfuly changed your password!";
+				return ResponseEntity.ok("You have successfuly changed your password!");
 			}
 		}
 	}
