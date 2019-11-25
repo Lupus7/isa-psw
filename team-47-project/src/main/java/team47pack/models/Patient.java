@@ -14,6 +14,11 @@ public class Patient extends User {
     @JoinColumn(name = "file_id", referencedColumnName = "id", nullable = true)
     private MedicalFile medicalFile;
 
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name="examination",referencedColumnName = "id", nullable = true)
+//    private List<Examination> examinations;
+
     public Patient() {
     }
 
@@ -32,5 +37,24 @@ public class Patient extends User {
         this.enabled = true;
         this.lastPasswordResetDate = Timestamp.valueOf(LocalDateTime.now());
     }
+
+    public MedicalFile getMedicalFile() {
+        return medicalFile;
+    }
+
+
+
+    public void setMedicalFile(MedicalFile medicalFile) {
+        this.medicalFile = medicalFile;
+    }
+/*
+    public void setExaminations(List<Examination> examinations) {
+        this.examinations = examinations;
+    }
+    public List<Examination> getExaminations() {
+        return examinations;
+    }
+    */
+
 
 }

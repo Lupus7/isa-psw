@@ -124,7 +124,6 @@
 
 <script>
 import axios from 'axios'
-import {returnToken} from '../../token.js'
 import ReqListTab from './ReqListTab'
 import AddAdmins from './AddAdmins'
 
@@ -176,9 +175,9 @@ export default {
             document.getElementById("codebook").classList.add("active");
         },
         getCCA(){
-            axios.get('http://localhost:8080/cca/getInfo',{ 
-                headers: returnToken()
-            }).then(response => { this.user = response.data; })
+            axios
+                .get('http://localhost:8080/cca/getInfo')
+                .then(response => { this.user = response.data; })
         }
     },
     components: {

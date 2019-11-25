@@ -80,7 +80,7 @@ export default {
 		
             console.log(firstname + lastname)
            
-             axios
+            axios
                 .post('http://localhost:8080/cca/reg_admin',{
                     "firstName" : firstname,
                     "lastName" : lastname,

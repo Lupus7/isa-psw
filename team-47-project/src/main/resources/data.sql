@@ -3,6 +3,7 @@ insert into users (is_accepted, address, city, email, enabled, first_name, last_
             values(true,'test','test','test1',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test',1);
 insert into patient values (1, 1);
 
+
 insert into medicalfile values(2);
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(false,'test','test','test2',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test2',2);
@@ -17,6 +18,8 @@ insert into medicalfile values(4);
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','test4',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test4',4);
 insert into patient values (4, 4);
+
+
 
 insert into medicalfile values(5);
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
@@ -53,6 +56,8 @@ insert into nurse values (11);
 
 SELECT setval('hibernate_id_seq"', 21, true);
 ALTER SEQUENCE hibernate_id_seq RESTART WITH 22;
+SELECT setval('clinic_id_seq"', 21, true);
+ALTER SEQUENCE clinic_id_seq RESTART WITH 10;
 
 insert into authority (name) values ('ROLE_PATIENT');
 insert into authority (name) values ('ROLE_DOCTOR');
@@ -71,7 +76,11 @@ insert into user_authority (user_id, authority_id) values (7,3);
 insert into user_authority (user_id, authority_id) values (8,2);
 insert into user_authority (user_id, authority_id) values (9,4);
 insert into user_authority (user_id, authority_id) values (10,5); 
-insert into user_authority (user_id, authority_id) values (11,3); 
+insert into user_authority (user_id, authority_id) values (11,3);
+
+insert into clinic(id,address,description,name) values (1,'klinika1','dr.andre','lepa bas onako');
+insert into clinic(id,address,description,name) values (2,'klinika2','Ulica 2','nije najsrecnija');
+insert into clinic(id,address,description,name) values (3,'klinika3','Ulica 3','odlicna');
 
 --- all users 
 insert into user_authority (user_id, authority_id) values (1,6);
@@ -87,3 +96,6 @@ insert into user_authority (user_id, authority_id) values (10,6);
 insert into user_authority (user_id, authority_id) values (11,6); 
 
 
+insert into examination(id,type,date,patient_id) values(1,'obican pregled','04.09.2020 15:24',2);
+insert into examination(id,type,date,patient_id) values(2,'operacija','07.10.2019 15:24',3);
+insert into examination(id,type,date,patient_id) values(3,'kontrola','04.09.2018 20:24',2);
