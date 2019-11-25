@@ -17,6 +17,7 @@ import team47pack.models.dto.ClinicRegister;
 import team47pack.models.dto.RegisterRequest;
 import team47pack.security.TokenUtils;
 import team47pack.service.CCAService;
+import team47pack.service.ClinicService;
 import team47pack.service.EmailService;
 import team47pack.service.LoginService;
 
@@ -32,6 +33,9 @@ public class CCAController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private ClinicService clinicService;
 
     @Autowired
     private TokenUtils tokenUtils;
@@ -90,8 +94,8 @@ public class CCAController {
         return ResponseEntity.ok("Successful");
     }
 
-    @GetMapping(value="/getClinics")
+    @GetMapping(value="/get_clinics")
     public List<Clinic> getClinics() {
-        return null;
+        return clinicService.getClinics();
     }
 }

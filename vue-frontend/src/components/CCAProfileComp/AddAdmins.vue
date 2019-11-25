@@ -1,6 +1,6 @@
 <template>
-<div class="row">
-    <div class="col-6 panel-body">
+<div style="display: flex">
+    <div class="panel-body">
         <form id="forma">
                 <fieldset>
             <div class="form-group">
@@ -36,6 +36,9 @@
                 <input type="number" class="form-control" id="uniqnum" required aria-describedby="emailHelp" placeholder="Enter Unique Number">
             </div>
 
+            <div class="form-group">
+                <input type="text" class="form-control" id="clinic" required aria-describedby="emailHelp" placeholder="Choose a clinic">
+            </div>
         
             <p id="error" hidden="true"></p>
             <p id="success" hidden="true"></p>
@@ -43,9 +46,28 @@
             </fieldset>
         </form>
     </div>
-    <div class="col-6 add-clinic">
-        <br>
-        <label> CLINIC REGISTRATION </label>
+    <div class="add-clinic">
+        <div class="reg-clinic row">
+            <div class="col" style="margin-left: 5px">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input type="text" class="form-control" placeholder="Enter a name">
+                    </div>
+                    <div class="form-group">
+                        <label>Address:</label>
+                        <input type="text" class="form-control" placeholder="Enter an address">
+                    </div>
+                </div>
+                <div class="form-group col">
+                    <label>Description:</label>
+                    <textarea class="form-control" rows="5" placeholder="Enter a description..." style="max-height: 124px; resize: none"></textarea>
+                </div>
+        </div>
+        <div class="clinic-list overflow-auto">
+            <div class="row clinic-item">
+                
+            </div>
+        </div>
     </div>
 </div>
 </template>
@@ -112,11 +134,13 @@ export default {
 <style scoped>
 
 .panel-body{
-    max-width: 25vw;
+    max-width: 25%;
+    min-width: 25%;
     padding: 20px;
     align-self: center;
-    margin-left: 50px;
+    margin-left: 30px;
     margin-right: 20px;
+    height: 100%;
  }
 
 .form {
@@ -146,12 +170,40 @@ export default {
 }
 
 .add-clinic{
-    max-width: 25vw;
-    padding: 40px;
-    background: #f1f1f1;
-    border-radius: 10px;
+    max-width: 65%;
+    min-width: 65%;
+    padding-top: 20px;
     align-self: center;
-    border: 1px dotted grey;
-    min-height: 600px;
+    height: 100%;
+    align-self: auto;
+}
+
+.reg-clinic{
+    border-radius: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-style: solid;
+    border-width: 1px;
+    background-color: #fdffff;
+    border-color: #d4d6d6;
+    padding-top: 5px;
+}
+
+.clinic-list{
+    width: auto;
+    margin: 0px;
+    height: auto;
+}
+
+.clinic-item{
+    width: auto;
+    margin: 0px;
+    height: 100px;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 1px;
+    margin-top: 5px;
+    background-color: #fdffff;
+    border-color: #d4d6d6;
 }
 </style>

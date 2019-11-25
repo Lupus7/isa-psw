@@ -25,11 +25,14 @@ export default {
                     "accessToken": accessToken
                 })
                 .then(res => {
-                    if (res.status === 200) {
+                    if (res.status >= 200 && res.status <= 299) {
                         localStorageService.setToken(res.data);
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorageService.getAccessToken();
+                    } else if (res.status >= 400) {
+                        localStorageService.clearToken();
+                        // TODO
                     }
-            })
+                })
             },240000);
         }
     },
