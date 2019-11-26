@@ -57,6 +57,14 @@ const router = new Router({
                 import("./components/PasswordChange")
 
   
+        },
+        {
+            path:"/search",
+            name: "Search",
+            component:()=>
+                import("./components/Search")
+
+  
         }
     ]
 });

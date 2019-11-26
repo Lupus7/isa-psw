@@ -23,7 +23,6 @@ export default {
             if(lss.getAccessToken() != undefined && lss.getAccessToken() != null){          
                 const token = jwt_decode(lss.getAccessToken());           
                 this.role = token.roles; 
-                alert(this.role) 
             }
             
 		},
