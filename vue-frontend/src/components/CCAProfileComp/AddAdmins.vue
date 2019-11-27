@@ -45,28 +45,33 @@
 
             <p id="error" hidden="true"></p>
             <p id="success" hidden="true"></p>
-            <button type="submit" v-on:click="addAdmin" class="btn btn-lg btn-primary btn-block">Add admin</button>
+            <button type="submit" v-on:click="addAdmin" class="btn btn-lg btn-outline-primary btn-block">Add admin</button>
             </fieldset>
         </form>
     </div>
     <div class="add-clinic">
-        <div class="reg-clinic row">
-            <div class="col" style="margin-left: 5px">
-                <div class="form-group">
-                    <label>Name:</label>
-                    <input type="text" class="form-control" placeholder="Enter a name">
+        <div class="reg-clinic">
+            <div class="row">
+                <div class="col" style="margin-left: 5px">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input type="text" class="form-control" placeholder="Enter a name" v-model="clinicData[0]">
+                    </div>
+                    <div class="form-group">
+                        <label>Address:</label>
+                        <input type="text" class="form-control" placeholder="Enter an address" v-model="clinicData[1]">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Address:</label>
-                    <input type="text" class="form-control" placeholder="Enter an address">
+                <div class="form-group col" style="margin-right:5px">
+                    <label>Description:</label>
+                    <textarea class="form-control" rows="5" placeholder="Enter a description..." style="max-height: 124px; resize: none;" v-model="clinicData[2]"></textarea>
                 </div>
             </div>
-            <div class="form-group col">
-                <label>Description:</label>
-                <textarea class="form-control" rows="5" placeholder="Enter a description..." style="max-height: 124px; resize: none"></textarea>
+            <div class="modal-footer" style="padding-top: 0px">
+                <button type="submit" v-on:click="addClinic" class="btn btn-outline-success">Add clinic</button>
             </div>
         </div>
-        <div class="clinic-list" style="max-height: 500px; overflow: overlay; margin-right: -15px">
+        <div class="clinic-list">
             <div v-for="(row, index) in rows" :key="index" style="margin-right: 15px">
             <div class="row clinic-item" v-bind:id="'clinic' + index">
             <details class="detailsX" style="margin: 5px; width: 100%">
@@ -97,7 +102,8 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            rows: []
+            rows: [],
+            clinicData: ["", "", ""]
         }
     },
     methods:{
@@ -156,7 +162,19 @@ export default {
         loadClinics() {
             axios
                 .get('http://localhost:8080/cca/get_clinics')
-                .then(response => { this.rows = response.data; console.log(response.data) })
+                .then(response => { this.rows = response.data.reverse() })
+        },
+        addClinic() {
+            axios
+                .post('http://localhost:8080/cca/reg_clinic', {
+                    name: this.clinicData[0],
+                    address: this.clinicData[1],
+                    description: this.clinicData[2]
+                })
+                .then(response => { 
+                    this.clinicData = [ "", "", "" ]
+                    this.loadClinics()
+                })
         }
     },
     created() {
@@ -221,7 +239,6 @@ export default {
     border-style: solid;
     border-width: 1px;
     background-color: #fdffff;
-    padding-top: 5px;
     margin-bottom: 10px;
     background: #f1f1f1;
 }
@@ -230,6 +247,9 @@ export default {
     width: auto;
     margin: 0px;
     height: auto;
+    max-height: 445px; 
+    overflow: overlay; 
+    margin-right: -15px
 }
 
 .clinic-item{
