@@ -22,5 +22,7 @@ public interface UserRepo extends JpaRepository<User,Long> {
     int rejectUser(String mail);
 
     List<User> findByAccepted(boolean accepted);
+    
+   
 }
 

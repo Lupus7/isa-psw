@@ -3,14 +3,18 @@ package team47pack.models;
 import team47pack.models.dto.RegisterRequest;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "patient")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Patient extends User {
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "file_id", referencedColumnName = "id", nullable = true)
     private MedicalFile medicalFile;
 
@@ -56,5 +60,6 @@ public class Patient extends User {
     }
     */
 
+    
 
 }
