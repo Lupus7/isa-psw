@@ -1,24 +1,19 @@
 package team47pack.controllers;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import team47pack.models.Clinic;
 import team47pack.models.Patient;
 import team47pack.models.dto.MedicalFileDto;
 import team47pack.models.dto.SearchPatientRequest;
 import team47pack.security.TokenUtils;
 import team47pack.service.PatientService;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class PatientController {
@@ -55,13 +50,13 @@ public class PatientController {
 	@PreAuthorize("hasRole('PATIENT')")
 	public MedicalFileDto getPatientMF() {
 		List<String> bolesti = new ArrayList<String>();
-		bolesti.add("nejebica");
-		bolesti.add("hepatitis A");
-		bolesti.add("hepatitis B");
+		bolesti.add("Upala krajnika");
+		bolesti.add("Prehlada");
+		bolesti.add("Temperatura, grip");
 		List<String> opisBolest = new ArrayList<>();
-		opisBolest.add("Bas je lepa ova bolest");
-		opisBolest.add("Ova i nije nesto lepa, zajebana je");
-		opisBolest.add("Umires za godinu dana jbg");
+		opisBolest.add("Antibiotici, il operacija jbg");
+		opisBolest.add("Fervex i kapi za nos");
+		opisBolest.add("Mirovanje, cajevi, krompir u carapu");
 		MedicalFileDto mdto = new MedicalFileDto(bolesti, opisBolest);
 		return mdto;
 

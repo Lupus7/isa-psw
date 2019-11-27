@@ -6,6 +6,7 @@ target/
 
 application.properties
 resources/application.properties
+team-47-project/src/main/resources/application.properties
 ### STS ###
 .apt_generated
 .classpath
