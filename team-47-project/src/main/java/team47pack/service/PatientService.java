@@ -3,8 +3,6 @@ package team47pack.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,6 +81,23 @@ public class PatientService {
 
 		return patients;
 
+	}
+
+	// @author:Jokara---------------------------------------------------------------
+	public Patient getPatientbyID(String idP) {
+		if (idP == null)
+			return null;
+		if (idP.equals(""))
+			return null;
+
+		Long id = Long.parseLong(idP);
+		if (id < 1 || id == null)
+			return null;
+		Patient p = patientRepository.getOne(id);
+		if (p == null)
+			return null;
+
+		return p;
 	}
 
 }

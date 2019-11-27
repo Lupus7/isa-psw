@@ -83,28 +83,105 @@
                 <th v-if=" this.valueFilter=== 'All' || this.valueFilter=== 'State' " align="justify" >State</th>
                 <th v-if=" this.valueFilter=== 'All' || this.valueFilter=== 'Telephone' " align="justify" >Telephone</th>
                 <th v-if=" this.valueFilter=== 'All' || this.valueFilter=== 'Unique Number' " align="justify" >Unique Number</th>
+                <th align = "justify"> Patient Profil </th> 
             </tr>
             </thead>
-            <tbody v-for="(patient, key) in this.patients " :key='key'>
-            <tr >
-                <td   align="justify">{{patient.id}}</td>
-                <td  align="justify">{{patient.firstName}}</td>
-                <td  align="justify">{{patient.lastName}}</td>
-                <td  align="justify">{{patient.address}}</td>
-                <td  align="justify">{{patient.city}}</td>
-                <td  align="justify">{{patient.state}}</td>
-                <td  align="justify">{{patient.telephone}}</td>
-                <td  align="justify">{{patient.uniqueNum}}</td>
-            </tr>
-         
-            </tbody>
+
+            <template v-if="this.valueFilter=== 'All'" >
+                <tbody v-for="(patient, key) in this.patients " :key='key'>
+                <tr> 
+                    <td  align="justify">{{patient.id}}</td>
+                    <td  align="justify">{{patient.firstName}}</td>
+                    <td  align="justify">{{patient.lastName}}</td>
+                    <td  align="justify">{{patient.address}}</td>
+                    <td  align="justify">{{patient.city}}</td>
+                    <td  align="justify">{{patient.state}}</td>
+                    <td  align="justify">{{patient.telephone}}</td>
+                    <td  align="justify">{{patient.uniqueNum}}</td>
+                    <td align="justify"> <button class="btn btn-primary " @click="showPatientProfile(patient.id)" style="padding:7px">Patient profile</button> </td>
+                </tr>       
+                </tbody>
+            </template>
+
+            <template v-if="this.valueFilter=== 'Patient ID'" >
+                <tbody v-for="(patient, key) in this.patients " :key='key'>
+                <tr> 
+                    <td  align="justify">{{patient.id}}</td>
+                    <td align="justify" > <button class="btn btn-primary " @click="showPatientProfile(patient.id)" style="padding:7px">Patient profile</button> </td>
+                </tr>       
+                </tbody>
+            </template>
+
+             <template v-if="this.valueFilter=== 'First Name'" >
+                <tbody v-for="(patient, key) in this.patients " :key='key'>
+                <tr> 
+                    <td  align="justify">{{patient.firstName}}</td>
+                    <td align="justify"> <button class="btn btn-primary " @click="showPatientProfile(patient.id)" style="padding:7px">Patient profile</button> </td>
+                </tr>       
+                </tbody>
+            </template>
+
+             <template v-if="this.valueFilter=== 'Last Name'" >
+                <tbody v-for="(patient, key) in this.patients " :key='key'>
+                <tr> 
+                    <td  align="justify">{{patient.lastName}}</td>
+                    <td align="justify"> <button class="btn btn-primary " @click="showPatientProfile(patient.id)" style="padding:7px">Patient profile</button> </td>
+                </tr>       
+                </tbody>
+            </template>
+
+             <template v-if="this.valueFilter=== 'Address'" >
+                <tbody v-for="(patient, key) in this.patients " :key='key'>
+                <tr> 
+                    <td  align="justify">{{patient.address}}</td>
+                    <td align="justify"> <button class="btn btn-primary " @click="showPatientProfile(patient.id)" style="padding:7px">Patient profile</button> </td>
+                </tr>
+                </tbody>
+            </template>
+
+             <template v-if="this.valueFilter=== 'City'" >
+                <tbody v-for="(patient, key) in this.patients " :key='key'>
+                <tr> 
+                    <td  align="justify">{{patient.city}}</td>
+                    <td align="justify"> <button class="btn btn-primary " @click="showPatientProfile(patient.id)" style="padding:7px">Patient profile</button> </td> 
+                </tr>       
+                </tbody>
+            </template>
+
+             <template v-if="this.valueFilter=== 'State'" >
+                <tbody v-for="(patient, key) in this.patients " :key='key'>
+                <tr> 
+                    <td  align="justify">{{patient.state}}</td>
+                    <td align="justify"> <button class="btn btn-primary " @click="showPatientProfile(patient.id)" style="padding:7px">Patient profile</button> </td>
+                </tr>       
+                </tbody>
+            </template>
+
+            <template v-if="this.valueFilter=== 'Telephone'" >
+                <tbody v-for="(patient, key) in this.patients " :key='key'>
+                <tr> 
+                    <td  align="justify">{{patient.telephone}}</td>
+                    <td align="justify"> <button class="btn btn-primary " @click="showPatientProfile(patient.id)" style="padding:7px">Patient profile</button> </td>
+                </tr>       
+                </tbody>
+            </template>
+
+            <template v-if="this.valueFilter=== 'Unique Number'" >
+                <tbody v-for="(patient, key) in this.patients " :key='key'>
+                <tr> 
+                    <td  align="justify">{{patient.uniqueNum}}</td>
+                    <td align="justify"> <button class="btn btn-primary " @click="showPatientProfile(patient.id)" style="padding:7px">Patient profile</button> </td>
+                </tr>       
+                </tbody>
+            </template>
+    
+
+            
             </table>
         <br>
 
         <div class="modal-footer">
-
-
-            <button v-if=" this.hideB " class="btn btn-success btn-lg" @click="showS($event)">Show search</button>     
+            <button v-if=" this.hideB " class="btn btn-success " @click="showS($event)">Show search</button>     
         </div>      
     
     </div>
@@ -118,6 +195,7 @@
 
 <script>
 import axios from 'axios'
+import PatientProfileVue from './PatientProfile.vue';
 export default {
 
      data() {
@@ -169,6 +247,12 @@ export default {
             this.valueFilter = document.getElementById("filterV").value;
             console.log(this.valueFilter)
           
+        },
+        showPatientProfile(id){
+            let url = '/patientProfile/';
+            url+=id;
+            this.$router.push(url);       
+            
         }
         
 

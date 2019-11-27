@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,5 +73,13 @@ public class PatientController {
 	public ArrayList<Patient> searchPatients(@RequestBody SearchPatientRequest req) {
 
 		return patientService.searchPatients(req);
+	}
+
+	// @author:Jokara-------------------------------------------------------------------------------------------
+	@GetMapping(value = "patient/{id}")
+	@PreAuthorize("hasRole('NURSE') or hasRole('DOCTOR') or hasRole('CADMIN') or hasRole('CCADMIN') ")
+	public Patient getPatient(@PathVariable(value = "id") String id) {
+
+		return patientService.getPatientbyID(id);
 	}
 }

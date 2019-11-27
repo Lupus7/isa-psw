@@ -12,9 +12,22 @@ export default {
             rows: []
         }
     },
+
+    props:{
+        id:{
+            type: String
+        }
+
+    },
     methods:{
 		getPatient(){
             axios.get('http://localhost:8080/patient/getInfo').then(response => { this.user = response.data;})
+        },
+
+        getPatientId(){
+            let url = 'http://localhost:8080/patient/';
+            url += this.id
+            axios.get(url).then(response => { this.user = response.data;})
         },
 		checkMedicalFile(){
 
@@ -35,9 +48,10 @@ export default {
     },
     created(){
 		this.getRole()
-		alert(this.role)
 		if(this.role === "ROLE_PATIENT")
             this.getPatient()
+        if(this.role === "ROLE_DOCTOR" || this.role === "ROLE_NURSE")
+            this.getPatientId()
 		
        /* const token = jwt_decode(localStorage.getItem("user"));
         this.userEmail = token.sub
@@ -74,8 +88,8 @@ export default {
                                 </div>
                                 <div class="userData ml-3">
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.email}}</h2>
-                                    <h4 v-if=" this.role === 'ROLE_DOCTOR'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Doctor</h4>
-                                    <h4 v-else-if=" this.role === 'ROLE_NURSE'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Nurse</h4>
+                                    <h4  class="d-block" style="font-size: 1.5rem; font-weight: bold">Patient</h4>
+                                 
 
                                 </div>
                                 <div class="ml-auto">
