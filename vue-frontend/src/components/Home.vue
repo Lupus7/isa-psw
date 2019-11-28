@@ -1,6 +1,7 @@
 <template>
     <div>
         <patientHome v-if="this.role=='ROLE_PATIENT' " />
+        <NurseHome v-if="this.role=='ROLE_NURSE'" />
     </div>
 </template>
 
@@ -8,7 +9,9 @@
 
 import patientHome from './PatientHome'
 import jwt_decode from 'jwt-decode'
-import LocalStorageService from "../LocalStorageService";
+import LocalStorageService from "../LocalStorageService"
+import NurseHome from './NurseHome'
+
 export default {
     data(){
         return{
@@ -31,7 +34,8 @@ export default {
         this.getRole()
     },
     components:{
-        patientHome
+        patientHome,
+        NurseHome
     }
 
 }

@@ -19,7 +19,9 @@ export default {
     },
     methods: {
         refreshTokenCont() {
-            this.refreshToken()
+            setTimeout(() => {  
+                this.refreshToken()
+            }, 2000)
             setInterval(() =>{
                 this.refreshToken()
             },240000);
