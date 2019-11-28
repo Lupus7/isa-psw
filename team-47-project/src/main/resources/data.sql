@@ -78,9 +78,9 @@ insert into user_authority (user_id, authority_id) values (9,4);
 insert into user_authority (user_id, authority_id) values (10,5); 
 insert into user_authority (user_id, authority_id) values (11,3);
 
-insert into clinic(id,address,description,name) values (1,'klinika1','dr.andre','lepa bas onako');
-insert into clinic(id,address,description,name) values (2,'klinika2','Ulica 2','nije najsrecnija');
-insert into clinic(id,address,description,name) values (3,'klinika3','Ulica 3','odlicna');
+insert into clinic(id,name,address,description) values (1,'klinika1','dr.andre','lepa bas onako');
+insert into clinic(id,name,address,description) values (2,'klinika2','Ulica 2','nije najsrecnija');
+insert into clinic(id,name,address,description) values (3,'klinika3','Ulica 3','odlicna');
 
 --- all users 
 insert into user_authority (user_id, authority_id) values (1,6);
@@ -93,12 +93,7 @@ insert into user_authority (user_id, authority_id) values (7,6);
 insert into user_authority (user_id, authority_id) values (8,6);
 insert into user_authority (user_id, authority_id) values (9,6);
 insert into user_authority (user_id, authority_id) values (10,6); 
-insert into user_authority (user_id, authority_id) values (11,6); 
-
-insert into clinic (id, address, description, name) values (1, 'test', 'test', 'test1');
-insert into clinic (id, address, description, name) values (2, 'test', 'test', 'test2');
-insert into clinic (id, address, description, name) values (3, 'test', 'test', 'test3');
-insert into clinic (id, address, description, name) values (4, 'test', 'test', 'test4');
+insert into user_authority (user_id, authority_id) values (11,6);
 
 insert into examination(id,type,date,patient_id) values(1,'obican pregled','04.09.2020 15:24',2);
 insert into examination(id,type,date,patient_id) values(2,'operacija','07.10.2019 15:24',3);
