@@ -67,7 +67,7 @@
                     <div class="form-group">
 
                         <select id="filterV"  class="btn btn-primary" style="font-size: 2vh" @change="filter($event)" >
-                            <option align="justify" >All</option>
+                            <option align="justify">-Select option-</option>
                             <option align="justify" >Patient ID</option>
                             <option align="justify" >First Name</option>
                             <option align="justify" >Last Name</option>
@@ -82,7 +82,7 @@
                             
                 </div>
 
-                <div class="control-group">
+                <div class="control-group" v-if=" this.valueFilter !== '-Select option-' " >
                     <label class="control-label" style=" font-size: 2vh" >{{valueFilter}}:</label>
                     <div class="form-group">
                          <input class="form-control" style=" font-size: 2vh"  placeholder= "..." v-model="filterBy" />
@@ -240,7 +240,7 @@ export default {
                        this.patients = response.data;
                        console.log(this.patients)
                     }).finally(()=>{ 
-
+                         this.filterBy = "";
 
                 });  
         }
