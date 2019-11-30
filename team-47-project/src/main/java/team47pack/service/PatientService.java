@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import team47pack.models.Clinic;
 import team47pack.models.Patient;
+import team47pack.models.dto.FilterPatientRequest;
 import team47pack.models.dto.SearchPatientRequest;
 import team47pack.repository.ClinicRepo;
 import team47pack.repository.PatientRepo;
@@ -78,6 +79,44 @@ public class PatientService {
 		} else
 			patients = patientRepository.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(
 					req.getFirstName(), req.getLastName());
+
+		return patients;
+
+	}
+
+	// @author:Jokara---------------------------------------------------------------
+	public ArrayList<Patient> filterPatients(@RequestBody FilterPatientRequest req) {
+		ArrayList<Patient> patients = new ArrayList<>();
+		if (req.getValueFilter() == null || req.getValueFilter() == null)
+			return patients;
+		if (req.getValueFilter().equals("") && req.getValueFilter().equals(""))
+			return patients;
+
+		String filterBy = req.getFilterBy();
+		String value = req.getValueFilter();
+
+		if (filterBy.equals("Patient ID")) {
+			Long id = Long.parseLong(value);
+			Patient p = patientRepository.getOne(id);
+			if (p != null)
+				patients.add(p);
+			return patients;
+			
+		} else if (filterBy.equals("First Name"))
+			return patientRepository.findByFirstNameContainingIgnoreCase(value);
+
+		else if (filterBy.equals("Last Name"))
+			return patientRepository.findByLastNameContainingIgnoreCase(value);
+		else if (filterBy.equals("Address"))
+			return patientRepository.findByAddressContainingIgnoreCase(value);
+		else if (filterBy.equals("City"))
+			return patientRepository.findByCityContainingIgnoreCase(value);
+		else if (filterBy.equals("State"))
+			return patientRepository.findByStateContainingIgnoreCase(value);
+		else if (filterBy.equals("Telephone"))
+			return patientRepository.findByTelephoneContainingIgnoreCase(value);
+		else if (filterBy.equals("Unique Number"))
+			return patientRepository.findByUniqueNumContainingIgnoreCase(value);
 
 		return patients;
 

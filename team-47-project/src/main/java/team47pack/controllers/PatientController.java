@@ -1,19 +1,25 @@
 package team47pack.controllers;
 
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import team47pack.models.Clinic;
 import team47pack.models.Patient;
+import team47pack.models.dto.FilterPatientRequest;
 import team47pack.models.dto.MedicalFileDto;
 import team47pack.models.dto.SearchPatientRequest;
 import team47pack.security.TokenUtils;
 import team47pack.service.PatientService;
-
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class PatientController {
@@ -68,6 +74,14 @@ public class PatientController {
 	public ArrayList<Patient> searchPatients(@RequestBody SearchPatientRequest req) {
 
 		return patientService.searchPatients(req);
+	}
+
+	// @author:Jokara-------------------------------------------------------------------------------------------
+	@PostMapping(value = "/patient/filterPatients", produces = "application/json", consumes = "application/json")
+	@PreAuthorize("hasRole('NURSE') or hasRole('DOCTOR')")
+	public ArrayList<Patient> filterPatients(@RequestBody FilterPatientRequest req) {
+
+		return patientService.filterPatients(req);
 	}
 
 	// @author:Jokara-------------------------------------------------------------------------------------------
