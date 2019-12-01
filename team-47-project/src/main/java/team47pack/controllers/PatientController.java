@@ -69,7 +69,7 @@ public class PatientController {
 
 		return patientService.searchPatients(req);
 	}
-
+	
 	// @author:Jokara-------------------------------------------------------------------------------------------
 	@GetMapping(value = "patient/{id}")
 	@PreAuthorize("hasRole('NURSE') or hasRole('DOCTOR') or hasRole('CADMIN') or hasRole('CCADMIN') ")

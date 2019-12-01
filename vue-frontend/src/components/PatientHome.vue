@@ -18,6 +18,11 @@ export default {
         getClinics(){
             axios.get('http://localhost:8080/patient/getAllClinics').then(response => { this.clinics = response.data;}).catch(error=>{console.log(error)})
         },
+        search(){
+          let type = document.getElementById("type").value
+          let date = document.getElementById("date").value
+          alert (type + date)
+        },
     
         sortTable(n){
             var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
@@ -110,6 +115,24 @@ export default {
 
 <template>
    <div>
+     <form>
+       <table>
+         <tr>
+           <td>
+             <input type ="text" placeholder="type of examination" id="type">
+           </td>
+           <td>
+             <input type="text" placeholder="location" id="location">
+           </td>
+          <td>
+             <input type ="date" placeholder="time and date" id="date">
+           </td>
+           <td>
+             <button v-on:click="search">Search</button>
+           </td>
+         </tr>
+       </table>
+     </form>
     <table class="table" id="tabela">
    <thead>
     <tr>
