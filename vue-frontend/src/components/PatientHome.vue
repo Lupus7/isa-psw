@@ -10,7 +10,9 @@ export default {
         return{
             clinics:{},
             examinations:{},
-            medicalFile:{}
+            medicalFile:{},
+            doctorSearch: false,
+            doctorSearchResult:{}
         }
     },
 
@@ -96,8 +98,19 @@ export default {
       });
 
         }).catch(error=>{console.log(error)})
-      }
+      },
+      searchForDoctors(){
+      this.doctorSearch=true
+      document.getElementById("doctorsearch").removeAttribute("hidden")
+      document.getElementById("clinicsearch").setAttribute("hidden","true")
     },
+    searchForClinics(){
+      document.getElementById("clinicsearch").removeAttribute("hidden")
+      document.getElementById("doctorsearch").setAttribute("hidden","true")
+    }
+    
+    },
+    
     
     created(){
         this.getClinics()
@@ -109,7 +122,39 @@ export default {
 </script>
 
 <template>
+  
    <div>
+     <button class="btn btn-secondary" @click="searchForDoctors()">Search for doctors</button>
+     <button class="btn btn-secondary" @click="searchForClinics()">Search for clinics</button>
+    <div>
+      <form id="doctorsearch" hidden>
+        <table>
+          <tr>
+            <td>Search for doctors:</td>
+            <td><input type="text" id="doctorname" placeholder="Name"></td>
+            <td><input type="text" id="doctorsurname" placeholder="Surname"></td>
+          </tr>
+        </table>
+      </form>
+       <form id="clinicsearch" hidden>
+       <table>
+         <tr>
+           <td>
+             <input type ="text" placeholder="type of examination" id="type">
+           </td>
+           <td>
+             <input type="text" placeholder="location" id="location">
+           </td>
+          <td>
+             <input type ="date" placeholder="time and date" id="date">
+           </td>
+           <td>
+             <button>Search</button>
+           </td>
+         </tr>
+       </table>
+     </form>
+    </div>
     <table class="table" id="tabela">
    <thead>
     <tr>
