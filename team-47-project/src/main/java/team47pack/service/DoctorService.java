@@ -6,9 +6,12 @@ import org.springframework.stereotype.Service;
 import team47pack.models.Doctor;
 import team47pack.models.User;
 import team47pack.models.dto.DoctorInfoRequest;
+import team47pack.models.dto.SearchDoctorRequest;
 import team47pack.repository.DoctorRepo;
 import team47pack.repository.MedicalStaffRepo;
 import team47pack.repository.UserRepo;
+
+import java.util.ArrayList;
 
 @Service
 public class DoctorService {
@@ -55,6 +58,14 @@ public class DoctorService {
 	        return true;
 	    }
 
-	    
 
+    public ArrayList<Doctor> searchDoctor(SearchDoctorRequest req) {
+	    	if(req.getName()!="" && req.getSurname()==""){
+	    		return doctorRepo.findByFirstNameContainingIgnoreCase(req.getName());
+			}else if(req.getName()=="" && req.getSurname()!=""){
+	    		return  doctorRepo.findByLastNameContainingIgnoreCase(req.getSurname());
+			}else {
+				return doctorRepo.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(req.getName(), req.getSurname());
+			}
+    }
 }

@@ -107,6 +107,22 @@ export default {
     searchForClinics(){
       document.getElementById("clinicsearch").removeAttribute("hidden")
       document.getElementById("doctorsearch").setAttribute("hidden","true")
+    },
+
+    goSearchDoctor(){
+      let name = document.getElementById("doctorname").value 
+      let surname = document.getElementById("doctorsurname").value
+      console.log(name+" "+surname)
+      axios
+      .post("http://localhost:8080/doctor/searchDoctor",{
+        "name":name,
+        "surname":surname,
+      }).then(response=>{
+        this.doctorSearchResult=response.data
+        console.log(this.doctorSearchResult)
+      }).catch(error=>{
+        console.log(error)
+      })
     }
     
     },
@@ -133,6 +149,7 @@ export default {
             <td>Search for doctors:</td>
             <td><input type="text" id="doctorname" placeholder="Name"></td>
             <td><input type="text" id="doctorsurname" placeholder="Surname"></td>
+            <td><button @click="goSearchDoctor()">Search</button></td>
           </tr>
         </table>
       </form>
