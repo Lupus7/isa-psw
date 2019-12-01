@@ -120,6 +120,8 @@ export default {
       }).then(response=>{
         this.doctorSearchResult=response.data
         console.log(this.doctorSearchResult)
+        document.getElementById("tabela").setAttribute("hidden","true")
+        document.getElementById("doctorresult").removeAttribute("hidden")
       }).catch(error=>{
         console.log(error)
       })
@@ -173,23 +175,41 @@ export default {
      </form>
     </div>
     <table class="table" id="tabela">
-   <thead>
-    <tr>
-      <th scope="col">Clinics</th>
-      <th scope="col" v-on:click="sortTable(0)">Name</th>
-      <th scope="col" v-on:click="sortTable(1)">Address</th>
-      <th scope="col">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="c in clinics" :key="c.id">
-      <th scope="row">{{c.id}}</th>
-      <td>{{c.name}}</td>
-      <td>{{c.address}}</td>
-      <td>{{c.description}}</td>
-    </tr>
-  </tbody>
+        <thead>
+         <tr>
+          <th scope="col">Clinics</th>
+          <th scope="col" v-on:click="sortTable(0)">Name</th>
+          <th scope="col" v-on:click="sortTable(1)">Address</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="c in clinics" :key="c.id">
+          <th scope="row">{{c.id}}</th>
+          <td>{{c.name}}</td>
+          <td>{{c.address}}</td>
+          <td>{{c.description}}</td>
+        </tr>
+    </tbody>
     </table>
+    
+    <table class="table" id="doctorresult" hidden>
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Surname</th>
+          <th scope="col">Specialization</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="d in this.doctorSearchResult" :key="d.id">
+          <td>{{d.firstName}}</td>
+          <td>{{d.lastName}}</td>
+          <td>{{d.specialization}}</td>
+        </tr>
+      </tbody>
+    </table>
+
     <h3>Examinations:</h3>
     <div>
       <table class="table" id="tabela2">
