@@ -18,26 +18,32 @@ export default {
         NavBar
     },
     methods: {
-        refreshToken() {
+        refreshTokenCont() {
+            setTimeout(() => {  
+                this.refreshToken()
+            }, 2000)
             setInterval(() =>{
-                const accessToken = localStorageService.getAccessToken();
-                axios.post('http://localhost:8080/refresh', {
-                    "accessToken": accessToken
-                })
-                .then(res => {
-                    if (res.status >= 200 && res.status <= 299) {
-                        localStorageService.setToken(res.data);
-                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorageService.getAccessToken();
-                    } else if (res.status >= 400) {
-                        localStorageService.clearToken();
-                        // TODO
-                    }
-                })
+                this.refreshToken()
             },240000);
+        },
+        refreshToken() {
+            const accessToken = localStorageService.getAccessToken();
+            axios.post('http://localhost:8080/refresh', {
+                "accessToken": accessToken
+            })
+            .then(res => {
+                if (res.status >= 200 && res.status <= 299) {
+                    localStorageService.setToken(res.data);
+                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorageService.getAccessToken();
+                } else if (res.status >= 400) {
+                    localStorageService.clearToken();
+                    // TODO
+                }
+            })
         }
     },
     created() {
-        this.refreshToken();
+        this.refreshTokenCont();
     }
 }
 </script>

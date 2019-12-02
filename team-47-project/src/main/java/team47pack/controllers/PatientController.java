@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import team47pack.models.Clinic;
 import team47pack.models.Patient;
+import team47pack.models.dto.FilterPatientRequest;
 import team47pack.models.dto.MedicalFileDto;
 import team47pack.models.dto.SearchPatientRequest;
 import team47pack.security.TokenUtils;
@@ -55,13 +56,13 @@ public class PatientController {
 	@PreAuthorize("hasRole('PATIENT')")
 	public MedicalFileDto getPatientMF() {
 		List<String> bolesti = new ArrayList<String>();
-		bolesti.add("nejebica");
-		bolesti.add("hepatitis A");
-		bolesti.add("hepatitis B");
+		bolesti.add("Upala krajnika");
+		bolesti.add("Prehlada");
+		bolesti.add("Temperatura, grip");
 		List<String> opisBolest = new ArrayList<>();
-		opisBolest.add("Bas je lepa ova bolest");
-		opisBolest.add("Ova i nije nesto lepa, zajebana je");
-		opisBolest.add("Umires za godinu dana jbg");
+		opisBolest.add("Antibiotici, il operacija jbg");
+		opisBolest.add("Fervex i kapi za nos");
+		opisBolest.add("Mirovanje, cajevi, krompir u carapu");
 		MedicalFileDto mdto = new MedicalFileDto(bolesti, opisBolest);
 		return mdto;
 
@@ -73,6 +74,14 @@ public class PatientController {
 	public ArrayList<Patient> searchPatients(@RequestBody SearchPatientRequest req) {
 
 		return patientService.searchPatients(req);
+	}
+
+	// @author:Jokara-------------------------------------------------------------------------------------------
+	@PostMapping(value = "/patient/filterPatients", produces = "application/json", consumes = "application/json")
+	@PreAuthorize("hasRole('NURSE') or hasRole('DOCTOR')")
+	public ArrayList<Patient> filterPatients(@RequestBody FilterPatientRequest req) {
+
+		return patientService.filterPatients(req);
 	}
 
 	// @author:Jokara-------------------------------------------------------------------------------------------

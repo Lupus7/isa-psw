@@ -81,7 +81,7 @@ import LocalStorageService from "../LocalStorageService";
                             if (response.data){
                                 const lss = LocalStorageService.getService();
                                 lss.setToken(response.data);
-                                funToastr("s","You have changed your password successfuly!","Login!");
+                                funToastr("s","You have changed your password successfuly!","Password Change!");
                             }
 
                         else
@@ -91,10 +91,10 @@ import LocalStorageService from "../LocalStorageService";
 
                     }).finally(()=>{ 
 
-                     setTimeout(() =>{                    
+                    setTimeout(() =>{                    
                  
-                        this.$router.push("/userProfile");       
-                        //this.$router.go("/");
+                        this.$router.push("/");       
+                        this.$router.go("/");
                              
                     },1700);
 
@@ -113,7 +113,7 @@ import LocalStorageService from "../LocalStorageService";
                             if (response.data){
                                 const lss = LocalStorageService.getService();
                                 lss.setToken(response.data);
-                                funToastr("s","You have changed your password successfuly!","Login!");
+                                funToastr("s","You have changed your password successfuly!","Password Change!");
                             }
                         else
                             funToastr("d",response.data,"Password Change!");
@@ -122,8 +122,8 @@ import LocalStorageService from "../LocalStorageService";
 
                         setTimeout(() =>{                    
                     
-                            this.$router.push("/userProfile");       
-                            //this.$router.go("/");
+                            this.$router.push("/");       
+                            this.$router.go("/");
                                 
                         },1700);
 
