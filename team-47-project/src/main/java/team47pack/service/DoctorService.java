@@ -1,8 +1,10 @@
 package team47pack.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import team47pack.models.Doctor;
 import team47pack.models.User;
 import team47pack.models.dto.DoctorInfoRequest;
@@ -12,6 +14,7 @@ import team47pack.repository.MedicalStaffRepo;
 import team47pack.repository.UserRepo;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 @Service
 public class DoctorService {
@@ -68,4 +71,12 @@ public class DoctorService {
 				return doctorRepo.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(req.getName(), req.getSurname());
 			}
     }
+
+    public ArrayList<Doctor>search2(SearchDoctorRequest req){
+		Specification<Doctor> spec = Specification
+				.where(DoctorSpecification.doctorFirstName(req.getName()))
+				.and(DoctorSpecification.doctormLastName(req.getSurname()))
+				.and(DoctorSpecification.doctorSpecialization(req.getSpecialization()));
+		return new ArrayList<>(new HashSet<>(doctorRepo.findAll(spec, PageRequest.of(0, 10, Sort.by("firstName"))).toList()));
+	}
 }

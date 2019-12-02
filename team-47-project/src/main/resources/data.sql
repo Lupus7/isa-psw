@@ -95,8 +95,12 @@ insert into user_authority (user_id, authority_id) values (9,6);
 insert into user_authority (user_id, authority_id) values (10,6); 
 insert into user_authority (user_id, authority_id) values (11,6);
 
+-- Doctors
+insert into doctors()
 insert into examination(id,type,date,patient_id,doctor_id) values(1,'obican pregled','04.09.2020 15:24',2,8);
 insert into examination(id,type,date,patient_id,doctor_id) values(2,'operacija','07.10.2019 15:24',3,8);
 insert into examination(id,type,date,patient_id,doctor_id) values(3,'kontrola','04.09.2018 20:24',2,8);
 
 insert into clinic_doctor values(1,8);
+insert into clinic_doctor values(2,8);
+insert into clinic_doctor values(3,8);

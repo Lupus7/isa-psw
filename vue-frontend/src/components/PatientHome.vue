@@ -114,12 +114,13 @@ export default {
       let name = document.getElementById("doctorname").value 
       let surname = document.getElementById("doctorsurname").value
       let specialization = document.getElementById("doctorspecialization").value
-      let date = document.getElementById("doctordate").value
-      console.log(name+" "+surname + specialization + date)
+      //let date = document.getElementById("doctordate").value
+      //console.log(name+" "+surname + specialization + date)
       axios
       .post("http://localhost:8080/doctor/searchDoctor",{
         "name":name,
         "surname":surname,
+        "specialization":specialization,
       }).then(response=>{
         this.doctorSearchResult=response.data
         console.log(this.doctorSearchResult)
@@ -132,8 +133,10 @@ export default {
     goSearchClinics(){
       let examination = document.getElementById("type").value
       let location = document.getElementById("location").value
-      let date = document.getElementById("date").value
-      console.log(examination + location + date)
+      
+      console.log(examination + location)
+      axios 
+      .post("http://localhost:8080/clinic")
     }
     
     },
@@ -161,7 +164,6 @@ export default {
             <td><input type="text" id="doctorname" placeholder="Name"></td>
             <td><input type="text" id="doctorsurname" placeholder="Surname"></td>
             <td><input type="text" id="doctorspecialization" placeholder="Specialization"></td>
-            <td><input type="date" id="doctordate" placeholder="date"></td>
             <td><button @click="goSearchDoctor()">Search</button></td>
           </tr>
         </table>
@@ -175,9 +177,6 @@ export default {
            </td>
            <td>
              <input type="text" placeholder="location" id="location">
-           </td>
-          <td>
-             <input type ="date" placeholder="time and date" id="date">
            </td>
            <td>
              <button @click="goSearchClinics()">Search</button>

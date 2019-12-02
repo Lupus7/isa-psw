@@ -47,7 +47,7 @@ public class DoctorController {
 	@PreAuthorize("hasRole('PATIENT')")
 	public ArrayList<Doctor> searchForDoctor(@RequestBody SearchDoctorRequest req){
 		System.out.println(req.getName() +" " +req.getSurname());
-		return doctorService.searchDoctor(req);
+		return doctorService.search2(req);
 	}
 
 }
