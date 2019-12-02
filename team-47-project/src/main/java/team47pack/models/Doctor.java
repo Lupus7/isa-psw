@@ -10,7 +10,8 @@ public class Doctor extends MedicalStaff {
 	
 	@Column(name="specialization", unique=false, nullable=false)
 	private String specialization;
-	
+
+
 	
 	public Doctor(String firstName, String lastName, String password, String email, String adress, String city,
 			String state, String telephone, String uniqueNum, Boolean onVacation,String specialization) {
@@ -25,6 +26,7 @@ public class Doctor extends MedicalStaff {
 		this.uniqueNum = uniqueNum;
 		this.onVacation = onVacation;
 		this.specialization = specialization;
+
 	}
 
 	public Doctor() {
@@ -38,7 +40,5 @@ public class Doctor extends MedicalStaff {
 	public void setSpecialization(String specialization) {
 		this.specialization = specialization;
 	}
-	
-	
-	
+
 }

@@ -25,9 +25,15 @@ public class Examination {
     @JoinColumn(name="patient_id",referencedColumnName = "id",nullable = true)
     private Patient patient;
 
-    public Examination(String type, Date date) {
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="doctor_id", referencedColumnName = "id", nullable = true)
+    private Doctor doctor;
+
+    public Examination(String type, Date date,Patient patient,Doctor doctor) {
         this.type = type;
         this.date = date;
+        this.doctor=doctor;
+        this.patient=patient;
     }
 
     public Examination() {
@@ -63,5 +69,13 @@ public class Examination {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 }

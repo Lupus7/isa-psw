@@ -107,12 +107,15 @@ export default {
     searchForClinics(){
       document.getElementById("clinicsearch").removeAttribute("hidden")
       document.getElementById("doctorsearch").setAttribute("hidden","true")
+      document.getElementById("doctorresult").setAttribute("hidden","true")
     },
 
     goSearchDoctor(){
       let name = document.getElementById("doctorname").value 
       let surname = document.getElementById("doctorsurname").value
-      console.log(name+" "+surname)
+      let specialization = document.getElementById("doctorspecialization").value
+      let date = document.getElementById("doctordate").value
+      console.log(name+" "+surname + specialization + date)
       axios
       .post("http://localhost:8080/doctor/searchDoctor",{
         "name":name,
@@ -125,6 +128,12 @@ export default {
       }).catch(error=>{
         console.log(error)
       })
+    },
+    goSearchClinics(){
+      let examination = document.getElementById("type").value
+      let location = document.getElementById("location").value
+      let date = document.getElementById("date").value
+      console.log(examination + location + date)
     }
     
     },
@@ -151,6 +160,8 @@ export default {
             <td>Search for doctors:</td>
             <td><input type="text" id="doctorname" placeholder="Name"></td>
             <td><input type="text" id="doctorsurname" placeholder="Surname"></td>
+            <td><input type="text" id="doctorspecialization" placeholder="Specialization"></td>
+            <td><input type="date" id="doctordate" placeholder="date"></td>
             <td><button @click="goSearchDoctor()">Search</button></td>
           </tr>
         </table>
@@ -158,6 +169,7 @@ export default {
        <form id="clinicsearch" hidden>
        <table>
          <tr>
+           <td>Search for clinics</td>
            <td>
              <input type ="text" placeholder="type of examination" id="type">
            </td>
@@ -168,7 +180,7 @@ export default {
              <input type ="date" placeholder="time and date" id="date">
            </td>
            <td>
-             <button>Search</button>
+             <button @click="goSearchClinics()">Search</button>
            </td>
          </tr>
        </table>
