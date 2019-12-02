@@ -10,7 +10,9 @@ export default {
         return{
             clinics:{},
             examinations:{},
-            medicalFile:{}
+            medicalFile:{},
+            doctorSearch: false,
+            doctorSearchResult:{}
         }
     },
 
@@ -96,8 +98,49 @@ export default {
       });
 
         }).catch(error=>{console.log(error)})
-      }
+      },
+      searchForDoctors(){
+      this.doctorSearch=true
+      document.getElementById("doctorsearch").removeAttribute("hidden")
+      document.getElementById("clinicsearch").setAttribute("hidden","true")
     },
+    searchForClinics(){
+      document.getElementById("clinicsearch").removeAttribute("hidden")
+      document.getElementById("doctorsearch").setAttribute("hidden","true")
+      document.getElementById("doctorresult").setAttribute("hidden","true")
+    },
+
+    goSearchDoctor(){
+      let name = document.getElementById("doctorname").value 
+      let surname = document.getElementById("doctorsurname").value
+      let specialization = document.getElementById("doctorspecialization").value
+      //let date = document.getElementById("doctordate").value
+      //console.log(name+" "+surname + specialization + date)
+      axios
+      .post("http://localhost:8080/doctor/searchDoctor",{
+        "name":name,
+        "surname":surname,
+        "specialization":specialization,
+      }).then(response=>{
+        this.doctorSearchResult=response.data
+        console.log(this.doctorSearchResult)
+        document.getElementById("tabela").setAttribute("hidden","true")
+        document.getElementById("doctorresult").removeAttribute("hidden")
+      }).catch(error=>{
+        console.log(error)
+      })
+    },
+    goSearchClinics(){
+      let examination = document.getElementById("type").value
+      let location = document.getElementById("location").value
+      
+      console.log(examination + location)
+      axios 
+      .post("http://localhost:8080/clinic")
+    }
+    
+    },
+    
     
     created(){
         this.getClinics()
@@ -109,25 +152,75 @@ export default {
 </script>
 
 <template>
+  
    <div>
+     <button class="btn btn-secondary" @click="searchForDoctors()">Search for doctors</button>
+     <button class="btn btn-secondary" @click="searchForClinics()">Search for clinics</button>
+    <div>
+      <form id="doctorsearch" hidden>
+        <table>
+          <tr>
+            <td>Search for doctors:</td>
+            <td><input type="text" id="doctorname" placeholder="Name"></td>
+            <td><input type="text" id="doctorsurname" placeholder="Surname"></td>
+            <td><input type="text" id="doctorspecialization" placeholder="Specialization"></td>
+            <td><button @click="goSearchDoctor()">Search</button></td>
+          </tr>
+        </table>
+      </form>
+       <form id="clinicsearch" hidden>
+       <table>
+         <tr>
+           <td>Search for clinics</td>
+           <td>
+             <input type ="text" placeholder="type of examination" id="type">
+           </td>
+           <td>
+             <input type="text" placeholder="location" id="location">
+           </td>
+           <td>
+             <button @click="goSearchClinics()">Search</button>
+           </td>
+         </tr>
+       </table>
+     </form>
+    </div>
     <table class="table" id="tabela">
-   <thead>
-    <tr>
-      <th scope="col">Clinics</th>
-      <th scope="col" v-on:click="sortTable(0)">Name</th>
-      <th scope="col" v-on:click="sortTable(1)">Address</th>
-      <th scope="col">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="c in clinics" :key="c.id">
-      <th scope="row">{{c.id}}</th>
-      <td>{{c.name}}</td>
-      <td>{{c.address}}</td>
-      <td>{{c.description}}</td>
-    </tr>
-  </tbody>
+        <thead>
+         <tr>
+          <th scope="col">Clinics</th>
+          <th scope="col" v-on:click="sortTable(0)">Name</th>
+          <th scope="col" v-on:click="sortTable(1)">Address</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="c in clinics" :key="c.id">
+          <th scope="row">{{c.id}}</th>
+          <td>{{c.name}}</td>
+          <td>{{c.address}}</td>
+          <td>{{c.description}}</td>
+        </tr>
+    </tbody>
     </table>
+    
+    <table class="table" id="doctorresult" hidden>
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Surname</th>
+          <th scope="col">Specialization</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="d in this.doctorSearchResult" :key="d.id">
+          <td>{{d.firstName}}</td>
+          <td>{{d.lastName}}</td>
+          <td>{{d.specialization}}</td>
+        </tr>
+      </tbody>
+    </table>
+
     <h3>Examinations:</h3>
     <div>
       <table class="table" id="tabela2">
