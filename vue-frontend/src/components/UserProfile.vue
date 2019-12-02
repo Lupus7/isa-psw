@@ -19,6 +19,9 @@
                                     <h4 v-if=" this.role === 'ROLE_DOCTOR'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Doctor</h4>
                                     <h4 v-else-if=" this.role === 'ROLE_NURSE'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Nurse</h4>
                                     <h6 class="d-block" style="font-size: 1rem; font-weight: bold"> {{this.holiday}} </h6>
+                                    <div class="middle" v-if="this.role === 'ROLE_NURSE' || this.role === 'ROLE_DOCTOR' ">
+                                        <button v-if="this.holiday = 'Not On holiday' " type="button" class="btn btn-warning btn-block " @click="holidayReq" style=" border-radius: 6px;  color: black; padding:5px " >Request holiday/time off</button>
+                                    </div>
                                 </div>
                                 <div class="ml-auto" style="margin-top: -2vh">
                                     <div class="middle">
@@ -33,6 +36,7 @@
                                         <br>
                                         <button type="button" class="btn btn-primary btn-block " @click="search" style=" border-radius: 6px;  color: white; padding:8px " >Search patients </button>
                                     </div>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -183,6 +187,11 @@ export default {
             }
             
         },
+        holidayReq(e){
+            e.preventDefault();
+            this.$router.push({name: 'Holiday', params: {staff:this.user}});
+   
+        }
        
 
     },
