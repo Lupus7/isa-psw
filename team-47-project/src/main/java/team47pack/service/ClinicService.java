@@ -1,6 +1,9 @@
 package team47pack.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import team47pack.models.Clinic;
 import team47pack.models.ClinicAdmin;
@@ -14,6 +17,7 @@ import team47pack.repository.ClinicRepo;
 import team47pack.repository.ExaminationRepo;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -47,25 +51,10 @@ public class ClinicService {
 
     public ArrayList<ClinicSearchResult> search(ClinicSearchRequest csr) {
         ArrayList<Clinic> clinics1 = new ArrayList<>();
-        if (!csr.getLocation().equals("")) {
-            clinics1 = clinicRepo.findByAddress(csr.getLocation());
-            System.out.println(clinics1);
-        }else {
-            clinics1 = (ArrayList<Clinic>)clinicRepo.findAll();
-            System.out.println(clinics1);
-        }
-        if(csr.getExamination().equals("")) {
-            ArrayList<ClinicSearchResult> result = new ArrayList<>();
-            for(Clinic c:clinics1) {
-                ClinicSearchResult res = new ClinicSearchResult();
-                res.setClinic(c);
-                res.setCost(2000);
-                result.add(res);
-            }
-            return result;
-        }else{
-        ArrayList<Examination> examinations = exRepo.findByType(csr.getExamination());
-        System.out.println(examinations);
+        clinics1 = retriveClinics(csr.getLocation());
+        System.out.println(clinics1);
+        ArrayList<Examination> examinations = retrieveExamination(csr.getExamination());
+
         ArrayList<ClinicSearchResult> result = new ArrayList<>();
         for (Clinic c : clinics1) {
             for (Doctor d : c.getDoctors()) {
@@ -77,11 +66,23 @@ public class ClinicService {
                             res.setClinic(c);
                             res.setCost(3000);
                             result.add(res);
+                            break;
                     }
                 }
             }
         }
             return result;
-        }
+
+    }
+
+    public ArrayList<Examination>retrieveExamination(String type){
+        Specification<Examination> spec = Specification
+                .where(ClinicSpecification.examinationType(type));
+        return new ArrayList<>(new HashSet<>(exRepo.findAll(spec, PageRequest.of(0, 10, Sort.by("type"))).toList()));
+    }
+
+    public ArrayList<Clinic>retriveClinics(String address){
+        Specification<Clinic> spec = Specification.where(ClinicSpecification.clinicLocation(address));
+        return new ArrayList<>(new HashSet<>(clinicRepo.findAll(spec, PageRequest.of(0, 10, Sort.by("address"))).toList()));
     }
 }

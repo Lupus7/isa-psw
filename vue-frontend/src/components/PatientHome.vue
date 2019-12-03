@@ -128,6 +128,7 @@ export default {
         console.log(this.doctorSearchResult)
         document.getElementById("tabela").setAttribute("hidden","true")
         document.getElementById("doctorresult").removeAttribute("hidden")
+        document.getElementById("clinics").setAttribute("hidden","true")
       }).catch(error=>{
         console.log(error)
       })
