@@ -20,6 +20,10 @@
             <label style="margin-top: 10px" v-if="selDiag !== 0">Description:</label>
             <p v-if="selDiag !== 0"><em>{{diagDesc}}</em></p>
         </div>
+        <div class="separator"> </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline-success">Confirm and end examination</button>
+        </div> 
     </div>
 </template>
 
@@ -72,6 +76,19 @@ export default {
         border-bottom-width: 2px;
         border-bottom-color: gray;
         border-bottom-style: solid;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+    .modal-footer {
+        border-top-width: 2px;
+        border-top-color: gray;
+        border-top-style: solid;
+        margin-top: 10px;
+    }
+    .separator {
+        border-bottom-width: 2px;
+        border-bottom-color: gray;
+        border-bottom-style: dashed;
         padding-bottom: 10px;
         margin-bottom: 10px;
     }
