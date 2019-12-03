@@ -32,29 +32,32 @@
                 </tr>
 
                 <tr class="table-secondary">
-                    <th align="justify"  style="font-size:18px">Name</th>
-                    <th align="justify"  style="font-size:18px">E-Mail</th>
-                    <th align="justify"  style="font-size:18px">Phone Number</th>
-                    <th align="justify"  style="font-size:18px">Unique Number</th>
-                    <th align="justify"  style="font-size:18px">Adress</th>
-                    <th align="justify"  style="font-size:18px">City</th>
-                    <th align="justify"  style="font-size:18px">Country</th>
-                    <th align="justify"  style="font-size:18px">Accept?</th>
+                    <th align="justify"  style="font-size:18px">Employee</th>
+                    <th align="justify"  style="font-size:18px">Email</th>
+                    <th align="justify"  style="font-size:18px">Request Type</th>
+                    <th align="justify"  style="font-size:18px">Begin Date</th>
+                    <th align="justify"  style="font-size:18px">End Date</th>
+                    <th align="justify"  style="font-size:18px">Reason</th>
+                    <th> </th>
+                    <th> </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody v-if="rows != null">
                 <tr v-for="(row, index) in rows" :key="index">
-                    <td>{{row.firstName}} {{row.lastName}}</td>
-                    <td>{{row.email}}</td>
-                    <td>{{row.telephone}}</td>
-                    <td>{{row.uniqueNum}}</td>
-                    <td>{{row.address}}</td>
-                    <td>{{row.city}}</td>
-                    <td>{{row.state}}</td>
-                    <td style="max-width: 150px">
-                        <button type="button" class="btn btn-success" @click="accept(row.email, index)">Accept</button>
-                        <button type="button" class="btn btn-danger" @click="fillReject(row.email, index)">Reject</button>
+                    <td>{{row.staff.firstName}} {{row.staff.lastName}}</td>
+                    <td>{{row.staff.email}}</td>
+                    <td>{{row.type}}</td>
+                    <td v-on="dateB(row.beginDate)">{{dateBeg}}</td>
+                    <td v-on="dateE(row.endDate)">{{dateEnd}}</td>
+                    <td> <textarea class="form-control" v-text=" row.reason"> </textarea> </td>
+                    <td style="max-width: 60px">
+                        <button type="button" class="btn btn-success" @click="accept(row.staff.email,row.id,row.beginDate,row.endDate,row.type, index)">Accept</button>
                     </td>
+                    <td style="max-width: 60px">
+                        <button type="button" class="btn btn-danger" @click="fillReject(row.staff.email, row.id, row.type, index)">Reject</button>
+                    </td>
+
+
                 </tr>
             </tbody>
         </table>
@@ -72,33 +75,50 @@ export default {
             rows: [],
             show: true,
             selectedUser: "",
+            selectedId: "",
+            selectedType: "",
             explanation: "",
             expVisible: "visibility:hidden; height: 0px",
-            selectedIndex: 0
+            selectedIndex: 0,
+            dateBeg: "",
+            dateEnd:""
         }
     },
     methods: { 
         getReqList() {
-            axios.get('http://localhost:8080/ca/request-list').then(response => { this.rows = response.data })
+            axios.get('http://localhost:8080/ca/request-list').then(response => { this.rows = response.data; })
         },
-        accept(email, index) {
+        accept(email,id,beginD,endD,type,index) {
             let url = 'http://localhost:8080/ca/request-list/accept'
-            axios.post(url, {"mail": email})
+            axios.post(url, {"mail": email, "id":id , "dateB":beginD,"dateE":endD,"type":type })
             this.rows.splice(index, 1)
             this.fillReject("", index)
         },
-        reject(email, index) {
+        reject(email, id, type, index) {
             let url = 'http://localhost:8080/ca/request-list/reject'
-            axios.post(url, { "mail": email, "expl": this.explanation })
+            axios.post(url, { "mail": email, "expl": this.explanation, "id": this.selectedId,"type":this.selectedType })
             this.rows.splice(index, 1)
             this.selectedUser = ""
         },
-        fillReject(email, index) {
+        fillReject(email,id,type, index) {
             if (email.localeCompare(this.selectedUser) != 0) {
                 this.selectedUser = email
                 this.explanation = ""
                 this.selectedIndex = index
+                this.selectedId = id;
+                this.selectedType = type;
             }
+        },
+        dateB(d){
+            let date = new Date(d);       
+            let s = date.toLocaleDateString().split("/");
+            this.dateBeg = s[1]+"."+s[0]+"."+s[2];
+          
+        },
+        dateE(d){
+            let date = new Date(d);       
+            let s = date.toLocaleDateString().split("/");
+            this.dateEnd = s[1]+"."+s[0]+"."+s[2];
         }
     },
     created() {
@@ -110,7 +130,7 @@ export default {
                 if (val == "")
                     this.expVisible = "visibility:hidden; height: 0px"
                 else
-                    this.expVisible = "visibility:visible; height: 300px"
+                    this.expVisible = "visibility:visible;"
             },
             deep: true
         }

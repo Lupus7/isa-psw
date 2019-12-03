@@ -27,12 +27,10 @@ public class HolidayTimeOff {
 	private Long id;
 
 	@Column
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date beginDate;
 
 	@Column
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date endDate;
 
