@@ -31,6 +31,12 @@ const router = new Router({
                 import ("./components/Register")
         },
         {
+            path: "/caProfile",
+            name: "CAProfile",
+            component: () =>
+                import ("./components/CAProfileComp/CAProfile")
+        },
+        {
             path: "/patientProfile",
             name: "PatientProfile",
             component: () =>
@@ -84,7 +90,13 @@ const router = new Router({
             name: "Holiday",
             component:()=>
                 import("./components/Holiday")
-        }
+        },
+        {
+            path: "/requestsTable",
+            name: "StaffRequests",
+            component: () =>
+                import ("./components/CAProfileComp/StaffRequests")
+        },
     ]
 });
 
