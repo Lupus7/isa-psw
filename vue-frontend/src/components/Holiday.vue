@@ -53,7 +53,7 @@
                                             <div class="control-group">
                                                 <label for="new_password" class="control-label">Type of request:</label>
                                                 <div class="form-group">
-                                                    <select class="form-control" id="select">
+                                                    <select class="form-control" id="type" @change="selectType($event)">
                                                         <option> Holiday </option>
                                                         <option> Time off </option>
                                                     </select>
@@ -129,13 +129,18 @@ export default {
 
         submitRq(e){
             e.preventDefault();
-            this.typeRequest = document.getElementById("select").value;
+            this.typeRequest = document.getElementById("type").value;
+            let date = this.beginDate.split("-");
+            let dateN = date[2]+"/"+date[1]+"/"+date[0];
+            date = this.endDate.split("-");
+            let dateE = date[2]+"/"+date[1]+"/"+date[0];
             axios.post('http://localhost:8080/medicalStaff/holiday', {
                         "email" : this.staff.email,
-                        "beginDate" : this.beginDate,
-                        "endDate" : this.endDate,
+                        "beginDate" : dateN,
+                        "endDate" : dateE,
                         "typeRequest" : this.typeRequest,
-                        "reason" : this.reason
+                        "reason" : this.reason,
+                      
                     }).then(response=>{
                         if(response.status == 200)
                             funToastr("s","Request send!","Request!");
@@ -160,6 +165,12 @@ export default {
         close(e){
             e.preventDefault();
             this.$router.push("/userProfile");
+          
+        },
+
+        selectType(e){
+            e.preventDefault()
+            this.typeRequest = document.getElementById("type").value;
           
         },
 
