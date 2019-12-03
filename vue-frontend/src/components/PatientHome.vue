@@ -138,14 +138,18 @@ export default {
       
       console.log(examination + location)
       axios 
-      .post("http://localhost:8080/clinic",{
+      .post("http://localhost:8080/clinic/search",{
         "location" : location,
         "examination":examination,
       }).then(response=>{
-          document.getElementById("tabela2").setAttribute("hidden","true")          
+          document.getElementById("tabela").setAttribute("hidden","true") 
+          document.getElementById("examinations").setAttribute("hidden","true")       
           document.getElementById("medfile").setAttribute("hidden","true")
           document.getElementById("doctorresult").setAttribute("hidden","true")
+          
+          document.getElementById("medfilediv").setAttribute("hidden","true")
           this.clinicSearchResult = response.data
+          document.getElementById("clinics").setAttribute("display","true")
       }).catch(error=>console.log(error))
     }
     
@@ -162,10 +166,13 @@ export default {
 </script>
 
 <template>
+ 
   
    <div>
+      <p></p>
      <button class="btn btn-secondary" @click="searchForDoctors()">Search for doctors</button>
      <button class="btn btn-secondary" @click="searchForClinics()">Search for clinics</button>
+      <p></p><p></p>
     <div>
       <form id="doctorsearch" hidden>
         <table>
@@ -178,6 +185,7 @@ export default {
           </tr>
         </table>
       </form>
+      <p></p>
        <form id="clinicsearch" hidden>
        <table>
          <tr>
@@ -194,6 +202,8 @@ export default {
          </tr>
        </table>
      </form>
+      <p></p>
+       <p></p>
     </div>
     <table class="table" id="tabela">
         <thead>
@@ -233,8 +243,8 @@ export default {
         </tr>
       </tbody>
     </table>
-
-    <table id="clinics" v-if="this.clinicSearchResult.length">
+    <p></p>
+    <table id="clinics" v-if="this.clinicSearchResult.length != 0" class="table table-dark">
       <thead>
         <tr>
           <th scope="col">Name</th>
@@ -252,9 +262,9 @@ export default {
         </tr>
       </tbody>
     </table>
-
-    <h3>Examinations:</h3>
-    <div>
+    
+    <div id="examinations">
+      <h3>Examinations:</h3>
       <table class="table" id="tabela2">
           <thead>
           <tr>
@@ -270,7 +280,7 @@ export default {
       </tbody>
       </table>
     </div>
-    <div>
+    <div id="medfilediv">
       <h3>Medical File:</h3>
       <table class="table table-dark" id="medfile">
   <thead>
