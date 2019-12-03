@@ -3,6 +3,7 @@
         <password-change v-if="this.firstLogin === true  "> PasswordChange </password-change>
         <patientHome v-else-if="this.role=='ROLE_PATIENT' && this.firstLogin === false " />
         <NurseHome v-else-if="this.role=='ROLE_NURSE' && this.firstLogin === false" />
+        <a href="#/search" v-else-if="this.role=='ROLE_DOCTOR' && this.firstLogin === false">SEARCH</a>
        
 
     </div>
