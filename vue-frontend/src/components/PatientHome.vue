@@ -5,6 +5,7 @@ import jwt_decode from 'jwt-decode'
 
 import LocalStorageService from "../LocalStorageService";
 
+
 export default {
     data(){
         return{
@@ -12,7 +13,8 @@ export default {
             examinations:{},
             medicalFile:{},
             doctorSearch: false,
-            doctorSearchResult:{}
+            doctorSearchResult:{},
+            clinicSearchResult:[]
         }
     },
 
@@ -136,7 +138,15 @@ export default {
       
       console.log(examination + location)
       axios 
-      .post("http://localhost:8080/clinic")
+      .post("http://localhost:8080/clinic",{
+        "location" : location,
+        "examination":examination,
+      }).then(response=>{
+          document.getElementById("tabela2").setAttribute("hidden","true")          
+          document.getElementById("medfile").setAttribute("hidden","true")
+          document.getElementById("doctorresult").setAttribute("hidden","true")
+          this.clinicSearchResult = response.data
+      }).catch(error=>console.log(error))
     }
     
     },
@@ -207,6 +217,7 @@ export default {
     <table class="table" id="doctorresult" hidden>
       <thead>
         <tr>
+          <th scope="col">Id</th>
           <th scope="col">Name</th>
           <th scope="col">Surname</th>
           <th scope="col">Specialization</th>
@@ -214,9 +225,30 @@ export default {
       </thead>
       <tbody>
         <tr v-for="d in this.doctorSearchResult" :key="d.id">
+          <td>{{d.id}}</td>
           <td>{{d.firstName}}</td>
           <td>{{d.lastName}}</td>
           <td>{{d.specialization}}</td>
+          <td><button type="button" class="btn btn-primary">Visit profile</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table id="clinics" v-if="this.clinicSearchResult.length">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Location</th>
+          <th scope="col">Average rate</th>
+          <th scope="col">Cost of examination</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="res in this.clinicSearchResult" :key="res.id">
+          <td>{{res.clinic.name}}</td>
+          <td>{{res.clinic.address}}</td>
+          <td>{{res.clinic.average}}</td>
+          <td>{{res.cost}}</td>
         </tr>
       </tbody>
     </table>
@@ -240,7 +272,7 @@ export default {
     </div>
     <div>
       <h3>Medical File:</h3>
-      <table class="table table-dark">
+      <table class="table table-dark" id="medfile">
   <thead>
     <tr>
       <th scope="col">Desease</th>
