@@ -104,28 +104,27 @@
 
         </div>
 
-     
+            <br>
             <div class="wrapper" style="margin-right: 2vh">
 
-                <div style=" margin-right: 100vh " >
-                    <div class="modal-header" style="border-bottom:none ">
-                        <h1> <span class="badge badge-dark">Table of Patients</span> </h1>
-                    </div>
-                </div>  
-
+               
                 <table class="table table-hover" style=" margin-left:10px;" >
-                <thead class="thead-dark">
-                <tr>
+                <thead >
+
+                <tr  class="thead-dark">
+                    <th colspan="9" > <center> <h2> Table of Patients </h2> </center> </th>                  
+                </tr>
+                <tr class="table-secondary">
             
-                    <th  align="justify" >Patient ID</th>
-                    <th  align="justify" >First Name</th>
-                    <th  align="justify" >Last Name</th>
-                    <th  align="justify" >Address</th>
-                    <th  align="justify" >City</th>
-                    <th  align="justify" >State</th>
-                    <th  align="justify" >Telephone</th>
-                    <th  align="justify" >Unique Number</th>
-                    <th align = "justify"> Patient Profil </th> 
+                    <th  align="justify" style="font-size:18px" >Patient ID</th>
+                    <th  align="justify"  style="font-size:18px" >First Name</th>
+                    <th  align="justify" style="font-size:18px" >Last Name</th>
+                    <th  align="justify" style="font-size:18px" >Address</th>
+                    <th  align="justify" style="font-size:18px" >City</th>
+                    <th  align="justify" style="font-size:18px" >State</th>
+                    <th  align="justify" style="font-size:18px" >Telephone</th>
+                    <th  align="justify" style="font-size:18px" >Unique Number</th>
+                    <th align = "justify" style="font-size:18px"> Patient Profil </th> 
                 </tr>
                 </thead>
 
