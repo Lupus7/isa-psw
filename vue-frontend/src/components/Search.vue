@@ -140,7 +140,10 @@
                         <td  align="justify">{{patient.state}}</td>
                         <td  align="justify">{{patient.telephone}}</td>
                         <td  align="justify">{{patient.uniqueNum}}</td>
-                        <td align="justify"> <button class="btn btn-primary " @click="showPatientProfile(patient.id)" style="padding:7px">Patient profile</button> </td>
+                        <td align="justify">
+                            <button class="btn btn-primary" @click="showPatientProfile(patient.id)" style="padding: 7px">Patient profile</button>
+                            <button class="btn btn-success" @click="startExamination(patient.id)" style="padding: 7px; margin-left: 5px" v-if="role === 'ROLE_DOCTOR'">Start examination</button>
+                        </td>
                     </tr>       
                     </tbody>
                 </template>
@@ -168,6 +171,9 @@
 <script>
 import axios from 'axios'
 import PatientProfileVue from './PatientProfile.vue';
+import jwt_decode from 'jwt-decode'
+import LocalStorageService from "../LocalStorageService"
+
 export default {
 
      data() {
@@ -243,11 +249,27 @@ export default {
                          this.filterBy = "";
 
                 });  
-        }
-        
+        },
+        startExamination(id) {
+            this.$router.push('/examination/' + id);
+        },
+        getRole(){
 
-    }
-    
+           const lss = LocalStorageService.getService();
+
+            if(lss.getAccessToken() != undefined && lss.getAccessToken() != null){          
+                const token = jwt_decode(lss.getAccessToken());           
+                this.role = token.roles; 
+                axios.get('http://localhost:8080/user/firstLogin').then(response => {                    
+                    this.firstLogin=response.data;
+                });  
+            }
+            
+		},
+    },
+    mounted(){
+        this.getRole()
+    }  
 }
 </script>
 
