@@ -21,6 +21,33 @@
             <p v-if="selDiag !== 0"><em>{{diagDesc}}</em></p>
         </div>
         <div class="separator"> </div>
+        <label>Prescription:</label>
+        <div class="input-group">
+            <select class="form-control" id="sel">
+                <option value=0>--- Select a prescription ---</option>
+                <!--option v-for="(row, index) in rows" :key="index" v-bind:value=index+1>{{row.name}}</option-->
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button">Add prescription</button>
+            </div>
+        </div>
+        <table class="table table-striped" style="margin-top: 10px"> <!-- v-if="..." -->
+            <thead class="thead-dark">
+                <tr>
+                    <th>Med. ID</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(row, index) in rows" :key="index">
+                    <td>{{row.id}}</td>
+                    <td>{{row.name}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="separator"> </div>
+            <label>Arrange another examination or operation:</label>
+            <!-- TODO: NEW EXAMINATION-OPERATION FORM -->
         <div class="modal-footer">
             <button class="btn btn-outline-success">Confirm and end examination</button>
         </div> 
@@ -84,12 +111,13 @@ export default {
         border-top-color: gray;
         border-top-style: solid;
         margin-top: 10px;
+        padding-right: 0px;
     }
     .separator {
         border-bottom-width: 2px;
         border-bottom-color: gray;
         border-bottom-style: dashed;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 </style>
