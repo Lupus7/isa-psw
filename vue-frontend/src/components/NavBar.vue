@@ -57,6 +57,8 @@ export default {
                 this.$router.push("/patientProfile")
             else if(this.role === "ROLE_DOCTOR" || this.role === "ROLE_NURSE")
                  this.$router.push("/userProfile")
+            else if(this.role === "ROLE_CADMIN")
+                this.$router.push("/CAProfile")
             else{
                 this.shouldChange(route)
                 this.$router.push(route)
