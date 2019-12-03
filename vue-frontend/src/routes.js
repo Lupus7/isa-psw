@@ -36,8 +36,8 @@ const router = new Router({
                 import ("./components/PatientProfile")
         },
         {
-            path: '/patientProfile/:id' ,
-            props:true,
+            path: '/patientProfile/:id',
+            props: true,
             component: () =>
                 import ("./components/PatientProfile")
         },
@@ -45,32 +45,39 @@ const router = new Router({
             path: "/userProfile",
             name: "UserProfile",
 
-            component:()=>
-                import("./components/UserProfile")
+            component: () =>
+                import ("./components/UserProfile")
         },
         {
-            path:"/changeData",
+            path: "/changeData",
             name: "ChangeData",
-            component:()=>
-                import("./components/ChangeData")
+            component: () =>
+                import ("./components/ChangeData")
 
-  
+
         },
         {
-            path:"/passwordChange",
+            path: "/passwordChange",
             name: "PasswordChange",
-            component:()=>
-                import("./components/PasswordChange")
+            component: () =>
+                import ("./components/PasswordChange")
 
-  
+
         },
         {
-            path:"/search",
+            path: "/search",
             name: "Search",
-            component:()=>
-                import("./components/Search")
+            component: () =>
+                import ("./components/Search")
 
-  
+
+        },
+        {
+            path: "/examination/:id",
+            props: true,
+            name: "Examination",
+            component: () =>
+                import ("./components/Examination")
         }
     ]
 });
