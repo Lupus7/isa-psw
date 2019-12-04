@@ -1,10 +1,11 @@
 package team47pack.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="med_file_entry")
+@Table(name="med_file_en")
 public class MedFileEntry {
     @Id
     @SequenceGenerator(name = "med_en_id_seq", sequenceName = "med_en_id_seq", allocationSize = 1)
@@ -15,11 +16,14 @@ public class MedFileEntry {
     @JoinColumn(name = "diagnosis_id", referencedColumnName = "id", nullable = true)
     private Diagnosis diagnosis;
 
-    @OneToMany(mappedBy = "med_file_entry", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Prescription> prescriptions;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "med_prescription",
+            joinColumns = @JoinColumn(name = "med_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
+    private List<Prescription> prescriptions = new ArrayList<>();
 
-    @Column(name = "desc", nullable = false, unique = false)
-    private String desc;
+    @Column(name = "description", nullable = false, unique = false)
+    private String description;
 
     public MedFileEntry() {
     }
@@ -28,7 +32,7 @@ public class MedFileEntry {
         this.id = id;
         this.diagnosis = diagnosis;
         this.prescriptions = prescriptions;
-        this.desc = desc;
+        this.description = desc;
     }
 
     public Long getId() {
@@ -56,10 +60,10 @@ public class MedFileEntry {
     }
 
     public String getDesc() {
-        return desc;
+        return description;
     }
 
     public void setDesc(String desc) {
-        this.desc = desc;
+        this.description = desc;
     }
 }

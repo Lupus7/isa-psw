@@ -3,7 +3,7 @@ package team47pack.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name="diagnosis")
+@Table(name="diagnosis_")
 public class Diagnosis {
     @Id
     @SequenceGenerator(name = "diag_id_seq", sequenceName = "diag_id_seq", allocationSize = 1)
@@ -13,8 +13,8 @@ public class Diagnosis {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "desc", nullable = false, unique = false)
-    private String desc;
+    @Column(name = "description", nullable = false, unique = false)
+    private String description;
 
     public Diagnosis() {
     }
@@ -22,7 +22,7 @@ public class Diagnosis {
     public Diagnosis(Long id, String name, String desc) {
         this.id = id;
         this.name = name;
-        this.desc = desc;
+        this.description = desc;
     }
 
     public Long getId() {
@@ -42,10 +42,10 @@ public class Diagnosis {
     }
 
     public String getDesc() {
-        return desc;
+        return description;
     }
 
     public void setDesc(String desc) {
-        this.desc = desc;
+        this.description = desc;
     }
 }
