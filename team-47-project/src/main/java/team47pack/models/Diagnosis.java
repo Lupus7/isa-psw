@@ -3,7 +3,7 @@ package team47pack.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name="diagnosis_")
+@Table(name="diagnosis")
 public class Diagnosis {
     @Id
     @SequenceGenerator(name = "diag_id_seq", sequenceName = "diag_id_seq", allocationSize = 1)
