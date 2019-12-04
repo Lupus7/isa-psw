@@ -105,11 +105,16 @@ export default {
       this.doctorSearch=true
       document.getElementById("doctorsearch").removeAttribute("hidden")
       document.getElementById("clinicsearch").setAttribute("hidden","true")
+      document.getElementById("medfilediv").setAttribute("hidden","true")
+      
+      document.getElementById("examinations").setAttribute("hidden","true")
     },
     searchForClinics(){
       document.getElementById("clinicsearch").removeAttribute("hidden")
       document.getElementById("doctorsearch").setAttribute("hidden","true")
       document.getElementById("doctorresult").setAttribute("hidden","true")
+      document.getElementById("medfilediv").setAttribute("hidden","true")
+      document.getElementById("examinations").setAttribute("hidden","true")
     },
 
     goSearchDoctor(){
@@ -129,6 +134,8 @@ export default {
         document.getElementById("tabela").setAttribute("hidden","true")
         document.getElementById("doctorresult").removeAttribute("hidden")
         document.getElementById("clinics").setAttribute("hidden","true")
+        document.getElementById("medfilediv").setAttribute("hidden","true")
+        document.getElementById("examinations").setAttribute("hidden","true")
       }).catch(error=>{
         console.log(error)
       })
@@ -147,10 +154,10 @@ export default {
           document.getElementById("examinations").setAttribute("hidden","true")       
           document.getElementById("medfile").setAttribute("hidden","true")
           document.getElementById("doctorresult").setAttribute("hidden","true")
-          
+          document.getElementById("clinics").removeAttribute("hidden")
           document.getElementById("medfilediv").setAttribute("hidden","true")
           this.clinicSearchResult = response.data
-          document.getElementById("clinics").setAttribute("display","true")
+          document.getElementById("examinations").setAttribute("hidden","true")
       }).catch(error=>console.log(error))
     }
     
