@@ -77,6 +77,12 @@ export default {
           }
         }
       },
+      goToDoctorProfile(id){
+            console.log(id)
+            let url = '/doctorProfile/'
+            url += id
+            this.$router.push(url)
+        },
 
       getExamination(){
         axios.get('http://localhost:8080/patient/getAllExaminations').then(response => { 
@@ -240,7 +246,7 @@ export default {
           <td>{{d.firstName}}</td>
           <td>{{d.lastName}}</td>
           <td>{{d.specialization}}</td>
-          <td><button type="button" class="btn btn-primary">Visit profile</button></td>
+          <td><button type="button" class="btn btn-primary" @click="goToDoctorProfile(d.id)">Visit profile</button></td>
         </tr>
       </tbody>
     </table>
