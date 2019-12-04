@@ -1,11 +1,16 @@
 package team47pack.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import team47pack.models.Examination;
 import team47pack.models.Patient;
+import team47pack.models.dto.ExaminInfo;
+import team47pack.service.DoctorService;
 import team47pack.service.ExaminationService;
 import team47pack.service.PatientService;
 
@@ -40,5 +45,11 @@ public class ExaminationControler {
             System.out.println(e.getId() +" " +e.getDate() +" " +e.getPatient().getEmail());
         }
         return ret;
+    }
+
+    @PostMapping(value="/patient/examination")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity<?> postExamination(@RequestBody ExaminInfo examinInfo) {
+        return (examinationService.addExamination(examinInfo)) ? ResponseEntity.ok("Successful") : ResponseEntity.status(400).body("Invalid information");
     }
 }
