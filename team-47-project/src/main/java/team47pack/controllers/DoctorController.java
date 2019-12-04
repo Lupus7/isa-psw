@@ -3,10 +3,7 @@ package team47pack.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team47pack.models.Doctor;
 import team47pack.models.dto.DoctorInfoRequest;
 import team47pack.models.dto.SearchDoctorRequest;
@@ -48,6 +45,13 @@ public class DoctorController {
 	public ArrayList<Doctor> searchForDoctor(@RequestBody SearchDoctorRequest req){
 		System.out.println(req.getName() +" " +req.getSurname());
 		return doctorService.search2(req);
+	}
+
+	//@@@ Author: Boki
+	@GetMapping(value = "doctor/{id}")
+	public Doctor getDoctor(@PathVariable(value = "id") String id) {
+
+		return doctorService.getDoctorByID(id);
 	}
 
 }
