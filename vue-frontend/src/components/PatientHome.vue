@@ -5,6 +5,7 @@ import jwt_decode from 'jwt-decode'
 
 import LocalStorageService from "../LocalStorageService";
 
+
 export default {
     data(){
         return{
@@ -12,7 +13,8 @@ export default {
             examinations:{},
             medicalFile:{},
             doctorSearch: false,
-            doctorSearchResult:{}
+            doctorSearchResult:{},
+            clinicSearchResult:[]
         }
     },
 
@@ -126,6 +128,7 @@ export default {
         console.log(this.doctorSearchResult)
         document.getElementById("tabela").setAttribute("hidden","true")
         document.getElementById("doctorresult").removeAttribute("hidden")
+        document.getElementById("clinics").setAttribute("hidden","true")
       }).catch(error=>{
         console.log(error)
       })
@@ -136,7 +139,19 @@ export default {
       
       console.log(examination + location)
       axios 
-      .post("http://localhost:8080/clinic")
+      .post("http://localhost:8080/clinic/search",{
+        "location" : location,
+        "examination":examination,
+      }).then(response=>{
+          document.getElementById("tabela").setAttribute("hidden","true") 
+          document.getElementById("examinations").setAttribute("hidden","true")       
+          document.getElementById("medfile").setAttribute("hidden","true")
+          document.getElementById("doctorresult").setAttribute("hidden","true")
+          
+          document.getElementById("medfilediv").setAttribute("hidden","true")
+          this.clinicSearchResult = response.data
+          document.getElementById("clinics").setAttribute("display","true")
+      }).catch(error=>console.log(error))
     }
     
     },
@@ -152,10 +167,13 @@ export default {
 </script>
 
 <template>
+ 
   
    <div>
+      <p></p>
      <button class="btn btn-secondary" @click="searchForDoctors()">Search for doctors</button>
      <button class="btn btn-secondary" @click="searchForClinics()">Search for clinics</button>
+      <p></p><p></p>
     <div>
       <form id="doctorsearch" hidden>
         <table>
@@ -168,6 +186,7 @@ export default {
           </tr>
         </table>
       </form>
+      <p></p>
        <form id="clinicsearch" hidden>
        <table>
          <tr>
@@ -184,6 +203,8 @@ export default {
          </tr>
        </table>
      </form>
+      <p></p>
+       <p></p>
     </div>
     <table class="table" id="tabela">
         <thead>
@@ -207,6 +228,7 @@ export default {
     <table class="table" id="doctorresult" hidden>
       <thead>
         <tr>
+          <th scope="col">Id</th>
           <th scope="col">Name</th>
           <th scope="col">Surname</th>
           <th scope="col">Specialization</th>
@@ -214,15 +236,36 @@ export default {
       </thead>
       <tbody>
         <tr v-for="d in this.doctorSearchResult" :key="d.id">
+          <td>{{d.id}}</td>
           <td>{{d.firstName}}</td>
           <td>{{d.lastName}}</td>
           <td>{{d.specialization}}</td>
+          <td><button type="button" class="btn btn-primary">Visit profile</button></td>
         </tr>
       </tbody>
     </table>
-
-    <h3>Examinations:</h3>
-    <div>
+    <p></p>
+    <table id="clinics" v-if="this.clinicSearchResult.length != 0" class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Location</th>
+          <th scope="col">Average rate</th>
+          <th scope="col">Cost of examination</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="res in this.clinicSearchResult" :key="res.id">
+          <td>{{res.clinic.name}}</td>
+          <td>{{res.clinic.address}}</td>
+          <td>{{res.clinic.average}}</td>
+          <td>{{res.cost}}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div id="examinations">
+      <h3>Examinations:</h3>
       <table class="table" id="tabela2">
           <thead>
           <tr>
@@ -238,9 +281,9 @@ export default {
       </tbody>
       </table>
     </div>
-    <div>
+    <div id="medfilediv">
       <h3>Medical File:</h3>
-      <table class="table table-dark">
+      <table class="table table-dark" id="medfile">
   <thead>
     <tr>
       <th scope="col">Desease</th>
