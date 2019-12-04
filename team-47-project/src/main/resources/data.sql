@@ -104,3 +104,11 @@ insert into examination(id,type,date,patient_id,doctor_id) values(3,'kontrola','
 insert into clinic_doctor values(1,8);
 insert into clinic_doctor values(2,8);
 insert into clinic_doctor values(3,8);
+
+insert into diagnosis (id, description, name) values (1, 'Antibiotici, il operacija jbg', 'Upala krajnika');
+insert into diagnosis (id, description, name) values (2, 'Fervex i kapi za nos', 'Prehlada');
+insert into diagnosis (id, description, name) values (3, 'Mirovanje, cajevi, krompir u carapu', 'Temperatura, grip');
+
+insert into prescription (id, name) values (1, 'Fervex');
+insert into prescription (id, name) values (2, 'Brufen');
+insert into prescription (id, name) values (3, 'Probiotik');
