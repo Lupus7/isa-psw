@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import { Object } from "core-js";
+
 
 Vue.use(Router);
 
@@ -47,6 +47,13 @@ const router = new Router({
             props: true,
             component: () =>
                 import ("./components/PatientProfile")
+        },
+        {
+            path:"/doctorProfile/:id",
+            props:true,
+            component:()=>
+                import("./components/DoctorProfile")
+            
         },
         {
             path: "/userProfile",

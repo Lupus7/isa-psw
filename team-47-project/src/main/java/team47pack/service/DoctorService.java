@@ -79,4 +79,20 @@ public class DoctorService {
 				.and(DoctorSpecification.doctorSpecialization(req.getSpecialization()));
 		return new ArrayList<>(new HashSet<>(doctorRepo.findAll(spec, PageRequest.of(0, 10, Sort.by("firstName"))).toList()));
 	}
+
+	public Doctor getDoctorByID(String idd) {
+		if (idd == null)
+			return null;
+		if (idd.equals(""))
+			return null;
+
+		Long id = Long.parseLong(idd);
+		if (id < 1 || id == null)
+			return null;
+		Doctor d = doctorRepo.getOne(id);
+		if (d == null)
+			return null;
+
+		return d;
+	}
 }
