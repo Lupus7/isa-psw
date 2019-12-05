@@ -49,10 +49,10 @@ const router = new Router({
                 import ("./components/PatientProfile")
         },
         {
-            path:"/doctorProfile/:id",
+            path:"/userProfile/:id",
             props:true,
             component:()=>
-                import("./components/DoctorProfile")
+                import("./components/UserProfile")
             
         },
         {
