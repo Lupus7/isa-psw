@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="userData ml-3">
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.email}}</h2>
-                                    <h4 v-if=" this.role === 'ROLE_DOCTOR'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Doctor</h4>
+                                    <h4 v-if=" this.role === 'ROLE_DOCTOR' || this.role === 'ROLE_PATIENT' " class="d-block" style="font-size: 1.5rem; font-weight: bold">Doctor</h4>
                                     <h4 v-else-if=" this.role === 'ROLE_NURSE'" class="d-block" style="font-size: 1.5rem; font-weight: bold">Nurse</h4>
                                     <h6 class="d-block" style="font-size: 1rem; font-weight: bold"> {{this.holiday}} </h6>
                                     <div class="middle" v-if="this.role === 'ROLE_NURSE' || this.role === 'ROLE_DOCTOR' ">
@@ -24,13 +24,13 @@
                                     </div>
                                 </div>
                                 <div class="ml-auto" style="margin-top: -2vh">
-                                    <div class="middle">
+                                    <div class="middle" v-if=" this.role === 'ROLE_DOCTOR' || this.role === 'ROLE_NURSE' ">
                                         <br>
-                                        <button type="button" class="btn btn-success btn-block " @click="changeD" style=" border-radius: 6px; padding:8px ">Change data </button>
+                                        <button  type="button" class="btn btn-success btn-block " @click="changeD" style=" border-radius: 6px; padding:8px ">Change data </button>
                                     </div>
-                                    <div class="middle">
+                                    <div class="middle" v-if=" this.role === 'ROLE_DOCTOR' || this.role === 'ROLE_NURSE' ">
                                         <br>
-                                        <button type="button" class="btn btn-dark btn-block " @click="changePassword" style=" border-radius: 6px;  color: white; padding:8px" >Change password </button>
+                                        <button  type="button" class="btn btn-dark btn-block " @click="changePassword" style=" border-radius: 6px;  color: white; padding:8px" >Change password </button>
                                     </div>
                                     <div class="middle" v-if="this.role === 'ROLE_NURSE' || this.role === 'ROLE_DOCTOR' ">
                                         <br>
@@ -153,9 +153,17 @@ export default {
                    
         }
     },
+    props:{
+        id: String,
+    },
     methods:{
         getDoctor(){
             axios.get('http://localhost:8080/doctor/getInfo').then(response => { this.user = response.data; })
+        },
+        getDoctorId(){
+            let url = 'http://localhost:8080/doctor/';
+            url += this.id
+            axios.get(url).then(response => { this.user = response.data;})
         },
 
         getNurse(){
@@ -203,6 +211,8 @@ export default {
             this.getDoctor();
         else if(this.role === "ROLE_NURSE")
             this.getNurse();
+        else if(this.role === "ROLE_PATIENT")
+            this.getDoctorId();
       
         if(this.user.onVacation === true)
             this.holiday = "On holiday";
