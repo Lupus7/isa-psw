@@ -79,7 +79,7 @@ export default {
       },
       goToDoctorProfile(id){
             console.log(id)
-            let url = '/doctorProfile/'
+            let url = '/userProfile/'
             url += id
             this.$router.push(url)
         },
