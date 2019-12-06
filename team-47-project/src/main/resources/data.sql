@@ -33,12 +33,12 @@ insert into patient values (6, 6);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','test7',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test7',7);
-insert into medical_staff (id,on_vacation) values (7,false);            
+insert into medical_staff (id,on_vacation,clinic_id) values (7,false,1);            
 insert into nurse values (7);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','test8',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test8',8);
-insert into medical_staff (id,on_vacation) values (8,false);            
+insert into medical_staff (id,on_vacation,clinic_id) values (8,false,1);            
 insert into doctor (id,specialization) values (8,'Stomatologist');
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
@@ -102,8 +102,7 @@ insert into examination(id,type,date,patient_id,doctor_id) values(2,'operacija',
 insert into examination(id,type,date,patient_id,doctor_id) values(3,'kontrola','04.09.2018 20:24',2,8);
 
 insert into clinic_doctor values(1,8);
-insert into clinic_doctor values(2,8);
-insert into clinic_doctor values(3,8);
+insert into cadmin values(1,9);
 
 insert into diagnosis (id, description, name) values (1, 'Antibiotici, il operacija jbg', 'Upala krajnika');
 insert into diagnosis (id, description, name) values (2, 'Fervex i kapi za nos', 'Prehlada');
