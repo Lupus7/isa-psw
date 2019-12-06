@@ -1,5 +1,9 @@
 package team47pack.controllers;
 
+import java.security.Principal;
+import java.text.ParseException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -7,15 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import team47pack.models.Examination;
 import team47pack.models.Patient;
 import team47pack.models.dto.ExaminInfo;
-import team47pack.service.DoctorService;
 import team47pack.service.ExaminationService;
 import team47pack.service.PatientService;
-
-import java.security.Principal;
-import java.util.List;
 
 @RestController
 public class ExaminationControler {
@@ -28,17 +29,13 @@ public class ExaminationControler {
     @GetMapping(value="/patient/getAllExaminations")
     @PreAuthorize("hasRole('PATIENT')")
     public List<Examination> getAllExams(Principal user){
-        System.out.println("11111>>>>>>>>>" + user.getName()+" <<<<<<<<<<");
         Patient patient = patientService.getPatient(user.getName());
-        System.out.println("22222>>>>>>>>>" + patient.getEmail()+" "+patient.getId()+" <<<<<<<<<<");
         return examinationService.getByPatientId(patient.getId());
     }
     @GetMapping(value="/patient/getAll")
     @PreAuthorize("hasRole('PATIENT')")
     public List<Examination> getAll(Principal user){
-        System.out.println("11111>>>>>>>>>" + user.getName()+" <<<<<<<<<<");
         Patient patient = patientService.getPatient(user.getName());
-        System.out.println("22222>>>>>>>>>" + patient.getEmail()+" "+patient.getId()+" <<<<<<<<<<");
         List<Examination> ret = examinationService.getAll();
         for(Examination e:ret){
             System.out.println("Nazad u servisu");
@@ -49,7 +46,7 @@ public class ExaminationControler {
 
     @PostMapping(value="/patient/examination")
     @PreAuthorize("hasRole('DOCTOR')")
-    public ResponseEntity<?> postExamination(@RequestBody ExaminInfo examinInfo) {
-        return (examinationService.addExamination(examinInfo)) ? ResponseEntity.ok("Successful") : ResponseEntity.status(400).body("Invalid information");
+    public ResponseEntity<?> postExamination(@RequestBody ExaminInfo examinInfo, Principal p) throws ParseException {
+        return (examinationService.addExamination(examinInfo,p.getName())) ? ResponseEntity.ok("Successful") : ResponseEntity.status(400).body("Invalid information");
     }
 }
