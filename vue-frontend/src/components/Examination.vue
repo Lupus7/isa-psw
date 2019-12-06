@@ -46,8 +46,48 @@
             </tbody>
         </table>
         <div class="separator"> </div>
-            <label>Arrange another examination or operation:</label>
             <!-- TODO: NEW EXAMINATION-OPERATION FORM -->
+            
+            <div>
+                <br>
+                <br>
+                <div class="modal-header" style=" border-bottom: 2px dashed #5f5f5f; width: 100%;padding: 5px;font-size: 20px;font-size: 3vh" >
+                    <label style="width:auto;font-size:25px">Arrange next procedure: </label>
+                </div>
+                    
+                    <div class="panel-body" >
+                        <br>
+                        <form accept-charset="UTF-8" role="form" >
+                            <div class="control-group" style="padding-left:20px; padding-right:700px">
+                                <label class="control-label">Type of procedure:</label>
+                                <div class="form-group">
+                                    <select class="form-control" v-model="procedure">
+                                        <option> Examination </option>
+                                        <option> Operation </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="control-group" style="padding-left:20px; padding-right:700px">
+                                <label class="control-label" >Date:</label>
+                                <div class="form-group">
+                                    <input class="form-control" type ="date" v-model="date" />
+                                </div>
+                            </div>
+
+
+                            <br>
+                            <div class="modal-footer" style=" border-top: 2px dashed #5f5f5f;" >
+                            </div>      
+                        </form>
+                                
+                    </div>
+            </div>
+
+        <br>
+        <br>
+        <br>
+
         <div class="modal-footer">
             <button class="btn btn-outline-success" v-on:click="confirm()">Confirm and end examination</button>
         </div> 
@@ -68,7 +108,10 @@ export default {
             presSel: [],
             prescs: [],
             diag: null,
-            examDesc: ""
+            examDesc: "",
+
+            procedure :"",
+            date: "",
         }
     },
     props: {
@@ -116,7 +159,9 @@ export default {
                 patientId: this.patient.id,
                 desc: this.examDesc,
                 diag: this.diag,
-                prescs: this.prescs
+                prescs: this.prescs,
+                procedure: this.procedure,
+                date: this.date
             }
             axios
                 .post('http://localhost:8080/patient/examination', reqData)
@@ -124,7 +169,8 @@ export default {
                     this.$router.push("/")
                     this.$router.go("/")
                 })
-        } 
+        },
+       
     },
     created() {
         this.getPatiendData()
@@ -175,7 +221,7 @@ export default {
         margin-bottom: 10px;
     }
     .modal-footer {
-        border-top-width: 2px;
+        border-top-width: 1px;
         border-top-color: gray;
         border-top-style: solid;
         margin-top: 10px;
