@@ -11,6 +11,9 @@ public abstract class MedicalStaff extends User {
 	
 	@Column(name="onVacation", unique=false, nullable=false)
 	protected Boolean onVacation;
+	
+	@Column(name="clinic_id", unique=false, nullable=false)
+	protected Long clinicId;
 
 	public Boolean getOnVacation() {
 		return onVacation;
@@ -19,6 +22,16 @@ public abstract class MedicalStaff extends User {
 	public void setOnVacation(Boolean onVacation) {
 		this.onVacation = onVacation;
 	}
+
+	public Long getClinicId() {
+		return clinicId;
+	}
+
+	public void setClinicId(Long clinicId) {
+		this.clinicId = clinicId;
+	}
+	
+	
 	
 	
 }
