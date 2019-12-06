@@ -1,12 +1,16 @@
 package team47pack.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import team47pack.models.*;
 import team47pack.models.dto.ExaminInfo;
 import team47pack.repository.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +29,13 @@ public class ExaminationService {
     private DiagnosisRepo diagRepo;
     @Autowired
     private PrescriptionRepo presRepo;
+    
+    @Autowired
+    private DoctorRepo doctorRepo;
+    @Autowired
+    private NextProcedureRepo nextProcedureRepo;
+  
+
 
 
     public List<Examination> getByPatientId(Long id){
@@ -39,7 +50,7 @@ public class ExaminationService {
         return ret;
     }
 
-    public boolean addExamination(ExaminInfo examinInfo) {
+    public boolean addExamination(ExaminInfo examinInfo, String doctor) throws ParseException {
         Optional<Patient> pat = patientRepo.findById(examinInfo.getPatientId());
 
         if (!pat.isPresent())
@@ -73,7 +84,32 @@ public class ExaminationService {
         }
 
         patientRepo.save(pat.get());
+        
+        //@------author: Jokara nextProcedure
+        if(examinInfo.getDate() != null && examinInfo.getProcedure() != null) {
+        	if(!examinInfo.getDate().equals("") && !examinInfo.getProcedure().equals("") && pat.isPresent()) {
+        		 addNextProcedure(examinInfo.getDate(),examinInfo.getProcedure(), pat,doctor);
+        	}
+        }
+        
 
         return true;
     }
+    
+    //@------author: Jokara
+    public void addNextProcedure(Date date, String procedure, Optional<Patient> pat,String d) throws ParseException {
+    	
+    	Doctor doctor = doctorRepo.findByEmail(d);	
+		Date dateT = new Date(); 
+
+		
+		if (dateT.compareTo(date) <= 0) {
+	    	NextProcedure np = new NextProcedure(procedure, date, pat.get(),doctor);
+	    	nextProcedureRepo.save(np);
+	    	
+	    	
+		}
+		
+    }
+    
 }
