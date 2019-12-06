@@ -31,6 +31,12 @@ public class Clinic {
             joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"))
     private List<Doctor> doctors;
+    
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "cadmin",
+            joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "clinic_admin_id", referencedColumnName = "id"))
+    private List<ClinicAdmin> clinicAdmins;
 
     // TODO : private List<Room> rooms;
     // TODO : private List<Procedure> procedures;
@@ -84,4 +90,14 @@ public class Clinic {
     public void setDoctors(List<Doctor> doctors) {
         this.doctors = doctors;
     }
+
+	public List<ClinicAdmin> getClinicAdmins() {
+		return clinicAdmins;
+	}
+
+	public void setClinicAdmins(List<ClinicAdmin> clinicAdmins) {
+		this.clinicAdmins = clinicAdmins;
+	}
+    
+    
 }
