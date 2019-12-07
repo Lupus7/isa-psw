@@ -31,15 +31,15 @@ public class ClinicService {
     @Autowired
     ExaminationRepo exRepo;
 
+    // @author: Lupus7 (Sinisa Canak)
     public List<ClinicAndAdmin> getClinics() {
         List<Clinic> clinics = clinicRepo.findAll();
         List<ClinicAndAdmin> retVal = new ArrayList<>();
 
         for (Clinic c : clinics) {
             List<String> admins = new ArrayList<>();
-            List<ClinicAdmin> cAdmins = caRepo.findAllByClinic(c.getId().intValue());
 
-            for (ClinicAdmin admin : cAdmins) {
+            for (ClinicAdmin admin : c.getClinicAdmins()) {
                 admins.add(admin.getUsername());
             }
 
@@ -48,6 +48,11 @@ public class ClinicService {
 
         return retVal;
     }
+
+    public void save(Clinic clinic) {
+        clinicRepo.save(clinic);
+    }
+    ////
 
     public ArrayList<ClinicSearchResult> search(ClinicSearchRequest csr) {
         ArrayList<Clinic> clinics1 = new ArrayList<>();
