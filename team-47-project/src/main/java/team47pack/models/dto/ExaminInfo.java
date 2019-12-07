@@ -1,23 +1,32 @@
 package team47pack.models.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
-import team47pack.models.Diagnosis;
-import team47pack.models.Prescription;
-
 public class ExaminInfo {
+	// @author: Lupus7 (Sinisa Canak)
+	@NotNull(message = "Patient id not valid")
+	@Positive(message = "Patient id not valid")
 	private Long patientId;
+	@NotBlank(message = "Please fill the examination description")
+	@Size(min = 10, message = "Examination info needs to contain at least 10 characters!")
 	private String desc;
-	private Diagnosis diag;
-	private List<Prescription> prescs;
+	@NotNull
+	private DiagnosisDTO diag;
+	private List<PrescriptionDTO> prescs;
+	////
+
 	private Date date;
 	private String procedure;
 
 	public ExaminInfo() {
 	}
 
-	public ExaminInfo(Long patientId, String desc, Diagnosis diag, List<Prescription> prescs, Date date,
+	public ExaminInfo(Long patientId, String desc, DiagnosisDTO diag, List<PrescriptionDTO> prescs, Date date,
 			String procedure) {
 		this.patientId = patientId;
 		this.desc = desc;
@@ -43,19 +52,19 @@ public class ExaminInfo {
 		this.desc = desc;
 	}
 
-	public Diagnosis getDiag() {
+	public @NotNull DiagnosisDTO getDiag() {
 		return diag;
 	}
 
-	public void setDiag(Diagnosis diag) {
+	public void setDiag(DiagnosisDTO diag) {
 		this.diag = diag;
 	}
 
-	public List<Prescription> getPrescs() {
+	public List<PrescriptionDTO> getPrescs() {
 		return prescs;
 	}
 
-	public void setPrescs(List<Prescription> prescs) {
+	public void setPrescs(List<PrescriptionDTO> prescs) {
 		this.prescs = prescs;
 	}
 
