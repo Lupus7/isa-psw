@@ -2,6 +2,7 @@ package team47pack.models;
 
 import javax.persistence.*;
 
+// @author: Lupus7 (Sinisa Canak)
 @Entity
 @Table(name="diagnosis")
 public class Diagnosis {

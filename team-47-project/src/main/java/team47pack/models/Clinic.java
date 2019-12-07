@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// @author: Lupus7 (Sinisa Canak)
 @Entity
 @Table(name="clinic")
 public class Clinic {
@@ -31,7 +32,8 @@ public class Clinic {
             joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"))
     private List<Doctor> doctors;
-    
+
+    // @author: Jokara
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "cadmin",
             joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"),
