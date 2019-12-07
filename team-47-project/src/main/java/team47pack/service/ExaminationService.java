@@ -1,5 +1,12 @@
 package team47pack.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import team47pack.models.*;
+import team47pack.models.dto.ExaminInfo;
+import team47pack.models.dto.PrescriptionDTO;
+import team47pack.repository.*;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,30 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import team47pack.models.Clinic;
-import team47pack.models.ClinicAdmin;
-import team47pack.models.Diagnosis;
-import team47pack.models.Doctor;
-import team47pack.models.Examination;
-import team47pack.models.MedFileEntry;
-import team47pack.models.MedicalFile;
-import team47pack.models.NextProcedure;
-import team47pack.models.Patient;
-import team47pack.models.Prescription;
-import team47pack.models.dto.ExaminInfo;
-import team47pack.repository.ClinicRepo;
-import team47pack.repository.DiagnosisRepo;
-import team47pack.repository.DoctorRepo;
-import team47pack.repository.ExaminationRepo;
-import team47pack.repository.MedEntryRepo;
-import team47pack.repository.MedFileRepo;
-import team47pack.repository.NextProcedureRepo;
-import team47pack.repository.PatientRepo;
-import team47pack.repository.PrescriptionRepo;
 
 @Service
 public class ExaminationService {
@@ -85,7 +68,7 @@ public class ExaminationService {
 
 		medFileEntry.setDiagnosis(diag.get());
 
-		for (Prescription p : examinInfo.getPrescs()) {
+		for (PrescriptionDTO p : examinInfo.getPrescs()) {
 			Optional<Prescription> pres = presRepo.findById(p.getId());
 			if (!pres.isPresent())
 				return false;

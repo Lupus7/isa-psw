@@ -2,9 +2,7 @@ package team47pack.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import team47pack.models.ClinicAdmin;
 import team47pack.models.Patient;
 import team47pack.models.User;
@@ -41,9 +39,9 @@ public class LoginService {
         return true;
     }
 
-    public Boolean registerAdmin(CAdminRegReq req) {
-        User u = userRepo.findByEmail(req.getEmail());
-        if(u != null){
+    // @author: Lupus7 (Sinisa Canak)
+    public Boolean registerClinicAdmin(CAdminRegReq req) {
+        if(userRepo.findByEmail(req.getEmail()) != null){
             return  false;
         }
 

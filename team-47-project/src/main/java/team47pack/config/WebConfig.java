@@ -19,6 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**").allowedOrigins("http://localhost:8081");
     }
 
+    // @author: Lupus7 (Sinisa Canak)
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

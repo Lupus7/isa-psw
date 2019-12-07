@@ -11,18 +11,19 @@ import java.util.List;
 public interface UserRepo extends JpaRepository<User,Long> {
     User findByEmail(String email);
 
+    // @author: Lupus7 (Sinisa Canak)
     @Transactional
     @Modifying
-    @Query("update User u set u.accepted = True where u.email = ?1")
-    int acceptUser(String mail);
+    @Query("update User set accepted = True where id = ?1")
+    int acceptUser(Long id);
 
+    // @author: Lupus7 (Sinisa Canak)
     @Transactional
     @Modifying
-    @Query("delete from User where email = ?1")
-    int rejectUser(String mail);
+    @Query("delete from User where id = ?1")
+    int rejectUser(Long id);
 
+    // @author: Lupus7 (Sinisa Canak)
     List<User> findByAccepted(boolean accepted);
-    
-   
 }
 

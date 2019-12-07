@@ -1,6 +1,13 @@
 package team47pack.models.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
+// @author: Lupus7 (Sinisa Canak)
 public class CAdminRegReq extends RegisterRequest {
+
+    @NotNull(message = "Choose the clinic id!")
+    @Positive(message = "Invalid clinic id!")
     private int clinic;
 
     public CAdminRegReq() {

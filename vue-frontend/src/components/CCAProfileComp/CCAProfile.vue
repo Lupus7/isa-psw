@@ -174,7 +174,7 @@ export default {
         },
         getCCA(){
             axios
-                .get('http://localhost:8080/cca/getInfo')
+                .get('/cca/info')
                 .then(response => { this.user = response.data; })
         }
     },

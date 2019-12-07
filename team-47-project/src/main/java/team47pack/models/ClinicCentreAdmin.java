@@ -3,6 +3,7 @@ package team47pack.models;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+// @author: Lupus7 (Sinisa Canak)
 @Entity
 @Table(name = "clinicCentreAdmin")
 public class ClinicCentreAdmin extends User {

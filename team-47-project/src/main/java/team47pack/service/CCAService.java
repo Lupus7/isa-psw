@@ -1,55 +1,81 @@
 package team47pack.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 import team47pack.models.Clinic;
-import team47pack.models.ClinicCentreAdmin;
+import team47pack.models.Patient;
 import team47pack.models.User;
+import team47pack.models.dto.CAdminRegReq;
+import team47pack.models.dto.ClinicAndAdmin;
 import team47pack.models.dto.ClinicRegister;
-import team47pack.repository.CCARepo;
-import team47pack.repository.ClinicRepo;
-import team47pack.repository.UserRepo;
+import team47pack.models.dto.UserInfo;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
+// @author: Lupus7 (Sinisa Canak)
 @Service
 public class CCAService {
 
     @Autowired
-    private UserRepo userRepo;
+    private UserService userService;
 
     @Autowired
-    private CCARepo ccaRepo;
+    private EmailService emailService;
 
     @Autowired
-    private ClinicRepo clinicRepo;
+    private PatientService patientService;
 
-    public List<User> getRegRequest() {
-        return userRepo.findByAccepted(false);
+    @Autowired
+    private LoginService loginService;
+
+    @Autowired
+    private ClinicService clinicService;
+
+    public List<UserInfo> getRequests() {
+        List<UserInfo> users = new ArrayList<>();
+        for(User user : userService.findByAccepted(false)) {
+            if (user instanceof Patient)
+                users.add(new UserInfo(user));
+        }
+        return users;
     }
 
-    public boolean acceptReq(String mail) {
-        if(userRepo.acceptUser(mail) != 0)
+    public boolean acceptRequest(Long id) {
+        if(userService.acceptUser(id)) {
+            emailService.sendSimpleMessage(
+                patientService.getPatientbyID(id.toString()).getUsername(),
+                "Registration accepted",
+                "Welcome to our clinic!"); // TODO: Refine and add "Complete registration" link
             return true;
+        }
         return false;
     }
 
-    public boolean rejectReq(String mail) {
-        if(userRepo.acceptUser(mail) != 0)
+    public boolean rejectRequest(Long id, String reason) {
+        if(userService.rejectUser(id)) {
+            emailService.sendSimpleMessage(
+                patientService.getPatientbyID(id.toString()).getUsername(),
+                "Registration rejected",
+                "Reason for rejection: \n" + reason);
             return true;
+        }
         return false;
     }
 
-    public ClinicCentreAdmin findByEmail(String email) {
-        User u = userRepo.findByEmail(email);
-        if (u == null)
-            return null;
-        return new ClinicCentreAdmin(u);
+    public UserInfo findByEmail(String email) {
+        return new UserInfo(userService.findByEmail(email));
     }
 
     public void registerClinic(ClinicRegister reg) {
-        clinicRepo.save(new Clinic(reg));
+        clinicService.save(new Clinic(reg));
+    }
+
+    public boolean registerAdmin(CAdminRegReq req) {
+        return loginService.registerClinicAdmin(req);
+    }
+
+    public List<ClinicAndAdmin> getClinics() {
+        return clinicService.getClinics();
     }
 }

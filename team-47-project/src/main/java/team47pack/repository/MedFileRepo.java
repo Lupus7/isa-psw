@@ -6,6 +6,7 @@ import team47pack.models.MedicalFile;
 
 import java.util.List;
 
+// @author: Lupus7 (Sinisa Canak)
 public interface MedFileRepo extends JpaRepository<MedicalFile, Long>, JpaSpecificationExecutor<MedicalFile> {
     List<MedicalFile> findAll();
 }

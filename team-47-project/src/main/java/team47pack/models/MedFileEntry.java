@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// @author: Lupus7 (Sinisa Canak)
 @Entity
 @Table(name="med_file_en")
 public class MedFileEntry {

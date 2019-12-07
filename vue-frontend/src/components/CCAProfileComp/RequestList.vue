@@ -55,18 +55,16 @@ export default {
     methods: { 
         getReqList() {
             axios
-                .get('http://localhost:8080/cca/request-list')
+                .get('/cca/requests')
                 .then(response => { this.rows = response.data })
         },
         accept(email, index) {
-            let url = 'http://localhost:8080/cca/request-list/accept'
-            axios.post(url, {"mail": email})
+            axios.put('/cca/request/' + this.rows[index].id)
             this.rows.splice(index, 1)
             this.fillReject("", index)
         },
         reject(email, index) {
-            let url = 'http://localhost:8080/cca/request-list/reject'
-            axios.post(url, { "mail": email, "expl": this.explanation })
+            axios.delete('/cca/request/' + this.rows[index].id, this.explanation)
             this.rows.splice(index, 1)
             this.selectedUser = ""
         },
