@@ -4,10 +4,12 @@ import team47pack.models.Clinic;
 
 import java.util.List;
 
+// @author: Lupus7 (Sinisa Canak)
 public class ClinicAndAdmin {
     private String name;
     private String address;
     private String description;
+    // no need to send more than emails
     private List<String> admin;
 
     public ClinicAndAdmin() {
