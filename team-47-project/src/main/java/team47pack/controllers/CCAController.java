@@ -1,103 +1,73 @@
 package team47pack.controllers;
 
-import java.security.Principal;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import team47pack.models.Clinic;
-import team47pack.models.ClinicCentreAdmin;
-import team47pack.models.User;
 import team47pack.models.dto.CAdminRegReq;
 import team47pack.models.dto.ClinicAndAdmin;
 import team47pack.models.dto.ClinicRegister;
-import team47pack.models.dto.RegisterRequest;
-import team47pack.security.TokenUtils;
+import team47pack.models.dto.UserInfo;
 import team47pack.service.CCAService;
-import team47pack.service.ClinicService;
-import team47pack.service.EmailService;
-import team47pack.service.LoginService;
 
+import javax.validation.Valid;
+import java.security.Principal;
+import java.util.List;
+
+// @author: Lupus7 (Sinisa Canak)
 @RestController
 @RequestMapping(value="/cca")
 @PreAuthorize("hasRole('CCADMIN')")
 public class CCAController {
+
     @Autowired
     private CCAService ccaService;
 
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private LoginService loginService;
-
-    @Autowired
-    private ClinicService clinicService;
-
-    @Autowired
-    private TokenUtils tokenUtils;
-
-    @GetMapping(value="/request-list")
-    public List<User> reqList() {
-        return ccaService.getRegRequest();
+    @GetMapping(value="/requests")
+    public List<UserInfo> reqList() {
+        return ccaService.getRequests();
     }
 
-    @PostMapping(value="/request-list/accept")
-    public ResponseEntity<String> acceptRequest(@RequestBody String mail) throws JSONException {
-        JSONObject obj = new JSONObject(mail);
-        if (obj == null || obj.get("mail") == null || obj.get("mail") == "")
-            return ResponseEntity.status(400).body("Could not accept");
-
-        if(ccaService.acceptReq((String) obj.get("mail"))) {
-            emailService.sendSimpleMessage((String) obj.get("mail"), "Registration accepted",
-                    "Welcome to our clinic!");
+    @PutMapping(value="/requests/{id}")
+    public ResponseEntity<String> acceptRequest(@PathVariable(value = "id") Long id) {
+        if (ccaService.acceptRequest(id))
             return ResponseEntity.ok("Successful");
-        }
-        else
-            return ResponseEntity.status(400).body("Could not accept");
+
+        return ResponseEntity.status(400).body("Could not accept User#" + id);
     }
 
-    @PostMapping(value="request-list/reject")
-    public ResponseEntity<String> rejectRequest(@RequestBody String expl) throws JSONException {
-        JSONObject obj = new JSONObject(expl);
-        if (obj == null || obj.get("expl") == null || obj.get("expl") == "" || obj.get("mail") == null || obj.get("mail") == "")
-            return ResponseEntity.status(400).body("Could not accept");
+    @DeleteMapping(value="/requests/{id}")
+    public ResponseEntity<String> rejectRequest(@RequestBody String reason, @PathVariable(value = "id") Long id) {
+        if (reason == null || reason.length() < 10)
+            return ResponseEntity.status(400).body("Rejection explanation not acceptable (min 10 characters)");
 
-        if(ccaService.rejectReq((String) obj.get("mail"))) {
-            emailService.sendSimpleMessage((String) obj.get("mail"), "Registration rejected",
-                    "Reason for rejection: \n" + (String) obj.get("expl"));
+        if(ccaService.rejectRequest(id, reason))
             return ResponseEntity.ok("Successful");
-        }
-        else
-            return ResponseEntity.status(400).body("Could not accept");
+
+        return ResponseEntity.status(400).body("Could not reject User#" + id);
     }
 
-    @PostMapping(value="/reg_admin")
-    public ResponseEntity<String> register(@RequestBody CAdminRegReq req) {
-        if (loginService.registerAdmin(req)) {
+    @PostMapping(value="/admin")
+    public ResponseEntity<String> register(@Valid @RequestBody CAdminRegReq req) {
+        if (ccaService.registerAdmin(req))
             return ResponseEntity.ok("Successful");
-        }
+
         return ResponseEntity.status(400).body("Invalid information");
     }
 
-    @GetMapping(value="/getInfo")
-    public ClinicCentreAdmin getInfo(Principal user) {
+    @GetMapping(value="/info")
+    public UserInfo getInfo(Principal user) {
         return ccaService.findByEmail(user.getName());
     }
 
-    @PostMapping(value="/reg_clinic")
-    public ResponseEntity<String> registerClinic(@RequestBody ClinicRegister req) {
+    @PostMapping(value="/clinic")
+    public ResponseEntity<String> registerClinic(@Valid @RequestBody ClinicRegister req) {
         ccaService.registerClinic(req);
         return ResponseEntity.ok("Successful");
     }
 
-    @GetMapping(value="/get_clinics")
+    @GetMapping(value="/clinics")
     public List<ClinicAndAdmin> getClinics() {
-        return clinicService.getClinics();
+        return ccaService.getClinics();
     }
 }
