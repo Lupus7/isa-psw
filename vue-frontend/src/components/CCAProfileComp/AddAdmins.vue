@@ -133,7 +133,7 @@ export default {
             console.log(firstname + lastname)
            
             axios
-                .post('http://localhost:8080/cca/reg_admin',{
+                .post('/cca/admin', {
                     "firstName" : firstname,
                     "lastName" : lastname,
                     "password" : password,
@@ -161,12 +161,12 @@ export default {
         },
         loadClinics() {
             axios
-                .get('http://localhost:8080/cca/get_clinics')
+                .get('/cca/clinics')
                 .then(response => { this.rows = response.data.reverse() })
         },
         addClinic() {
             axios
-                .post('http://localhost:8080/cca/reg_clinic', {
+                .post('/cca/clinic', {
                     name: this.clinicData[0],
                     address: this.clinicData[1],
                     description: this.clinicData[2]
