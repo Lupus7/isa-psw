@@ -58,6 +58,8 @@ SELECT setval('hibernate_id_seq"', 21, true);
 ALTER SEQUENCE hibernate_id_seq RESTART WITH 22;
 SELECT setval('clinic_id_seq"', 21, true);
 ALTER SEQUENCE clinic_id_seq RESTART WITH 10;
+SELECT setval('procedure_id_seq"', 21, true);
+ALTER SEQUENCE procedure_id_seq RESTART WITH 22;
 
 insert into authority (name) values ('ROLE_PATIENT');
 insert into authority (name) values ('ROLE_DOCTOR');
@@ -122,7 +124,8 @@ insert into medicalfile_entries(medical_file_id,entries_id) values(2,2);
 
 
 
-insert into procedure (id,date,type,patient_id) values(1,'obican pregled','04.09.2020 15:24',2);
-insert into procedure (id,date,type,patient_id) values(2,'kontrola','03.07.2018 15:24',2);
+insert into procedure (id,date,type,patient_id) values(1,'04.09.2020 15:24','obican pregled',2);
+insert into procedure (id,date,type,patient_id) values(2,'03.07.2018 15:24','kontrola',2);
+
 
 insert into examination(id,doctor_id) values(2,8);
