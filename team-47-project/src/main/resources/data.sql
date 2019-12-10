@@ -111,3 +111,13 @@ insert into diagnosis (id, description, name) values (3, 'Mirovanje, cajevi, kro
 insert into prescription (id, name) values (1, 'Fervex');
 insert into prescription (id, name) values (2, 'Brufen');
 insert into prescription (id, name) values (3, 'Probiotik');
+
+insert into med_file_en(id, description, diagnosis_id) values(1,'Opis 1',1);
+insert into med_file_en(id, description, diagnosis_id) values(2,'Opis 2',2);
+insert into med_file_en(id, description, diagnosis_id) values(3,'Opis 3',2);
+
+insert into medicalfile_entries(medical_file_id,entries_id) values (1,1);
+insert into medicalfile_entries(medical_file_id,entries_id) values (2,2);
+insert into medicalfile_entries(medical_file_id,entries_id) values (3,3);
+
+

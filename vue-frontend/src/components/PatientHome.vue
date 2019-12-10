@@ -85,17 +85,17 @@ export default {
         },
 
       getExamination(){
-        axios.get('http://localhost:8080/patient/getAllExaminations').then(response => { 
-          this.examinations = response.data;
-            for(var i=0;i<this.examinations.length;i++){
-              let c=this.examinations[i]
-              //  alert(c.type)
-                var myDate = new Date( c.date );
-                //alert(myDate.toUTCString());
-                var mytime=myDate.toUTCString()
-                this.examinations[i].date = mytime
-            }
-          }).catch(error=>{console.log("ne mere" + error)})
+        // axios.get('http://localhost:8080/patient/getAllExaminations').then(response => { 
+        //   this.examinations = response.data;
+        //     for(var i=0;i<this.examinations.length;i++){
+        //       let c=this.examinations[i]
+        //       //  alert(c.type)
+        //         var myDate = new Date( c.date );
+        //         //alert(myDate.toUTCString());
+        //         var mytime=myDate.toUTCString()
+        //         this.examinations[i].date = mytime
+        //     }
+        //   }).catch(error=>{console.log("ne mere" + error)})
       },
       getMedicalFiles(){
         axios.get('http://localhost:8080/patient/getAllFiles').then(response=>{
@@ -149,15 +149,17 @@ export default {
         "location" : location,
         "examination":examination,
       }).then(response=>{
+          console.log(response.data)
           document.getElementById("tabela").setAttribute("hidden","true") 
           document.getElementById("examinations").setAttribute("hidden","true")       
           document.getElementById("medfile").setAttribute("hidden","true")
           document.getElementById("doctorresult").setAttribute("hidden","true")
           
           document.getElementById("medfilediv").setAttribute("hidden","true")
+          document.getElementById("clinics1").setAttribute("display","true")
           this.clinicSearchResult = response.data
-          document.getElementById("clinics").setAttribute("display","true")
-      }).catch(error=>console.log(error))
+          
+      }).catch(error=>{console.log(error)})
     }
     
     },
@@ -222,7 +224,7 @@ export default {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="c in clinics" :key="c.id">
+        <tr v-for="(c,key) in this.clinics" :key="key">
           <th scope="row">{{c.id}}</th>
           <td>{{c.name}}</td>
           <td>{{c.address}}</td>
@@ -251,7 +253,7 @@ export default {
       </tbody>
     </table>
     <p></p>
-    <table id="clinics" v-if="this.clinicSearchResult.length != 0" class="table table-dark">
+    <table  v-if="this.clinicSearchResult.length != 0" class="table table-dark" id="clinics1">
       <thead>
         <tr>
           <th scope="col">Name</th>
@@ -261,7 +263,7 @@ export default {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="res in this.clinicSearchResult" :key="res.id">
+        <tr v-for="(res,key) in this.clinicSearchResult" :key="key">
           <td>{{res.clinic.name}}</td>
           <td>{{res.clinic.address}}</td>
           <td>{{res.clinic.average}}</td>
@@ -280,7 +282,7 @@ export default {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="e in this.examinations" :key="e.id">
+        <tr v-for="(e,key) in this.examinations" :key="key">
           <td>{{e.type}}</td>
           <td>{{e.date}}</td>
         </tr>
@@ -297,7 +299,7 @@ export default {
     </tr>
   </thead>
   <tbody>
-    <tr v-for="d in this.medicalFile" :key="d">
+    <tr v-for="(d,key) in this.medicalFile" :key="key">
       <td>{{d[0]}}</td>
       <td>{{d[1]}}</td>
     </tr>

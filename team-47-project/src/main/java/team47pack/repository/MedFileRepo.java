@@ -9,4 +9,7 @@ import java.util.List;
 // @author: Lupus7 (Sinisa Canak)
 public interface MedFileRepo extends JpaRepository<MedicalFile, Long>, JpaSpecificationExecutor<MedicalFile> {
     List<MedicalFile> findAll();
+
+
+    //MedicalFile findByPatientId(Long id);
 }

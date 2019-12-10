@@ -1,25 +1,23 @@
 package team47pack.controllers;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import team47pack.models.Clinic;
+import team47pack.models.MedFileEntry;
+import team47pack.models.MedicalFile;
 import team47pack.models.Patient;
 import team47pack.models.dto.FilterPatientRequest;
 import team47pack.models.dto.MedicalFileDto;
 import team47pack.models.dto.SearchPatientRequest;
 import team47pack.security.TokenUtils;
+import team47pack.service.MedicalFileService;
 import team47pack.service.PatientService;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class PatientController {
@@ -29,6 +27,9 @@ public class PatientController {
 
 	@Autowired
 	private TokenUtils tokenUtils;
+
+	@Autowired
+	private MedicalFileService medicalFileService;
 
 	@GetMapping(value = "/patients")
 	public List<Patient> posts() {
@@ -54,18 +55,15 @@ public class PatientController {
 
 	@GetMapping(value = "/patient/getAllFiles")
 	@PreAuthorize("hasRole('PATIENT')")
-	public MedicalFileDto getPatientMF() {
-		List<String> bolesti = new ArrayList<String>();
-		bolesti.add("Upala krajnika");
-		bolesti.add("Prehlada");
-		bolesti.add("Temperatura, grip");
-		List<String> opisBolest = new ArrayList<>();
-		opisBolest.add("Antibiotici, il operacija jbg");
-		opisBolest.add("Fervex i kapi za nos");
-		opisBolest.add("Mirovanje, cajevi, krompir u carapu");
-		MedicalFileDto mdto = new MedicalFileDto(bolesti, opisBolest);
-		return mdto;
+	public MedicalFileDto getPatientMF(Principal user) {
+		Patient patient = patientService.getPatient(user.getName());
+		MedicalFile mdf = patient.getMedicalFile();
+		System.out.println(mdf.getId());
+		List<MedFileEntry> entries = mdf.getEntries();
+		MedFileEntry mdentry = entries.get(0);
+		System.out.println(mdentry.getPrescriptions());
 
+		return null;
 	}
 
 	// @author:Jokara-------------------------------------------------------------------------------------------
