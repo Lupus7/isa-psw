@@ -45,6 +45,9 @@ public class ExaminationService {
 		return examinationRepo.findByPatientId(id);
 	}
 
+	public void save(Examination e){
+		examinationRepo.save(e);
+	}
 	public List<Examination> getAll() {
 		List<Examination> ret = examinationRepo.findAll();
 		for (Examination e : ret) {
