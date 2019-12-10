@@ -1,10 +1,7 @@
 package team47pack.models;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="examination")
@@ -14,15 +11,32 @@ public class Examination extends Procedure{
     @JoinColumn(name="doctor_id", referencedColumnName = "id", nullable = true)
     private Doctor doctor;
 
+    @Column
+    private Boolean approved;
+
     public Examination(Doctor doctor) {
         this.doctor=doctor;
     }
     
     public Examination() {
 	}
+	public Examination( String type, Date date, Patient patient,Doctor doc,Boolean approved){
+        this.type = type;
+        this.date = date;
+        this.patient = patient;
+        this.doctor = doc;
+        this.approved = approved;
+    }
 
+    public Boolean getApproved() {
+        return approved;
+    }
 
-	public Doctor getDoctor() {
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
+    }
+
+    public Doctor getDoctor() {
         return doctor;
     }
 

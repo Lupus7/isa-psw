@@ -13,8 +13,8 @@ public abstract class Procedure {
 	// nije gotov model, sale bla bla....
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+	@SequenceGenerator(name = "procedure_id_seq", sequenceName = "procedure_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "procedure_id_seq")
     protected Long id;
 
     @Column
