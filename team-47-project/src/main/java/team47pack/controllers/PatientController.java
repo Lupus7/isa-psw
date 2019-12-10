@@ -11,10 +11,13 @@ import team47pack.models.dto.MedicalFileDto;
 import team47pack.models.dto.SearchPatientRequest;
 import team47pack.security.TokenUtils;
 import team47pack.service.DiagnosisService;
+import team47pack.service.DoctorService;
+import team47pack.service.ExaminationService;
 import team47pack.service.PatientService;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -24,8 +27,13 @@ public class PatientController {
 	private PatientService patientService;
 
 	@Autowired
+	private DoctorService doctorService;
+
+	@Autowired
 	private TokenUtils tokenUtils;
 
+	@Autowired
+	private ExaminationService examinationService;
 	@Autowired
 	private DiagnosisService diagnosisService;
 
@@ -102,5 +110,17 @@ public class PatientController {
 	public Patient getPatient(@PathVariable(value = "id") String id) {
 
 		return patientService.getPatientbyID(id);
+	}
+
+	@PostMapping(value="patient/requests/{id}/{spec}")
+	@PreAuthorize("hasRole('PATIENT')")
+	public ResponseEntity<String> sendRequest(@PathVariable(value = "id") Long id, @PathVariable(value = "spec")String spec,Principal user) {
+		System.out.println(id + spec);
+
+		Patient pat = patientService.getPatient(user.getName());
+		Doctor doc = doctorService.getDoctorByID(id.toString());
+		Examination examination = new Examination(spec,new Date(),pat,doc,false);
+		examinationService.save(examination);
+		return ResponseEntity.ok().body("Successfully send procedure request appointment");
 	}
 }
