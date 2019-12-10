@@ -101,9 +101,9 @@ export default {
       getMedicalFiles(){
         axios.get('http://localhost:8080/patient/getMedicalFile').then(response=>{
           //this.medicalFile = zip(response.data.bolesti,response.data.opisiBolesti);
-
-      this.medicalFile = response.data.bolesti.map(function(e, i) {
-      return [e, response.data.opisBolesti[i]];
+        console.log(response);
+      this.medicalFile = response.data.dijagnoze.map(function(e, i) {
+      return [e, response.data.opisi[i]];
       });
 
         }).catch(error=>{console.log(error)})
@@ -293,14 +293,16 @@ export default {
       <table class="table table-dark" id="medfile">
   <thead>
     <tr>
-      <th scope="col">Desease</th>
-      <th scope="col">Description</th>
+      <th scope="col">Examination description</th>
+      <th scope="col">Diagnosis</th>
+      <th scope="col">Diagnosis description</th>
     </tr>
   </thead>
   <tbody>
     <tr v-for="(d, index) in this.medicalFile" :key="index">
-      <td>{{d[0]}}</td>
       <td>{{d[1]}}</td>
+      <td>{{d[0].name}}</td>
+      <td>{{d[0].description}}</td>
     </tr>
     </tbody>
       </table>

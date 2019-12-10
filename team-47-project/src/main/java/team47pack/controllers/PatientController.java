@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import team47pack.models.*;
+import team47pack.models.dto.DiagnosisDTO;
 import team47pack.models.dto.FilterPatientRequest;
 import team47pack.models.dto.MedicalFileDto;
 import team47pack.models.dto.SearchPatientRequest;
@@ -57,7 +58,7 @@ public class PatientController {
 		System.out.println("Usao :" + user.getName() + user.toString());
 		Patient patient = patientService.getPatient(user.getName());
 		System.out.println("+++++++++" + patient.getUsername());
-		ArrayList<Diagnosis> dijagnoze = new ArrayList<>();
+		ArrayList<DiagnosisDTO> dijagnoze = new ArrayList<>();
 		ArrayList<String> opisi = new ArrayList<>();
 		//sada izvlacimo MedicalFile iz pacijenta
 		MedicalFile mf = patient.getMedicalFile();
@@ -68,7 +69,7 @@ public class PatientController {
 			opisi.add(m.getDesc());
 			Diagnosis d = diagnosisService.findOneById(m.getDiagnosis().getId());
 			System.out.println("Nasao dijagnozu: " + d.getName()+d.getDesc());
-			dijagnoze.add(d);
+			dijagnoze.add(new DiagnosisDTO(d));
 		}
 		MedicalFileDto mfd = new MedicalFileDto();
 		mfd.setDijagnoze(dijagnoze);
