@@ -32,6 +32,10 @@
                                         <br>
                                         <button  type="button" class="btn btn-dark btn-block " @click="changePassword" style=" border-radius: 6px;  color: white; padding:8px" >Change password </button>
                                     </div>
+                                    <div class="middle" v-if=" this.role === 'ROLE_PATIENT' ">
+                                        <br>
+                                        <button  type="button" class="btn btn-dark btn-block " @click="sendExaminationRequest(user.id)" style=" border-radius: 6px;  color: white; padding:8px" >Send request for procedure </button>
+                                    </div>
                                     <div class="middle" v-if="this.role === 'ROLE_NURSE' || this.role === 'ROLE_DOCTOR' ">
                                         <br>
                                         <button type="button" class="btn btn-primary btn-block " @click="search" style=" border-radius: 6px;  color: white; padding:8px " >Search patients </button>
@@ -199,6 +203,20 @@ export default {
             e.preventDefault();
             this.$router.push({name: 'Holiday', params: {staff:this.user}});
    
+        },
+        sendExaminationRequest(id){
+            console.log(id)
+            console.log(this.user.specialization)
+            let url = "/patient/requests/" + id +"/"+this.user.specialization
+            console.log(url)
+            axios
+            .post(url)
+            .then(response=>{
+                console.log(response.data);
+            })
+            .catch(error=>{
+                console.log(error)
+            })
         }
        
 

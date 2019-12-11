@@ -58,6 +58,8 @@ SELECT setval('hibernate_id_seq"', 21, true);
 ALTER SEQUENCE hibernate_id_seq RESTART WITH 22;
 SELECT setval('clinic_id_seq"', 21, true);
 ALTER SEQUENCE clinic_id_seq RESTART WITH 10;
+SELECT setval('procedure_id_seq"', 21, true);
+ALTER SEQUENCE procedure_id_seq RESTART WITH 22;
 
 insert into authority (name) values ('ROLE_PATIENT');
 insert into authority (name) values ('ROLE_DOCTOR');
@@ -111,3 +113,19 @@ insert into diagnosis (id, description, name) values (3, 'Mirovanje, cajevi, kro
 insert into prescription (id, name) values (1, 'Fervex');
 insert into prescription (id, name) values (2, 'Brufen');
 insert into prescription (id, name) values (3, 'Probiotik');
+
+--Prvo pravim entrijeve
+insert into med_file_en(id,description,diagnosis_id) values(1,'opis bolesti 1',1);
+insert into med_file_en(id,description,diagnosis_id)  values(2,'opis bolesti 2',2);
+
+--sada povezujem sa medical file
+insert into medicalfile_entries(medical_file_id,entries_id) values(2,1);
+insert into medicalfile_entries(medical_file_id,entries_id) values(2,2);
+
+
+
+insert into procedure (id,date,type,patient_id) values(1,'04.09.2020 15:24','obican pregled',2);
+insert into procedure (id,date,type,patient_id) values(2,'03.07.2018 15:24','kontrola',2);
+
+
+insert into examination(id,doctor_id) values(2,8);

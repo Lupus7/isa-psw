@@ -72,6 +72,8 @@ public class DoctorService {
 			}
     }
 
+
+
     public ArrayList<Doctor>search2(SearchDoctorRequest req){
 		Specification<Doctor> spec = Specification
 				.where(DoctorSpecification.doctorFirstName(req.getName()))

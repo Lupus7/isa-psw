@@ -1,32 +1,33 @@
 package team47pack.models.dto;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class MedicalFileDto {
-    private List<String> bolesti;
-    private List<String> opisBolesti;
+    private ArrayList<String> opisi;
+    private ArrayList<DiagnosisDTO> dijagnoze;
 
     public MedicalFileDto() {
     }
 
-    public MedicalFileDto(List<String> bolesti, List<String> opisBolesti) {
-        this.bolesti = bolesti;
-        this.opisBolesti = opisBolesti;
+    public MedicalFileDto(ArrayList<String> opisi, ArrayList<DiagnosisDTO> dijagnoze) {
+        this.opisi = opisi;
+        this.dijagnoze = dijagnoze;
     }
 
-    public List<String> getBolesti() {
-        return bolesti;
+    public ArrayList<String> getOpisi() {
+        return opisi;
     }
 
-    public void setBolesti(List<String> bolesti) {
-        this.bolesti = bolesti;
+    public void setOpisi(ArrayList<String> opisi) {
+        this.opisi = opisi;
     }
 
-    public List<String> getOpisBolesti() {
-        return opisBolesti;
+    public ArrayList<DiagnosisDTO> getDijagnoze() {
+        return dijagnoze;
     }
 
-    public void setOpisBolesti(List<String> opisBolesti) {
-        this.opisBolesti = opisBolesti;
+    public void setDijagnoze(ArrayList<DiagnosisDTO> dijagnoze) {
+        this.dijagnoze = dijagnoze;
     }
+
 }

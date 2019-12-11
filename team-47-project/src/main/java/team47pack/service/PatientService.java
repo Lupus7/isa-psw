@@ -1,18 +1,17 @@
 package team47pack.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import team47pack.models.Clinic;
 import team47pack.models.Patient;
 import team47pack.models.dto.FilterPatientRequest;
 import team47pack.models.dto.SearchPatientRequest;
 import team47pack.repository.ClinicRepo;
 import team47pack.repository.PatientRepo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PatientService {
@@ -53,7 +52,7 @@ public class PatientService {
 				break;
 			}
 		}
-		System.out.println(ret.getUsername() + ret.getEmail());
+		System.out.println("RETURN : "   + ret.getUsername() + ret.getEmail());
 		return ret;
 	}
 

@@ -1,21 +1,9 @@
 package team47pack.models;
 
-import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="procedure")
@@ -25,8 +13,8 @@ public abstract class Procedure {
 	// nije gotov model, sale bla bla....
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+	@SequenceGenerator(name = "procedure_id_seq", sequenceName = "procedure_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "procedure_id_seq")
     protected Long id;
 
     @Column
@@ -45,6 +33,12 @@ public abstract class Procedure {
 		
 	}
 
+	public Procedure(Long id, String type, Date date, Patient patient) {
+		this.id = id;
+		this.type = type;
+		this.date = date;
+		this.patient = patient;
+	}
 
 	public Long getId() {
 		return id;

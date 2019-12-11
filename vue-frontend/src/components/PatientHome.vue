@@ -1,4 +1,5 @@
 
+
 <script>
 import axios from 'axios';
 import jwt_decode from 'jwt-decode'
@@ -9,11 +10,11 @@ import LocalStorageService from "../LocalStorageService";
 export default {
     data(){
         return{
-            clinics:{},
-            examinations:{},
-            medicalFile:{},
+            clinics:[],
+            examinations:[],
+            medicalFile:[],
             doctorSearch: false,
-            doctorSearchResult:{},
+            doctorSearchResult:[],
             clinicSearchResult:[]
         }
     },
@@ -98,11 +99,11 @@ export default {
           }).catch(error=>{console.log("ne mere" + error)})
       },
       getMedicalFiles(){
-        axios.get('http://localhost:8080/patient/getAllFiles').then(response=>{
+        axios.get('http://localhost:8080/patient/getMedicalFile').then(response=>{
           //this.medicalFile = zip(response.data.bolesti,response.data.opisiBolesti);
-
-      this.medicalFile = response.data.bolesti.map(function(e, i) {
-      return [e, response.data.opisBolesti[i]];
+        console.log(response);
+      this.medicalFile = response.data.dijagnoze.map(function(e, i) {
+      return [e, response.data.opisi[i]];
       });
 
         }).catch(error=>{console.log(error)})
@@ -212,7 +213,7 @@ export default {
       <p></p>
        <p></p>
     </div>
-    <table class="table" id="tabela">
+    <table class="table" id="tabela" v-if="clinics.length > 0">
         <thead>
          <tr>
           <th scope="col">Clinics</th>
@@ -231,7 +232,7 @@ export default {
     </tbody>
     </table>
     
-    <table class="table" id="doctorresult" hidden>
+    <table class="table" id="doctorresult" v-if="doctorSearchResult.length > 0">
       <thead>
         <tr>
           <th scope="col">Id</th>
@@ -241,7 +242,7 @@ export default {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="d in this.doctorSearchResult" :key="d.id">
+        <tr v-for="d in doctorSearchResult" :key="d.id">
           <td>{{d.id}}</td>
           <td>{{d.firstName}}</td>
           <td>{{d.lastName}}</td>
@@ -251,7 +252,7 @@ export default {
       </tbody>
     </table>
     <p></p>
-    <table id="clinics" v-if="this.clinicSearchResult.length != 0" class="table table-dark">
+    <table id="clinics" v-if="this.clinicSearchResult.length > 0" class="table table-dark">
       <thead>
         <tr>
           <th scope="col">Name</th>
@@ -270,7 +271,7 @@ export default {
       </tbody>
     </table>
     
-    <div id="examinations">
+    <div id="examinations" v-if="examinations.length > 0">
       <h3>Examinations:</h3>
       <table class="table" id="tabela2">
           <thead>
@@ -287,19 +288,21 @@ export default {
       </tbody>
       </table>
     </div>
-    <div id="medfilediv">
+    <div id="medfilediv" v-if="medicalFile.length > 0">
       <h3>Medical File:</h3>
       <table class="table table-dark" id="medfile">
   <thead>
     <tr>
-      <th scope="col">Desease</th>
-      <th scope="col">Description</th>
+      <th scope="col">Examination description</th>
+      <th scope="col">Diagnosis</th>
+      <th scope="col">Diagnosis description</th>
     </tr>
   </thead>
   <tbody>
-    <tr v-for="d in this.medicalFile" :key="d">
-      <td>{{d[0]}}</td>
+    <tr v-for="(d, index) in this.medicalFile" :key="index">
       <td>{{d[1]}}</td>
+      <td>{{d[0].name}}</td>
+      <td>{{d[0].description}}</td>
     </tr>
     </tbody>
       </table>

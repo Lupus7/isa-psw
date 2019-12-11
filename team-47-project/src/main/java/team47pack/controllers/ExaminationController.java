@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 import team47pack.models.Examination;
 import team47pack.models.Patient;
 import team47pack.models.dto.ExaminInfo;
+import team47pack.models.dto.ExaminationDTO;
 import team47pack.service.ExaminationService;
 import team47pack.service.PatientService;
 
 import java.security.Principal;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,9 +29,15 @@ public class ExaminationController {
 
     @GetMapping(value="/patient/getAllExaminations")
     @PreAuthorize("hasRole('PATIENT')")
-    public List<Examination> getAllExams(Principal user){
+    public List<ExaminationDTO> getAllExams(Principal user){
+        List<ExaminationDTO> ret = new ArrayList<>();
         Patient patient = patientService.getPatient(user.getName());
-        return examinationService.getByPatientId(patient.getId());
+        System.out.println("IZZZZ" + patient.getUsername());
+        List<Examination> list =  examinationService.getByPatientId(patient.getId());
+        for(Examination e: list){
+            ret.add(new ExaminationDTO(e));
+        }
+        return ret;
     }
     @GetMapping(value="/patient/getAll")
     @PreAuthorize("hasRole('PATIENT')")
