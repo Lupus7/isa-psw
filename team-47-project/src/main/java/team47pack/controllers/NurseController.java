@@ -48,7 +48,7 @@ public class NurseController {
 	}
 
 	// @author: Lupus7 (Sinisa Canak)
-	@PutMapping(value = "/nurse/prescription/{id}")
+	@PostMapping(value = "/nurse/prescription/{id}")
 	@PreAuthorize("hasRole('NURSE')")
 	public ResponseEntity<?> verifyPrescription(@PathVariable(value = "id") Long id, Principal nurse) {
 		if (nurseService.verifyPrescription(id, nurse.getName()))

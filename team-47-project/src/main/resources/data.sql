@@ -54,11 +54,11 @@ insert into users (is_accepted, address, city, email, enabled, first_name, last_
 insert into medical_staff (id,on_vacation) values (11,false);            
 insert into nurse values (11);
 
-SELECT setval('hibernate_id_seq"', 21, true);
+SELECT setval('hibernate_id_seq', 21, true);
 ALTER SEQUENCE hibernate_id_seq RESTART WITH 22;
-SELECT setval('clinic_id_seq"', 21, true);
+SELECT setval('clinic_id_seq', 21, true);
 ALTER SEQUENCE clinic_id_seq RESTART WITH 10;
-SELECT setval('procedure_id_seq"', 21, true);
+SELECT setval('procedure_id_seq', 21, true);
 ALTER SEQUENCE procedure_id_seq RESTART WITH 22;
 
 insert into authority (name) values ('ROLE_PATIENT');
@@ -122,6 +122,8 @@ insert into med_file_en(id,description,diagnosis_id)  values(2,'opis bolesti 2',
 insert into medicalfile_entries(medical_file_id,entries_id) values(2,1);
 insert into medicalfile_entries(medical_file_id,entries_id) values(2,2);
 
+SELECT setval('med_en_id_seq', 2, true);
+ALTER SEQUENCE procedure_id_seq RESTART WITH 3;
 
 
 insert into procedure (id,date,type,patient_id) values(1,'04.09.2020 15:24','obican pregled',2);

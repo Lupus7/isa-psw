@@ -43,17 +43,17 @@ const router = new Router({
                 import ("./components/PatientProfile")
         },
         {
-            path: '/patientProfile/:id' ,
+            path: '/patientProfile/:id',
             props: true,
             component: () =>
                 import ("./components/PatientProfile")
         },
         {
-            path:"/userProfile/:id",
-            props:true,
-            component:()=>
-                import("./components/UserProfile")
-            
+            path: "/userProfile/:id",
+            props: true,
+            component: () =>
+                import ("./components/UserProfile")
+
         },
         {
             path: "/userProfile",
@@ -92,11 +92,11 @@ const router = new Router({
                 import ("./components/Examination")
         },
         {
-            path: '/holiday' ,
+            path: '/holiday',
             props: true,
             name: "Holiday",
-            component:()=>
-                import("./components/Holiday")
+            component: () =>
+                import ("./components/Holiday")
         },
         {
             path: "/requestsTable",
@@ -104,6 +104,13 @@ const router = new Router({
             component: () =>
                 import ("./components/CAProfileComp/StaffRequests")
         },
+        {
+            path: '/prescriptions',
+            props: true,
+            name: "Prescriptions",
+            component: () =>
+                import ("./components/PrescriptionVerification")
+        }
     ]
 });
 

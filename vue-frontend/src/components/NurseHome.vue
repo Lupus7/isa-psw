@@ -34,7 +34,7 @@ export default {
         this.cards.push(["http://ssl.gstatic.com/accounts/ui/avatar_2x.png", "Profile", "Access your profile to view and/or change your personal information.", "#/userProfile"]);
         this.cards.push(["../assets/calendar.png", "Work Calendar", "View all of the appointed examinations and operations. Get data about patients in the appointments", "/"]);
         this.cards.push(["../assets/vacation.png", "Time off", "Make a request for taking a vacation or time off.", "/"]);
-        this.cards.push(["../assets/prescription.png", "Prescriptions", "View and verify prescriptions", "/"]);
+        this.cards.push(["../assets/prescription.png", "Prescriptions", "View and verify prescriptions", "#/prescriptions"]);
     }
 }
 </script>
