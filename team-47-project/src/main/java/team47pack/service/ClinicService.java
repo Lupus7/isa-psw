@@ -57,9 +57,13 @@ public class ClinicService {
     public ArrayList<ClinicSearchResult> search(ClinicSearchRequest csr) {
         ArrayList<Clinic> clinics1 = new ArrayList<>();
         clinics1 = retriveClinics(csr.getLocation());
-        System.out.println(clinics1);
+        if (clinics1.size() != 0){
+            System.out.println("Klinika: " + clinics1.get(0).getAddress() + clinics1.get(0).getName());
+        }
         ArrayList<Examination> examinations = retrieveExamination(csr.getExamination());
-
+        if (examinations.size() != 0) {
+            System.out.println(examinations.get(0).getId() + " " + examinations.get(0).getType());
+        }
         ArrayList<ClinicSearchResult> result = new ArrayList<>();
         for (Clinic c : clinics1) {
             for (Doctor d : c.getDoctors()) {
@@ -76,6 +80,9 @@ public class ClinicService {
                 }
             }
         }
+            if(result.size() != 0) {
+                System.out.println(result.get(0).getClinic().getAddress() + " " + result.get(0).getClinic().getName() + " " + result.get(0).getCost());
+            }
             return result;
 
     }
@@ -89,5 +96,11 @@ public class ClinicService {
     public ArrayList<Clinic>retriveClinics(String address){
         Specification<Clinic> spec = Specification.where(ClinicSpecification.clinicLocation(address));
         return new ArrayList<>(new HashSet<>(clinicRepo.findAll(spec, PageRequest.of(0, 10, Sort.by("address"))).toList()));
+    }
+
+    public Clinic getClinic(Long id) {
+        Clinic c= clinicRepo.getOne(id);
+        System.out.println("Klinika iz repozitorijuma : " + c.getDescription() + c.getName());
+        return c;
     }
 }

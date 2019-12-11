@@ -7,6 +7,7 @@ import jwt_decode from 'jwt-decode'
 import LocalStorageService from "../LocalStorageService";
 
 
+
 export default {
     data(){
         return{
@@ -15,7 +16,9 @@ export default {
             medicalFile:[],
             doctorSearch: false,
             doctorSearchResult:[],
-            clinicSearchResult:[]
+            clinicSearchResult:[],
+            klinikiniDoktori:[],
+            prikaziKlinikineDoktore:false,
         }
     },
 
@@ -112,11 +115,14 @@ export default {
       this.doctorSearch=true
       document.getElementById("doctorsearch").removeAttribute("hidden")
       document.getElementById("clinicsearch").setAttribute("hidden","true")
+      this.clinicSearchResult = null
     },
     searchForClinics(){
       document.getElementById("clinicsearch").removeAttribute("hidden")
       document.getElementById("doctorsearch").setAttribute("hidden","true")
       document.getElementById("doctorresult").setAttribute("hidden","true")
+      document.getElementById("clinics").setAttribute("hidden","true")
+      
     },
 
     goSearchDoctor(){
@@ -143,22 +149,44 @@ export default {
     goSearchClinics(){
       let examination = document.getElementById("type").value
       let location = document.getElementById("location").value
-      
-      console.log(examination + location)
+      let date = document.getElementById("date").value
+      console.log(examination + location+" " + date)
       axios 
       .post("http://localhost:8080/clinic/search",{
         "location" : location,
         "examination":examination,
+        "date":date,
       }).then(response=>{
+        
+          console.log(response.data)
+          this.clinicSearchResult = response.data
           document.getElementById("tabela").setAttribute("hidden","true") 
           document.getElementById("examinations").setAttribute("hidden","true")       
-          document.getElementById("medfile").setAttribute("hidden","true")
+          document.getElementById("medfilediv").setAttribute("hidden","true")
           document.getElementById("doctorresult").setAttribute("hidden","true")
           
           document.getElementById("medfilediv").setAttribute("hidden","true")
-          this.clinicSearchResult = response.data
-          document.getElementById("clinics").setAttribute("display","true")
+          
+          
+          document.getElementById("clinics").removeAttribute("hidden")
       }).catch(error=>console.log(error))
+    },
+
+    seeAvailableDoctors(id){
+      console.log(id)
+      this.pretiso = true
+      let url = 'http://localhost:8080/clinic/'+ id +'/getAvailableDoctors'
+      console.log(url)
+      axios
+      .get(url).then(response=>{
+        console.log(response.data)
+        this.prikaziKlinikineDoktore = true
+        this.doctorSearchResult = response.data
+        document.getElementById("doctorresult").removeAttribute("hidden")
+      }).catch(error=>{
+        console.log(error)
+      })
+      
     }
     
     },
@@ -203,6 +231,9 @@ export default {
            </td>
            <td>
              <input type="text" placeholder="location" id="location">
+           </td>
+           <td>
+             <input type="date" placeholder="location" id="date">
            </td>
            <td>
              <button @click="goSearchClinics()">Search</button>
@@ -252,6 +283,7 @@ export default {
       </tbody>
     </table>
     <p></p>
+    <p v-if="this.clinicSearchResult.length==0">NO SEARCH RESULT</p>
     <table id="clinics" v-if="this.clinicSearchResult.length > 0" class="table table-dark">
       <thead>
         <tr>
@@ -262,11 +294,12 @@ export default {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="res in this.clinicSearchResult" :key="res.id">
+        <tr v-for="(res, key) in this.clinicSearchResult" :key="key">
           <td>{{res.clinic.name}}</td>
           <td>{{res.clinic.address}}</td>
           <td>{{res.clinic.average}}</td>
           <td>{{res.cost}}</td>
+          <td><button @click="seeAvailableDoctors(res.clinic.id)">See available doctors</button></td>
         </tr>
       </tbody>
     </table>
