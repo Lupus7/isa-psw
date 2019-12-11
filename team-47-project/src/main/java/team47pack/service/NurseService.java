@@ -2,12 +2,14 @@ package team47pack.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import team47pack.models.Nurse;
 import team47pack.models.User;
 import team47pack.models.dto.NurseInfoRequest;
+import team47pack.models.dto.PrescriptionVerifyDTO;
 import team47pack.repository.MedicalStaffRepo;
 import team47pack.repository.UserRepo;
+
+import java.util.Collection;
 
 @Service
 public class NurseService {
@@ -16,7 +18,8 @@ public class NurseService {
     private UserRepo userRepo;
 	@Autowired
 	private MedicalStaffRepo medicalRepo;
-
+	@Autowired
+	private PresVerifService presVerifService;
 
     public Nurse getNurse(String email) {
     	Nurse n = (Nurse) userRepo.findByEmail(email);	
@@ -45,5 +48,12 @@ public class NurseService {
         return true;
     }
 
+	// @author: Lupus7 (Sinisa Canak)
+    public Collection<PrescriptionVerifyDTO> getPrescriptionVerification() {
+		return presVerifService.getPresForVerification();
+    }
 
+	public boolean verifyPrescription(Long id, String nurseUsername) {
+    	return presVerifService.verifyPrescription(id, getNurse(nurseUsername));
+	}
 }
