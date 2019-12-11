@@ -19,8 +19,6 @@ import java.util.Optional;
 public class ExaminationService {
 	@Autowired
 	private ExaminationRepo examinationRepo;
-	@Autowired
-	private PatientRepo patientRepo;
 
 	@Autowired
 	private MedFileRepo medFileRepo;
@@ -40,6 +38,11 @@ public class ExaminationService {
 	@Autowired
 	private ClinicRepo clinicRepo;
 
+	@Autowired
+	private PatientService patientService;
+	@Autowired
+	private DoctorService doctorService;
+
 	public List<Examination> getByPatientId(Long id) {
 		System.out.println("Ovo je iz servica : " + id);
 		return examinationRepo.findByPatientId(id);
@@ -57,9 +60,14 @@ public class ExaminationService {
 	}
 
 	public boolean addExamination(ExaminInfo examinInfo, String doctor) throws ParseException {
-		Optional<Patient> pat = patientRepo.findById(examinInfo.getPatientId());
+		// @author: Lupus7 (Sinisa Canak)
+		Optional<Patient> pat = Optional.ofNullable(patientService.getPatientbyID(examinInfo.getPatientId().toString()));
+		Optional<Doctor> doc = Optional.ofNullable(doctorService.getDoctor(doctor));
 
 		if (!pat.isPresent())
+			return false;
+
+		if (!doc.isPresent())
 			return false;
 
 		MedFileEntry medFileEntry = new MedFileEntry();
@@ -75,7 +83,7 @@ public class ExaminationService {
 			Optional<Prescription> pres = presRepo.findById(p.getId());
 			if (!pres.isPresent())
 				return false;
-			medFileEntry.getPrescriptions().add(pres.get());
+			medFileEntry.getPrescriptions().add(new PrescriptionVerification(pat.get(), doc.get(), pres.get()));
 		}
 
 		medEntryRepo.save(medFileEntry);
@@ -89,7 +97,7 @@ public class ExaminationService {
 			pat.get().setMedicalFile(mf);
 		}
 
-		patientRepo.save(pat.get());
+		patientService.insert(pat.get());
 
 		// @------author: Jokara nextProcedure
 		if (examinInfo.getDate() != null && examinInfo.getProcedure() != null) {

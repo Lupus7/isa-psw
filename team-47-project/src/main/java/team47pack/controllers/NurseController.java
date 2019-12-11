@@ -1,19 +1,17 @@
 package team47pack.controllers;
 
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import team47pack.models.Nurse;
 import team47pack.models.dto.NurseInfoRequest;
+import team47pack.models.dto.PrescriptionVerifyDTO;
 import team47pack.security.TokenUtils;
 import team47pack.service.NurseService;
+
+import java.security.Principal;
+import java.util.Collection;
 
 @RestController
 public class NurseController {
@@ -42,5 +40,19 @@ public class NurseController {
 		return ResponseEntity.ok("Update successful!");
 	}
 
+	// @author: Lupus7 (Sinisa Canak)
+	@GetMapping(value = "/nurse/prescription")
+	@PreAuthorize("hasRole('NURSE')")
+	public Collection<PrescriptionVerifyDTO> getPrescriptions() {
+		return nurseService.getPrescriptionVerification();
+	}
 
+	// @author: Lupus7 (Sinisa Canak)
+	@PutMapping(value = "/nurse/prescription/{id}")
+	@PreAuthorize("hasRole('NURSE')")
+	public ResponseEntity<?> verifyPrescription(@PathVariable(value = "id") Long id, Principal nurse) {
+		if (nurseService.verifyPrescription(id, nurse.getName()))
+			return ResponseEntity.ok("Verification successful!");
+		return ResponseEntity.badRequest().body("Verification error. Check if id is valid");
+	}
 }
