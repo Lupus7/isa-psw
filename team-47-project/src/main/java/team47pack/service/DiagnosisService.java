@@ -3,6 +3,7 @@ package team47pack.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team47pack.models.Diagnosis;
+import team47pack.repository.DiagnosisRepo;
 
 import java.util.List;
 
@@ -11,9 +12,9 @@ import java.util.List;
 public class DiagnosisService {
 
     @Autowired
-    DiagnosisService diagnosisService;
+    DiagnosisRepo diagnosisRepo;
 
     public List<Diagnosis> findAll() {
-        return diagnosisService.findAll();
+        return diagnosisRepo.findAll();
     }
 }
