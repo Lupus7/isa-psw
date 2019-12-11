@@ -21,7 +21,7 @@ public class MedFileEntry {
     @JoinTable(name = "med_prescription",
             joinColumns = @JoinColumn(name = "med_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
-    private List<Prescription> prescriptions = new ArrayList<>();
+    private List<PrescriptionVerification> prescriptions = new ArrayList<>();
 
     @Column(name = "description", nullable = false, unique = false)
     private String description;
@@ -29,10 +29,16 @@ public class MedFileEntry {
     public MedFileEntry() {
     }
 
-    public MedFileEntry(Long id, Diagnosis diagnosis, List<Prescription> prescriptions, String desc) {
+    public MedFileEntry(Long id, Diagnosis diagnosis, List<Prescription> prescriptions, String desc, Patient patient, Doctor doc) {
         this.id = id;
         this.diagnosis = diagnosis;
-        this.prescriptions = prescriptions;
+
+        List<PrescriptionVerification> pres = new ArrayList<>();
+        for (Prescription p : prescriptions) {
+            pres.add(new PrescriptionVerification(patient, doc, p));
+        }
+
+        this.prescriptions = pres;
         this.description = desc;
     }
 
@@ -52,19 +58,19 @@ public class MedFileEntry {
         this.diagnosis = diagnosis;
     }
 
-    public List<Prescription> getPrescriptions() {
-        return prescriptions;
-    }
-
-    public void setPrescriptions(List<Prescription> prescriptions) {
-        this.prescriptions = prescriptions;
-    }
-
     public String getDesc() {
         return description;
     }
 
     public void setDesc(String desc) {
         this.description = desc;
+    }
+
+    public List<PrescriptionVerification> getPrescriptions() {
+        return prescriptions;
+    }
+
+    public void setPrescriptions(List<PrescriptionVerification> prescriptions) {
+        this.prescriptions = prescriptions;
     }
 }
