@@ -1,5 +1,7 @@
 package team47pack.models;
 
+import team47pack.models.dto.PrescriptionDTO;
+
 import javax.persistence.*;
 
 // @author: Lupus7 (Sinisa Canak)
@@ -20,6 +22,11 @@ public class Prescription {
     public Prescription(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Prescription(PrescriptionDTO pres) {
+        this.id = pres.getId();
+        this.name = pres.getName();
     }
 
     public Long getId() {
