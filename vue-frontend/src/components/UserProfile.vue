@@ -12,7 +12,8 @@
                         <div class="card-title mb-4">
                             <div class="d-flex justify-content-start">
                                 <div class="image-container">
-                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" style="width: 150px; height: 150px margin-top: -2vh " class="img-thumbnail" />
+                                    <img v-if=" this.role === 'ROLE_DOCTOR'"  src="../../public/assets/doctor.jpg" style="width: 150px; height: 150px margin-top: -2vh " class="img-thumbnail" />
+                                    <img v-if=" this.role === 'ROLE_NURSE'"  src="../../public/assets/nurse.png" style="width: 150px; height: 150px margin-top: -2vh " class="img-thumbnail" />
                                 </div>
                                 <div class="userData ml-3">
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.email}}</h2>

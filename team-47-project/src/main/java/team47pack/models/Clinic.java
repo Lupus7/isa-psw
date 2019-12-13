@@ -35,10 +35,17 @@ public class Clinic {
 
     // @author: Jokara
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "cadmin",
+    @JoinTable(name = "clinic_admins",
             joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "clinic_admin_id", referencedColumnName = "id"))
     private List<ClinicAdmin> clinicAdmins;
+    
+    // @author: Jokara
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "clinic_rooms",
+            joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "clinic_room_id", referencedColumnName = "id"))
+    private List<Room> rooms;
 
     // TODO : private List<Room> rooms;
     // TODO : private List<Procedure> procedures;
@@ -51,6 +58,8 @@ public class Clinic {
         this.address = reg.getAddress();
         this.description = reg.getDescription();
         this.doctors = new ArrayList<Doctor>();
+        this.clinicAdmins = new ArrayList<>();
+        this.rooms = new ArrayList<>();
     }
 
     public Long getId() {
@@ -100,6 +109,16 @@ public class Clinic {
 	public void setClinicAdmins(List<ClinicAdmin> clinicAdmins) {
 		this.clinicAdmins = clinicAdmins;
 	}
+
+	public List<Room> getRooms() {
+		return rooms;
+	}
+
+	public void setRooms(List<Room> rooms) {
+		this.rooms = rooms;
+	}
+	
+	
     
     
 }

@@ -66,6 +66,25 @@ insert into users (is_accepted, address, city, email, enabled, first_name, last_
 insert into medical_staff (id,on_vacation) values (11,false);            
 insert into nurse values (11);
 
+-----------------------------------------------------------------------Rooms
+insert into room (id,name,number,clinic_id) values (1, 'room1','1',1);
+insert into room (id,name,number,clinic_id) values (2, 'room2','2',1);
+insert into room (id,name,number,clinic_id) values (3, 'room3','3',1);
+insert into room (id,name,number,clinic_id) values (4, 'room4','4',1);
+insert into room (id,name,number,clinic_id) values (5, 'room5','5',1);
+insert into room (id,name,number,clinic_id) values (6, 'room6','6',1);
+insert into room (id,name,number,clinic_id) values (7, 'room7','7',2);
+insert into room (id,name,number,clinic_id) values (8, 'room8','8',2);
+insert into room (id,name,number,clinic_id) values (9, 'room9','9',2);
+insert into room (id,name,number,clinic_id) values (10, 'room10','10',3);
+insert into room (id,name,number,clinic_id) values (11, 'room11','11',3);
+insert into room (id,name,number,clinic_id) values (12, 'room12','12',3);
+
+ALTER SEQUENCE room_id_seq RESTART WITH 13;
+
+
+------------------------------------------------------------------------
+
 SELECT setval('hibernate_id_seq', 21, true);
 ALTER SEQUENCE hibernate_id_seq RESTART WITH 22;
 SELECT setval('clinic_id_seq', 21, true);
@@ -119,11 +138,28 @@ insert into examination(id,type,date,patient_id,doctor_id) values(1,'obican preg
 insert into examination(id,type,date,patient_id,doctor_id) values(2,'operacija','07.10.2019 15:24',3,8);
 insert into examination(id,type,date,patient_id,doctor_id) values(3,'kontrola','04.09.2018 20:24',2,8);
 
--- Dodavanje doktora i cadmin u kliniku 1
+-------------------------------------- Dodavanje doktora,cadmin u kliniku 1
 insert into clinic_doctor values(1,8);
 insert into clinic_doctor values(2,12);
 insert into clinic_doctor values(2,13);
-insert into cadmin values(1,9);
+insert into clinic_admins values(1,9);
+-------------------------------------
+
+------------------------------------- Dodavanje room u klinike
+insert into clinic_rooms values(1,1);
+insert into clinic_rooms values(1,2);
+insert into clinic_rooms values(1,3);
+insert into clinic_rooms values(1,4);
+insert into clinic_rooms values(1,5);
+insert into clinic_rooms values(1,6);
+insert into clinic_rooms values(2,7);
+insert into clinic_rooms values(2,8);
+insert into clinic_rooms values(2,9);
+insert into clinic_rooms values(3,10);
+insert into clinic_rooms values(3,11);
+insert into clinic_rooms values(3,12);
+-------------------------------------------
+
 
 insert into diagnosis (id, description, name) values (1, 'Antibiotici, il operacija jbg', 'Upala krajnika');
 insert into diagnosis (id, description, name) values (2, 'Fervex i kapi za nos', 'Prehlada');

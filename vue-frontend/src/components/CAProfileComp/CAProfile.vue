@@ -9,7 +9,7 @@
                         <div class="card-title mb-4">
                             <div class="d-flex justify-content-start">
                                 <div class="image-container">
-                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" id="imgProfile" style="width: 150px; height: 150px; margin-bottom: 5px" class="img-thumbnail" />
+                                    <img src="../../../public/assets/cadmin.gif" id="imgProfile" style="width: 150px; height: 150px; margin-bottom: 5px" class="img-thumbnail" />
                                   
                                 </div>
                                 <div class="userData ml-3">
