@@ -120,8 +120,8 @@ export default {
     searchForClinics(){
       document.getElementById("clinicsearch").removeAttribute("hidden")
       document.getElementById("doctorsearch").setAttribute("hidden","true")
-      document.getElementById("doctorresult").setAttribute("hidden","true")
-      document.getElementById("clinics").setAttribute("hidden","true")
+      //document.getElementById("doctorresult").setAttribute("hidden","true")
+      //document.getElementById("clinics").setAttribute("hidden","true")
       
     },
 
@@ -140,8 +140,8 @@ export default {
         this.doctorSearchResult=response.data
         console.log(this.doctorSearchResult)
         document.getElementById("tabela").setAttribute("hidden","true")
-        document.getElementById("doctorresult").removeAttribute("hidden")
-        document.getElementById("clinics").setAttribute("hidden","true")
+        // document.getElementById("doctorresult").removeAttribute("hidden")
+        // document.getElementById("clinics").setAttribute("hidden","true")
       }).catch(error=>{
         console.log(error)
       })
@@ -244,7 +244,8 @@ export default {
       <p></p>
        <p></p>
     </div>
-    <table class="table" id="tabela" v-if="clinics.length > 0">
+    <p v-if="clinics == null || clinics.length == 0"> NO SEARCH RESULT </p>
+    <table class="table" id="tabela" v-if="clinics != null && clinics.length > 0">
         <thead>
          <tr>
           <th scope="col">Clinics</th>
@@ -262,8 +263,8 @@ export default {
         </tr>
     </tbody>
     </table>
-    
-    <table class="table" id="doctorresult" v-if="doctorSearchResult.length > 0">
+    <p v-if="doctorSearchResult == null || doctorSearchResult.length == 0"> NO SEARCH RESULT </p>
+    <table class="table" id="doctorresult" v-if="doctorSearchResult != null && doctorSearchResult.length > 0">
       <thead>
         <tr>
           <th scope="col">Id</th>
@@ -283,8 +284,7 @@ export default {
       </tbody>
     </table>
     <p></p>
-    <p v-if="this.clinicSearchResult.length==0">NO SEARCH RESULT</p>
-    <table id="clinics" v-if="this.clinicSearchResult.length > 0" class="table table-dark">
+    <table id="clinics" v-if="clinicSearchResult != null && clinicSearchResult.length > 0" class="table table-dark">
       <thead>
         <tr>
           <th scope="col">Name</th>
@@ -294,7 +294,7 @@ export default {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(res, key) in this.clinicSearchResult" :key="key">
+        <tr v-for="(res, key) in clinicSearchResult" :key="key">
           <td>{{res.clinic.name}}</td>
           <td>{{res.clinic.address}}</td>
           <td>{{res.clinic.average}}</td>
@@ -304,7 +304,7 @@ export default {
       </tbody>
     </table>
     
-    <div id="examinations" v-if="examinations.length > 0">
+    <div id="examinations" v-if="examinations != null && examinations.length > 0">
       <h3>Examinations:</h3>
       <table class="table" id="tabela2">
           <thead>
@@ -321,7 +321,7 @@ export default {
       </tbody>
       </table>
     </div>
-    <div id="medfilediv" v-if="medicalFile.length > 0">
+    <div id="medfilediv" v-if="medicalFile != null && medicalFile.length > 0">
       <h3>Medical File:</h3>
       <table class="table table-dark" id="medfile">
   <thead>
