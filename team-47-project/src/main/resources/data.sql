@@ -36,11 +36,23 @@ insert into users (is_accepted, address, city, email, enabled, first_name, last_
 insert into medical_staff (id,on_vacation,clinic_id) values (7,false,1);            
 insert into nurse values (7);
 
+------------------------------- Doctors
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
-            values(true,'test','test','test8',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test8',8);
+            values(true,'test','test','doctor1',true,'Jovana','Jovanic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor1',8);
 insert into medical_staff (id,on_vacation,clinic_id) values (8,false,1);            
-insert into doctor (id,specialization) values (8,'Stomatologist');
+insert into doctor (id,specialization,shift) values (8,'Ginecologist',1);
 
+insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
+            values(true,'test','test','doctor2',true,'Zivko','Zivkovic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor2',12);
+insert into medical_staff (id,on_vacation,clinic_id) values (12,false,2);            
+insert into doctor (id,specialization,shift) values (12,'Stomatologist',1);
+
+insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
+            values(true,'test','test','doctor3',true,'Nikola','Nikolic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor3',13);
+insert into medical_staff (id,on_vacation,clinic_id) values (13,false,2);            
+insert into doctor (id,specialization,shift) values (13,'Plastic surgeon',2);
+
+--------------------------------
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','test9',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test9',9);
 insert into clinic_admin (id,clinic) values (9, 1);
@@ -76,6 +88,8 @@ insert into user_authority (user_id, authority_id) values (5,1);
 insert into user_authority (user_id, authority_id) values (6,1);
 insert into user_authority (user_id, authority_id) values (7,3); 
 insert into user_authority (user_id, authority_id) values (8,2);
+insert into user_authority (user_id, authority_id) values (12,2);
+insert into user_authority (user_id, authority_id) values (13,2);
 insert into user_authority (user_id, authority_id) values (9,4);
 insert into user_authority (user_id, authority_id) values (10,5); 
 insert into user_authority (user_id, authority_id) values (11,3);
@@ -96,6 +110,8 @@ insert into user_authority (user_id, authority_id) values (8,6);
 insert into user_authority (user_id, authority_id) values (9,6);
 insert into user_authority (user_id, authority_id) values (10,6); 
 insert into user_authority (user_id, authority_id) values (11,6);
+insert into user_authority (user_id, authority_id) values (12,6);
+insert into user_authority (user_id, authority_id) values (13,6);
 
 -- Doctors
 insert into doctors()
@@ -103,7 +119,10 @@ insert into examination(id,type,date,patient_id,doctor_id) values(1,'obican preg
 insert into examination(id,type,date,patient_id,doctor_id) values(2,'operacija','07.10.2019 15:24',3,8);
 insert into examination(id,type,date,patient_id,doctor_id) values(3,'kontrola','04.09.2018 20:24',2,8);
 
+-- Dodavanje doktora i cadmin u kliniku 1
 insert into clinic_doctor values(1,8);
+insert into clinic_doctor values(2,12);
+insert into clinic_doctor values(2,13);
 insert into cadmin values(1,9);
 
 insert into diagnosis (id, description, name) values (1, 'Antibiotici, il operacija jbg', 'Upala krajnika');
