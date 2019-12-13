@@ -7,14 +7,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "doctor")
 public class Doctor extends MedicalStaff {
-	
-	@Column(name="specialization", unique=false, nullable=false)
+
+	@Column(name = "specialization", unique = false, nullable = false)
 	private String specialization;
 
+	@Column(name = "shift", unique = false, nullable = false)
+	private int shift;
 
-	
 	public Doctor(String firstName, String lastName, String password, String email, String adress, String city,
-			String state, String telephone, String uniqueNum, Boolean onVacation,String specialization) {
+			String state, String telephone, String uniqueNum, Boolean onVacation, String specialization, int shift) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
@@ -26,11 +27,12 @@ public class Doctor extends MedicalStaff {
 		this.uniqueNum = uniqueNum;
 		this.onVacation = onVacation;
 		this.specialization = specialization;
+		this.shift = shift;
 
 	}
 
 	public Doctor() {
-		
+
 	}
 
 	public String getSpecialization() {
@@ -39,6 +41,14 @@ public class Doctor extends MedicalStaff {
 
 	public void setSpecialization(String specialization) {
 		this.specialization = specialization;
+	}
+
+	public int getShift() {
+		return shift;
+	}
+
+	public void setShift(int shift) {
+		this.shift = shift;
 	}
 
 }
