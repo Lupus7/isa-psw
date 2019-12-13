@@ -9,26 +9,33 @@
                         <div class="card-title mb-4">
                             <div class="d-flex justify-content-start">
                                 <div class="image-container">
-                                    <img src="../../../public/assets/cadmin.gif" id="imgProfile" style="width: 150px; height: 150px; margin-bottom: 5px" class="img-thumbnail" />
+                                    <img src="../../../public/assets/cadmin.gif" id="imgProfile" style="width: 150px; height: 150px; margin-bottom: 10px" class="img-thumbnail" />
+                                     
+                                     <div class="middle">                    
+                                        <button type="button" class="btn btn-success btn-block "  style=" border-radius: 6px; padding:5px ; margin-bottom: 10px">Change data </button>
+                                    </div>
                                   
+                                    <div class="middle">              
+                                        <button type="button" class="btn btn-dark btn-block "  style=" border-radius: 6px;  color: white; padding:6px;" >Change password </button>
+                                    </div>
+
                                 </div>
                                 <div class="userData ml-3">
+
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.email}}</h2>
                                     <h4 class="d-block" style="font-size: 1.5rem; font-weight: bold">Clinical Admin</h4>
+                                   
                                 </div>
                                
-                            <div class="ml-auto" style="margin-top: -2vh">
+                            <div class="ml-auto" style="margin-top: 0vh " >
+                                  
                                     <div class="middle">
-                                        <br>
-                                        <button type="button" class="btn btn-success btn-block "  style=" border-radius: 6px; padding:8px ">Change data </button>
+                                        
+                                        <button type="button" class="btn btn-primary btn-block " @click="showReqs" style=" border-radius: 6px;  color: white; padding:8px;margin-right:50px;margin-bottom: 15px " >Staff requests </button>
                                     </div>
                                     <div class="middle">
-                                        <br>
-                                        <button type="button" class="btn btn-dark btn-block "  style=" border-radius: 6px;  color: white; padding:8px" >Change password </button>
-                                    </div>
-                                    <div class="middle">
-                                        <br>
-                                        <button type="button" class="btn btn-primary btn-block " @click="showReqs" style=" border-radius: 6px;  color: white; padding:8px " >Staff requests </button>
+                                      
+                                        <button type="button" class="btn btn-block " @click="rooms" style=" border-radius: 6px;  color: white; padding:8px; background:#ff795b" >Rooms </button>
                                     </div>
                                    
                                 </div>
@@ -38,11 +45,13 @@
 
                         <div class="row">
                             <div class="col-12">
+                                
                                 <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="basicInfo-tab" data-toggle="tab"  role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
-                                    </li>                               
-                                  
+                                        <a class="nav-link  active"   role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
+                                    </li> 
+
+                                                                                                           
                                 </ul>
                                 <div class="tab-content ml-1" id="myTabContent">
                                     <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
@@ -137,6 +146,11 @@ export default {
             this.$router.push("/requestsTable");
 
         },
+        rooms(e){
+             e.preventDefault();
+              this.$router.push("/rooms");
+
+        }
         
     },
     created() {
