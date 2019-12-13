@@ -81,7 +81,7 @@ export default {
                         <div class="card-title mb-4">
                             <div class="d-flex justify-content-start">
                                 <div class="image-container">
-                                    <img class="editable img-responsive" alt=" Avatar" id="avatar2" src="http://bootdey.com/img/Content/avatar/avatar6.png">
+                                    <img class="editable img-responsive" style="width: 150px; height: 150px; margin-bottom: 5px" id="avatar2" src="../../public/assets/patient.png">
                                     <div class="middle">
                                         <button type="button" class="btn btn-secondary btn-block" v-on:click="changeD">Change data </button>
                                     </div>
