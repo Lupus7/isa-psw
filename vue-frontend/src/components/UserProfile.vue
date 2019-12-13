@@ -113,12 +113,21 @@
                                             </div>
                                         </div>
                                         <hr />
-                                         <div v-if=" this.role === 'ROLE_DOCTOR'" class="row">
+                                         <div v-if=" this.role === 'ROLE_DOCTOR' || this.role === 'ROLE_PATIENT' " class="row">
                                             <div class="col-sm-3 col-md-2 col-5">
                                                 <label style="font-weight:bold;">Specialization</label>
                                             </div>
                                             <div class="col-md-8 col-6">
                                                  {{user.specialization}}
+                                            </div>
+                                        </div>
+                                         <hr />
+                                        <div v-if=" this.role === 'ROLE_DOCTOR' || this.role === 'ROLE_PATIENT' " class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">Work Time</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                 {{workTime}}
                                             </div>
                                         </div>
                                        
@@ -153,7 +162,8 @@ export default {
         return {
             user : [],
             holiday : "",
-            role: ""
+            role: "",
+            workTime: "",
                    
         }
     },
@@ -162,12 +172,25 @@ export default {
     },
     methods:{
         getDoctor(){
-            axios.get('http://localhost:8080/doctor/getInfo').then(response => { this.user = response.data; })
+            axios.get('http://localhost:8080/doctor/getInfo').then(response => { 
+                this.user = response.data;
+                if(this.user.shift === 1)
+                    this.workTime = "06:00 - 14:00";
+                else if(this.user.shift === 2)
+                    this.workTime = "14:00 - 22:00";
+             })
         },
         getDoctorId(){
             let url = 'http://localhost:8080/doctor/';
             url += this.id
-            axios.get(url).then(response => { this.user = response.data;})
+            axios.get(url).then(response => { 
+                this.user = response.data;
+                if(this.user.shift === 1)
+                    this.workTime = "06:00 - 14:00";
+                else if(this.user.shift === 2)
+                    this.workTime = "14:00 - 22:00";
+                
+            })
         },
 
         getNurse(){
@@ -227,6 +250,7 @@ export default {
 
         if(this.role === "ROLE_DOCTOR")
             this.getDoctor();
+
         else if(this.role === "ROLE_NURSE")
             this.getNurse();
         else if(this.role === "ROLE_PATIENT")
