@@ -8,7 +8,7 @@
                         <div class="card-title mb-4">
                             <div class="d-flex justify-content-start">
                                 <div class="image-container">
-                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" id="imgProfile" style="width: 150px; height: 150px; margin-bottom: 5px" class="img-thumbnail" />
+                                    <img src="../../../public/assets/ccadmin.jpg" id="imgProfile" style="width: 150px; height: 150px; margin-bottom: 5px" class="img-thumbnail" />
                                     <div class="middle">
                                         <input type="button" class="btn btn-secondary btn-block" id="btnChangePicture" value="Change data" />
                                         <input type="file" style="display: none;" id="profilePicture" name="file" />
