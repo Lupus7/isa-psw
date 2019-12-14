@@ -56,6 +56,7 @@ public class Clinic {
 
     // TODO : private List<Room> rooms;
     // TODO : private List<Procedure> procedures;
+    //@Column(name="average")
     private Double average;
 
     public Clinic() {
@@ -136,15 +137,20 @@ public class Clinic {
 
     public Double calculateRate(){
         int sum = 0;
-        for (Rate r: this.ratings){
-            sum += r.getValue();
+        if(this.ratings.size() != 0) {
+            for (Rate r : this.ratings) {
+                System.out.println(r.getValue());
+                sum += r.getValue();
+            }
+            this.average = Double.valueOf(sum / this.ratings.size());
+            System.out.println("Izracunat prosek: "+this.average);
+            return Double.valueOf(sum / this.ratings.size());
         }
-        this.average = Double.valueOf(sum/this.ratings.size());
-        return Double.valueOf(sum/this.ratings.size());
+        return 0.0;
     }
 
     public Double getAverage() {
-        return average;
+        return this.average;
     }
 
     public void setAverage(Double average) {
