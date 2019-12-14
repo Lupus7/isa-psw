@@ -9,17 +9,20 @@
                             <div class="d-flex justify-content-start">
                                 <div class="image-container">
                                     <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" id="imgProfile" style="width: 150px; height: 150px; margin-bottom: 5px" class="img-thumbnail" />
-                                    <div class="middle">
-                                        <input type="button" class="btn btn-secondary btn-block" id="btnChangePicture" value="Change data" />
-                                        <input type="file" style="display: none;" id="profilePicture" name="file" />
-                                    </div>
                                 </div>
                                 <div class="userData ml-3">
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.email}}</h2>
                                     <h4 class="d-block" style="font-size: 1.5rem; font-weight: bold">Clinical Centre Admin</h4>
                                 </div>
                                 <div class="ml-auto">
-                                    <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
+                                    <div class="middle">
+                                        <br>
+                                        <button  type="button" class="btn btn-success btn-block " @click="changeD" style=" border-radius: 6px; padding:8px ">Change data </button>
+                                    </div>
+                                    <div class="middle">
+                                        <br>
+                                        <button  type="button" class="btn btn-dark btn-block " @click="changePassword" style=" border-radius: 6px;  color: white; padding:8px" >Change password </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -176,6 +179,15 @@ export default {
             axios
                 .get('/cca/info')
                 .then(response => { this.user = response.data; })
+        },
+        changeD(e){
+            e.preventDefault()
+            this.$router.push("/changeData");
+        },
+
+        changePassword(e){
+            e.preventDefault()
+            this.$router.push("/passwordChange");
         }
     },
     components: {
