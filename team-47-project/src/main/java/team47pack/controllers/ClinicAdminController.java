@@ -51,8 +51,8 @@ public class ClinicAdminController {
 				|| obj.get("type") == null || obj.get("dateE") == null)
 			return ResponseEntity.status(400).body("Could not accept");
 
-		if (obj.get("mail") == "" || obj.get("id") == "" || obj.get("dateB") == "" || obj.get("dateE") == ""
-				|| obj.get("type") == "")
+		if (obj.get("mail").equals("") || obj.get("id").equals("") || obj.get("dateB").equals("") || obj.get("dateE").equals("")
+				|| obj.get("type").equals(""))
 			return ResponseEntity.status(400).body("Could not accept");
 
 		String Email = (String) obj.get("mail");

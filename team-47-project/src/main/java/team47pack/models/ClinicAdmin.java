@@ -49,4 +49,14 @@ public class ClinicAdmin extends User{
 		this.lastPasswordResetDate = Timestamp.valueOf(LocalDateTime.now());
 		this.clinic = i;
 	}
+
+	public int getClinic() {
+		return clinic;
+	}
+
+	public void setClinic(int clinic) {
+		this.clinic = clinic;
+	}
+	
+	
 }
