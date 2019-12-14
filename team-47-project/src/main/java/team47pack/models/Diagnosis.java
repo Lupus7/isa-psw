@@ -1,5 +1,7 @@
 package team47pack.models;
 
+import team47pack.models.dto.DiagnosisDTO;
+
 import javax.persistence.*;
 
 // @author: Lupus7 (Sinisa Canak)
@@ -24,6 +26,11 @@ public class Diagnosis {
         this.id = id;
         this.name = name;
         this.description = desc;
+    }
+
+    public Diagnosis(DiagnosisDTO diagnosisDTO) {
+        this.name = diagnosisDTO.getName();
+        this.description = diagnosisDTO.getDescription();
     }
 
     public Long getId() {

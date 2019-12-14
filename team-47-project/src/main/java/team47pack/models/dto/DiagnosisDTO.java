@@ -3,12 +3,10 @@ package team47pack.models.dto;
 import team47pack.models.Diagnosis;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class DiagnosisDTO {
 
-    @NotNull(message = "Diagnosis ID not valid!")
     @Positive(message = "Diagnosis ID not valid!")
     Long id;
 

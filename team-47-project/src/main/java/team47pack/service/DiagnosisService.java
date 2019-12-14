@@ -14,9 +14,15 @@ public class DiagnosisService {
     @Autowired
     DiagnosisRepo diagnosisRepo;
 
-    public List<Diagnosis> findAll() {
-        return diagnosisRepo.findAll();
+    public List<Diagnosis> findAllByOrderByIdAsc() {
+        return diagnosisRepo.findAllByOrderByIdAsc();
     }
 
     public Diagnosis findOneById(Long id){ return diagnosisRepo.getOne(id); }
+
+    public void save(Diagnosis diag) {
+        diagnosisRepo.save(diag);
+    }
+
+    public void delete(Long id) { diagnosisRepo.deleteById(id);}
 }

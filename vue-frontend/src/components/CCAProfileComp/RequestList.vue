@@ -28,8 +28,14 @@
                     <td>{{row.city}}</td>
                     <td>{{row.state}}</td>
                     <td style="max-width: 150px">
-                        <button type="button" class="btn btn-success" v-on:click="accept(row.email, index)">Accept</button>
-                        <button type="button" class="btn btn-danger" v-on:click="fillReject(row.email, index)">Reject</button>
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons" style="padding: 0px; margin: 0px">
+                            <label class="btn btn-outline-success">
+                                <input type="radio" name="options" autocomplete="off" v-on:click="accept(row.email, index)"> Yes
+                            </label>
+                            <label class="btn btn-outline-danger">
+                                <input type="radio" name="options" autocomplete="off" v-on:click="fillReject(row.email, index)"> No
+                            </label>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -59,14 +65,24 @@ export default {
                 .then(response => { this.rows = response.data })
         },
         accept(email, index) {
-            axios.put('/cca/request/' + this.rows[index].id)
-            this.rows.splice(index, 1)
-            this.fillReject("", index)
+            var vm = this
+
+            axios
+                .put('/cca/requests/' + this.rows[index].id)
+                .finally(function(){
+                    vm.getReqList()    
+                    vm.fillReject("", index)
+                })
         },
         reject(email, index) {
-            axios.delete('/cca/request/' + this.rows[index].id, this.explanation)
-            this.rows.splice(index, 1)
-            this.selectedUser = ""
+            var vm = this
+
+            axios
+                .delete('/cca/requests/' + this.rows[index].id, { data: this.explanation, headers: { 'Content-Type': 'application/text', } })
+                .finally(function(){
+                    vm.getReqList()    
+                    vm.fillReject("", index)
+                })
         },
         fillReject(email, index) {
             if (email.localeCompare(this.selectedUser) != 0) {
@@ -99,6 +115,6 @@ export default {
         margin: 10px
     }
     button {
-        margin-left: 5px
+        margin: 0px;
     }
 </style>

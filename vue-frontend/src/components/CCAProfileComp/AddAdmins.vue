@@ -39,7 +39,7 @@
             <div class="form-group">
                 <select class="form-control" id="sel">
                     <option value=0>--- Select a clinic ---</option>
-                    <option v-for="(row, index) in rows" :key="index" v-bind:value=index+1>{{row.name}}</option>
+                    <option v-for="(row, index) in rows" :key="index" v-bind:value=row.id>{{row.name}}</option>
                 </select>
             </div>
 
@@ -248,7 +248,7 @@ export default {
     margin: 0px;
     height: auto;
     max-height: 445px; 
-    overflow: overlay; 
+    overflow: auto; 
     margin-right: -15px
 }
 

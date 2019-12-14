@@ -1,14 +1,13 @@
 package team47pack.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import team47pack.models.ClinicAdmin;
 import team47pack.models.HolidayTimeOff;
 import team47pack.repository.ClinicAdminRepo;
 import team47pack.repository.HolidayTimeOffRepository;
+
+import java.util.List;
 
 //@author:Jokara
 @Service
@@ -41,4 +40,7 @@ public class ClinicAdminService {
         return false;
     }
 
+    public void save(ClinicAdmin ca) {
+		clinicAdminRepo.save(ca);
+    }
 }

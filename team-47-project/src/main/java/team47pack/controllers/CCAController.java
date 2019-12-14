@@ -60,6 +60,14 @@ public class CCAController {
         return ccaService.findByEmail(user.getName());
     }
 
+    @PutMapping(value="/info")
+    public ResponseEntity<String> updateInfo(@Valid @RequestBody UserInfo userInfo) {
+        if (ccaService.save(userInfo))
+            return ResponseEntity.ok("Successful");
+
+        return ResponseEntity.status(400).body("Invalid information");
+    }
+
     @PostMapping(value="/clinic")
     public ResponseEntity<String> registerClinic(@Valid @RequestBody ClinicRegister req) {
         ccaService.registerClinic(req);

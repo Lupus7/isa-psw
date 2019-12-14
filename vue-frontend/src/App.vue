@@ -28,6 +28,8 @@ export default {
         },
         refreshToken() {
             const accessToken = localStorageService.getAccessToken();
+            var vm = this;
+
             axios.post('http://localhost:8080/refresh', {
                 "accessToken": accessToken
             })
@@ -37,13 +39,17 @@ export default {
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorageService.getAccessToken();
                 } else if (res.status >= 400) {
                     localStorageService.clearToken();
-                    // TODO
+                    vm.$router.push('/login');
                 }
             })
         }
     },
     created() {
-        this.refreshTokenCont();
+        const url = window.location.pathname;
+        if (!(url.endsWith('/login') || url.endsWith('/register'))) {
+            this.refreshTokenCont();       
+        }
+
     }
 }
 </script>

@@ -9,10 +9,6 @@
                             <div class="d-flex justify-content-start">
                                 <div class="image-container">
                                     <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" id="imgProfile" style="width: 150px; height: 150px; margin-bottom: 5px" class="img-thumbnail" />
-                                    <div class="middle">
-                                        <input type="button" class="btn btn-secondary btn-block" id="btnChangePicture" value="Change data" />
-                                        <input type="file" style="display: none;" id="profilePicture" name="file" />
-                                    </div>
                                 </div>
                                 <div class="userData ml-3">
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.email}}</h2>
@@ -113,7 +109,7 @@
                                         <AddAdmins/>
                                     </div> 
                                     <div class="tab-pane fade show" id="codebook" role="tabpanel" aria-labelledby="codebook-tab">
-                                        CODEBOOK
+                                        <Codebook/>
                                     </div>
                                 </div>
                             </div>
@@ -131,6 +127,7 @@
 import axios from 'axios'
 import ReqListTab from './ReqListTab'
 import AddAdmins from './AddAdmins'
+import Codebook from './Codebook'
 
 export default {
     data() {
@@ -196,7 +193,8 @@ export default {
     },
     components: {
         ReqListTab,
-        AddAdmins
+        AddAdmins,
+        Codebook
     },
     created() {
         this.getCCA()
