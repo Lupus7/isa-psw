@@ -60,9 +60,26 @@ public class ClinicService {
         if (clinics1.size() != 0){
             System.out.println("Klinika: " + clinics1.get(0).getAddress() + clinics1.get(0).getName());
         }
+        if(csr.getRate() != null){
+            for(int i=0;i<clinics1.size();i++){
+                Clinic c = clinics1.get(i);
+                System.out.println("Iteriramo kroz" + c.getName() +c.getDescription());
+                c.setAverage(c.calculateRate());
+                if(c.getAverage() < csr.getRate()){
+                    System.out.println("BRISE SE OVA: " +c.getName() + " " +c.getDescription());
+                    clinics1.remove(i);
+                }
+            }
+        }
+        System.out.println("PRitmao one koje su ostale");
+        for(Clinic c: clinics1){
+            System.out.println(c.getAddress() + c.getName() + c.getDescription());
+        }
         ArrayList<Examination> examinations = retrieveExamination(csr.getExamination());
         if (examinations.size() != 0) {
             System.out.println(examinations.get(0).getId() + " " + examinations.get(0).getType());
+        }else{
+            System.out.println("EXAMINATIONS SU NULL");
         }
         ArrayList<ClinicSearchResult> result = new ArrayList<>();
         for (Clinic c : clinics1) {

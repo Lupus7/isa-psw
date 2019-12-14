@@ -134,7 +134,7 @@ insert into user_authority (user_id, authority_id) values (13,6);
 
 -- Doctors
 insert into doctors()
-insert into examination(id,type,date,patient_id,doctor_id) values(1,'obican pregled','04.09.2020 15:24',2,8);
+insert into examination(id,type,date,patient_id,doctor_id) values(1,'obican pregled','04.09.2020 15:24',2,13);
 insert into examination(id,type,date,patient_id,doctor_id) values(2,'operacija','07.10.2019 15:24',3,8);
 insert into examination(id,type,date,patient_id,doctor_id) values(3,'kontrola','04.09.2018 20:24',2,8);
 
@@ -188,6 +188,8 @@ insert into procedure (id,date,type,patient_id) values(2,'03.07.2018 15:24','kon
 
 
 insert into examination(id,doctor_id) values(2,8);
+insert into examination(id,doctor_id) values(1,12);
+--insert into examination(id,doctor_id) values(2,13);
 
 --Adding ratings
 insert into rate(id,value) values(1,5);

@@ -24,6 +24,7 @@ public class ClinicController {
     @PreAuthorize("hasRole('PATIENT')")
     public ArrayList<ClinicSearchResult> searchForClinics(@RequestBody ClinicSearchRequest csr) {
         System.out.println(csr.getExamination() + " " + csr.getLocation() + " " + csr.getDate());
+        System.out.println("PROSEK je: " + csr.getRate());
         ArrayList<ClinicSearchResult> rez = clinicService.search(csr);
         for (ClinicSearchResult c : rez) {
             System.out.println(c.getClinic().getAddress() + " " + c.getClinic().getDescription());
