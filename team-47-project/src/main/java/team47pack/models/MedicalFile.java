@@ -17,13 +17,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "medicalfile")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class MedicalFile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<MedFileEntry> entries = new ArrayList<>();
 
