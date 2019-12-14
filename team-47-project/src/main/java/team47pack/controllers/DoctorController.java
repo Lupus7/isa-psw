@@ -22,12 +22,14 @@ public class DoctorController {
 	@Autowired
 	private TokenUtils tokenUtils;
 
+	//@-------------------author:Jokara
 	@GetMapping(value = "/doctor/getInfo")
 	@PreAuthorize("hasRole('DOCTOR')")
 	public ResponseEntity<Doctor> getInfo(Principal user) {
 		return ResponseEntity.ok(this.doctorService.getDoctor(user.getName()));
 	}
 
+	//@--------------------------author:Jokara
 	@PostMapping(value = "/doctor/updateDoctorInfo", produces = "application/json", consumes = "application/json")
 	@PreAuthorize("hasRole('DOCTOR')")
 	public ResponseEntity<?> updateInfo(@RequestBody DoctorInfoRequest req, Principal user) {
@@ -39,7 +41,8 @@ public class DoctorController {
 
 		return ResponseEntity.ok("Update successful!");
 	}
-
+	
+	//@---------------author:Jokara
 	@PostMapping(value="/doctor/searchDoctor",produces = "application/json",consumes = "application/json")
 	@PreAuthorize("hasRole('PATIENT')")
 	public ArrayList<Doctor> searchForDoctor(@RequestBody SearchDoctorRequest req){
