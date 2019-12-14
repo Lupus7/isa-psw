@@ -148,6 +148,8 @@ import LocalStorageService from "../LocalStorageService";
 
                 if(role == "ROLE_CCADMIN")
                     this.$router.push("/profile");
+                else if(role == "ROLE_CADMIN")
+                    this.$router.push("/caProfile");
                 else
                     this.$router.push("/userProfile");
             },
