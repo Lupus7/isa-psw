@@ -110,7 +110,13 @@ const router = new Router({
             name: "Prescriptions",
             component: () =>
                 import ("./components/PrescriptionVerification")
-        }
+        },
+        {
+            path: "/rooms",
+            name: "Rooms",
+            component: () =>
+                import ("./components/CAProfileComp/Rooms")
+        },
     ]
 });
 
