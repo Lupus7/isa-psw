@@ -44,6 +44,16 @@ public class ClinicAdminController {
 		return clinicAdminService.getHolidayTimeoffRequests();
 	}
 
+	@PostMapping(value = "/updateInfo", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<String> changeData(@RequestBody String json, Principal user) throws JSONException {
+		JSONObject obj = new JSONObject(json);
+
+		if (clinicAdminService.updateData(obj, user.getName()))
+			return ResponseEntity.ok("Successfulty updated data!");
+		else
+			return ResponseEntity.status(400).body("Could not accept");
+	}
+
 	@PostMapping(value = "/request-list/accept")
 	public ResponseEntity<String> acceptRequest(@RequestBody String json) throws JSONException {
 		JSONObject obj = new JSONObject(json);
@@ -51,8 +61,8 @@ public class ClinicAdminController {
 				|| obj.get("type") == null || obj.get("dateE") == null)
 			return ResponseEntity.status(400).body("Could not accept");
 
-		if (obj.get("mail").equals("") || obj.get("id").equals("") || obj.get("dateB").equals("") || obj.get("dateE").equals("")
-				|| obj.get("type").equals(""))
+		if (obj.get("mail").equals("") || obj.get("id").equals("") || obj.get("dateB").equals("")
+				|| obj.get("dateE").equals("") || obj.get("type").equals(""))
 			return ResponseEntity.status(400).body("Could not accept");
 
 		String Email = (String) obj.get("mail");
@@ -94,7 +104,7 @@ public class ClinicAdminController {
 		String expl = (String) obj.get("expl");
 		String type = (String) obj.get("type");
 		String body = "Dear Sir/Madam \n \nYour " + type + " request" + " has been rejected!" + "\n"
-				+ "Reason for rejecting: " + expl + "\nAll the best!"+ "\n\n" + "Admin team";
+				+ "Reason for rejecting: " + expl + "\nAll the best!" + "\n\n" + "Admin team";
 
 		if (clinicAdminService.rejectRequest(id)) {
 			emailService.sendSimpleMessage(email, type, body);
