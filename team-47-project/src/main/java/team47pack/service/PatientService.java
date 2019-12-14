@@ -12,6 +12,7 @@ import team47pack.repository.PatientRepo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService {
@@ -69,15 +70,19 @@ public class PatientService {
 			if (id < 1 || id == null)
 				return patients;
 
-			Patient p = (Patient) patientRepository.getOne(id);
+			Optional<Patient> p = patientRepository.findById(id);
 
-			if (p != null)
-				patients.add(p);
+			if (p.isPresent())
+				patients.add(p.get());
 			return patients;
 
-		} else
+		} else if(!req.getFirstName().equals("") && !req.getLastName().equals("") && req.getId().equals(""))
 			patients = patientRepository.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(
 					req.getFirstName(), req.getLastName());
+		else if(!req.getFirstName().equals("") && req.getLastName().equals("") && req.getId().equals(""))
+			patients = patientRepository.findByFirstNameContainingIgnoreCase(req.getFirstName());		
+		else if(req.getFirstName().equals("") && !req.getLastName().equals("") && req.getId().equals(""))
+			patients = patientRepository.findByLastNameContainingIgnoreCase(req.getLastName());
 
 		return patients;
 
@@ -96,9 +101,9 @@ public class PatientService {
 
 		if (filterBy.equals("Patient ID")) {
 			Long id = Long.parseLong(value);
-			Patient p = patientRepository.getOne(id);
-			if (p != null)
-				patients.add(p);
+			Optional<Patient> p = patientRepository.findById(id);
+			if (p.isPresent())
+				patients.add(p.get());
 			return patients;
 			
 		} else if (filterBy.equals("First Name"))
@@ -131,11 +136,11 @@ public class PatientService {
 		Long id = Long.parseLong(idP);
 		if (id < 1 || id == null)
 			return null;
-		Patient p = patientRepository.getOne(id);
-		if (p == null)
+		Optional<Patient> p = patientRepository.findById(id);
+		if (!p.isPresent())
 			return null;
 
-		return p;
+		return p.get();
 	}
 
 }

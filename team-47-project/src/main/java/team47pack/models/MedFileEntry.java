@@ -1,6 +1,9 @@
 package team47pack.models;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +16,12 @@ public class MedFileEntry {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "med_en_id_seq")
     Long id;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "diagnosis_id", referencedColumnName = "id", nullable = true)
     private Diagnosis diagnosis;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "med_prescription",
             joinColumns = @JoinColumn(name = "med_id", referencedColumnName = "id"),

@@ -66,7 +66,7 @@
                     <label  class="control-label" style=" font-size: 2vh"> Filter by:  </label>
                     <div class="form-group">
 
-                        <select id="filterV"  class="btn btn-primary" style="font-size: 2vh" @change="filter($event)" >
+                        <select class="btn btn-primary" style="font-size: 2vh" v-model=" valueFilter" >
                             <option align="justify">-Select option-</option>
                             <option align="justify" >Patient ID</option>
                             <option align="justify" >First Name</option>
@@ -220,12 +220,7 @@ export default {
             this.hideB = false; 
 
         },
-        filter(e){
-            e.preventDefault()
-            this.valueFilter = document.getElementById("filterV").value;
-            console.log(this.valueFilter)
-          
-        },
+       
         showPatientProfile(id){
             let url = '/patientProfile/';
             url+=id;
