@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import VueToastr2 from 'vue-toastr-2'
 import 'vue-toastr-2/dist/vue-toastr-2.min.css'
- 
+
 window.toastr = require('toastr')
- 
+
 Vue.use(VueToastr2)
- 
+
 
 const options = window.toastr.options = {
     "closeButton": false,
@@ -25,14 +25,14 @@ const options = window.toastr.options = {
     "hideMethod": "fadeOut"
 }
 
-export function funToastr(type,message,title){
+export function funToastr(type, message, title) {
     if (type === "s")
         window.toastr.success(message, title, options);
-    else if(type === "w")
+    else if (type === "w")
         window.toastr.warning(message, title, options);
-    else if(type === "i")
+    else if (type === "i")
         window.toastr.info(message, title, options);
-    else if(type === "d")
-        window.toastr.danger(message, title, options);
-      
+    else if (type === "d")
+        window.toastr.error(message, title, options);
+
 }

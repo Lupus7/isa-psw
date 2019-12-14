@@ -8,5 +8,7 @@ import java.util.List;
 
 // @author: Lupus7 (Sinisa Canak)
 public interface PrescriptionRepo extends JpaRepository<Prescription, Long>, JpaSpecificationExecutor<Prescription> {
-        List<Prescription> findAll();
+    List<Prescription> findAllByOrderByIdAsc();
+
+    Prescription findOneById(Long id);
 }

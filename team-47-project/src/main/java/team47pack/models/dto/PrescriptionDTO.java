@@ -3,12 +3,10 @@ package team47pack.models.dto;
 import team47pack.models.Prescription;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class PrescriptionDTO {
 
-    @NotNull(message = "Prescription ID not valid!")
     @Positive(message = "Prescription ID not valid!")
     Long id;
 

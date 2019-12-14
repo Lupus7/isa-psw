@@ -108,7 +108,7 @@ export default {
                         return;
                     }
                     if(response.status==200){
-                        alert("Uspesno ste registrovani");
+                        alert("Registration successful");
                         this.$router.push('/login');
             
                     }

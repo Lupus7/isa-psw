@@ -6,6 +6,7 @@ import java.util.List;
 
 // @author: Lupus7 (Sinisa Canak)
 public class ClinicAndAdmin {
+    private Long id;
     private String name;
     private String address;
     private String description;
@@ -15,7 +16,8 @@ public class ClinicAndAdmin {
     public ClinicAndAdmin() {
     }
 
-    public ClinicAndAdmin(String name, String address, String description, List<String> admin) {
+    public ClinicAndAdmin(Long id, String name, String address, String description, List<String> admin) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.description = description;
@@ -23,10 +25,19 @@ public class ClinicAndAdmin {
     }
 
     public ClinicAndAdmin(Clinic c, List<String> admin) {
+        this.id = c.getId();
         this.name = c.getName();
         this.address = c.getAddress();
         this.description = c.getDescription();
         this.admin = admin;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

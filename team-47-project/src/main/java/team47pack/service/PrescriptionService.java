@@ -12,9 +12,19 @@ import java.util.List;
 public class PrescriptionService {
 
     @Autowired
-    PrescriptionRepo prescriptionRepp;
+    PrescriptionRepo prescriptionRepo;
 
-    public List<Prescription> findAll() {
-        return prescriptionRepp.findAll();
+    public List<Prescription> findAllByOrderByIdAsc() {
+        return prescriptionRepo.findAllByOrderByIdAsc();
     }
+
+    public void save(Prescription pres) {
+        prescriptionRepo.save(pres);
+    }
+
+    public Prescription findOneById(Long id) {
+        return prescriptionRepo.findOneById(id);
+    }
+
+    public void delete(Long id) { prescriptionRepo.deleteById(id); }
 }

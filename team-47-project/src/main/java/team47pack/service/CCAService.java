@@ -44,7 +44,7 @@ public class CCAService {
     public boolean acceptRequest(Long id) {
         if(userService.acceptUser(id)) {
             emailService.sendSimpleMessage(
-                patientService.getPatientbyID(id.toString()).getUsername(),
+                patientService.getPatient(id.toString()).getUsername(),
                 "Registration accepted",
                 "Welcome to our clinic!"); // TODO: Refine and add "Complete registration" link
             return true;
@@ -55,7 +55,7 @@ public class CCAService {
     public boolean rejectRequest(Long id, String reason) {
         if(userService.rejectUser(id)) {
             emailService.sendSimpleMessage(
-                patientService.getPatientbyID(id.toString()).getUsername(),
+                patientService.getPatient(id.toString()).getUsername(),
                 "Registration rejected",
                 "Reason for rejection: \n" + reason);
             return true;
@@ -77,5 +77,9 @@ public class CCAService {
 
     public List<ClinicAndAdmin> getClinics() {
         return clinicService.getClinics();
+    }
+
+    public boolean save(UserInfo userInfo) {
+        return userService.save(userInfo);
     }
 }

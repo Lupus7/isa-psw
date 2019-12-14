@@ -3,6 +3,7 @@ package team47pack.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team47pack.models.User;
+import team47pack.models.dto.UserInfo;
 import team47pack.repository.UserRepo;
 
 import java.util.List;
@@ -32,4 +33,22 @@ public class UserService {
         return userRepo.findByEmail(email);
     }
 
+    public boolean save(UserInfo userInfo) {
+        User u = userRepo.findByEmail(userInfo.getEmail());
+
+        if (u == null)
+            return false;
+
+        u.setFirstName(userInfo.getFirstName());
+        u.setLastName(userInfo.getLastName());
+        u.setAddress(userInfo.getAddress());
+        u.setCity(userInfo.getCity());
+        u.setState(userInfo.getState());
+        u.setTelephone(userInfo.getTelephone());
+        u.setUniqueNum(userInfo.getUniqueNum());
+
+        userRepo.save(u);
+
+        return true;
+    }
 }

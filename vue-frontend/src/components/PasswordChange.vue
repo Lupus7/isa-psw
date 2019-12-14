@@ -136,7 +136,20 @@ import LocalStorageService from "../LocalStorageService";
             },
             close(e){
                 e.preventDefault();
-                this.$router.push("/userProfile");
+
+                let role = "";
+
+                const lss = LocalStorageService.getService();
+
+                if(lss.getAccessToken() != undefined && lss.getAccessToken() != null){          
+                    const token = jwt_decode(lss.getAccessToken());           
+                    role = token.roles;  
+                }
+
+                if(role == "ROLE_CCADMIN")
+                    this.$router.push("/profile");
+                else
+                    this.$router.push("/userProfile");
             },
             getFLogin(){
             

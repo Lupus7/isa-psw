@@ -180,6 +180,8 @@ insert into medicalfile_entries(medical_file_id,entries_id) values(2,2);
 SELECT setval('med_en_id_seq', 2, true);
 ALTER SEQUENCE procedure_id_seq RESTART WITH 3;
 
+ALTER SEQUENCE diag_id_seq RESTART WITH 10;
+ALTER SEQUENCE pres_id_seq RESTART WITH 10;
 
 insert into procedure (id,date,type,patient_id) values(1,'04.09.2020 15:24','obican pregled',2);
 insert into procedure (id,date,type,patient_id) values(2,'03.07.2018 15:24','kontrola',2);

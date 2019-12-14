@@ -163,9 +163,39 @@ export default {
            
         },
 
+        getCCAdmin(){
+            axios.get('/cca/info').then(response => { 
+                this.user = response.data;
+                this.firstName = this.user.firstName;
+                this.lastName= this.user.lastName;  
+                this.address = this.user.address;
+                this.city = this.user.city;
+                this.state= this.user.state;
+                this.telephone = this.user.telephone;
+                this.uniqueNum= this.user.uniqueNum;
+                this.email = this.user.email;              
+
+                document.getElementById("fN").value = this.firstName;
+                document.getElementById("nN").value = this.lastName;
+                document.getElementById("add").value = this.address;
+                document.getElementById("cy").value = this.city;
+                document.getElementById("st").value = this.state;
+                document.getElementById("tp").value = this.telephone;
+                document.getElementById("un").value = this.uniqueNum;
+
+            })
+            
+
+           
+        },
+
         cancel(e){
             e.preventDefault()
-            this.$router.push("/userProfile");
+            
+            if(this.role == "ROLE_CCADMIN")
+                this.$router.push("/profile");
+            else
+                this.$router.push("/userProfile");
         },
         
         update(event){
@@ -237,6 +267,34 @@ export default {
 
                     })
 
+            }else if(this.role === "ROLE_CCADMIN"){
+                if(this.firstName==="" || this.LastName==="" || this.address==="" ||this.city==="" || this.state===""  || this.telephone===""  || this.uniqueNum==="" ){
+                    funToastr("w","Fields must not be empty!","Empty fields!");
+                    return;
+                }
+                
+                axios.put('/cca/info',{
+                        "firstName" : this.firstName,
+                        "lastName" : this.lastName,
+                        "email" : this.email,
+                        "address":this.address,
+                        "city":this.city,
+                        "state" : this.state,
+                        "telephone":this.telephone,
+                        "uniqueNum" : this.uniqueNum,
+                     
+                    }).then(response => { 
+                        
+                    }).finally(()=>{
+
+                        funToastr("s","Data successfuly updated!","Data Updated!");
+                            setTimeout(() =>{
+                            this.$router.push("/profile");
+                        },1500);
+           
+
+                    })
+
             }
 
 
@@ -264,6 +322,8 @@ export default {
             this.getDoctor();
         else if(this.role == "ROLE_NURSE")
             this.getNurse();
+        else if(this.role == "ROLE_CCADMIN")
+            this.getCCAdmin();
     },
   
 }
