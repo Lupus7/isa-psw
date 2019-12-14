@@ -1,12 +1,5 @@
 package team47pack.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import team47pack.models.*;
-import team47pack.models.dto.ExaminInfo;
-import team47pack.models.dto.PrescriptionDTO;
-import team47pack.repository.*;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +7,31 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import team47pack.models.Clinic;
+import team47pack.models.ClinicAdmin;
+import team47pack.models.Diagnosis;
+import team47pack.models.Doctor;
+import team47pack.models.Examination;
+import team47pack.models.MedFileEntry;
+import team47pack.models.MedicalFile;
+import team47pack.models.NextProcedure;
+import team47pack.models.Patient;
+import team47pack.models.Prescription;
+import team47pack.models.PrescriptionVerification;
+import team47pack.models.dto.ExaminInfo;
+import team47pack.models.dto.PrescriptionDTO;
+import team47pack.repository.ClinicRepo;
+import team47pack.repository.DiagnosisRepo;
+import team47pack.repository.DoctorRepo;
+import team47pack.repository.ExaminationRepo;
+import team47pack.repository.MedEntryRepo;
+import team47pack.repository.MedFileRepo;
+import team47pack.repository.NextProcedureRepo;
+import team47pack.repository.PrescriptionRepo;
 
 @Service
 public class ExaminationService {
@@ -48,9 +66,10 @@ public class ExaminationService {
 		return examinationRepo.findByPatientId(id);
 	}
 
-	public void save(Examination e){
+	public void save(Examination e) {
 		examinationRepo.save(e);
 	}
+
 	public List<Examination> getAll() {
 		List<Examination> ret = examinationRepo.findAll();
 		for (Examination e : ret) {
@@ -61,7 +80,8 @@ public class ExaminationService {
 
 	public boolean addExamination(ExaminInfo examinInfo, String doctor) throws ParseException {
 		// @author: Lupus7 (Sinisa Canak)
-		Optional<Patient> pat = Optional.ofNullable(patientService.getPatientbyID(examinInfo.getPatientId().toString()));
+		Optional<Patient> pat = Optional
+				.ofNullable(patientService.getPatientbyID(examinInfo.getPatientId().toString()));
 		Optional<Doctor> doc = Optional.ofNullable(doctorService.getDoctor(doctor));
 
 		if (!pat.isPresent())
@@ -100,8 +120,13 @@ public class ExaminationService {
 		patientService.insert(pat.get());
 
 		// @------author: Jokara nextProcedure
+
 		if (examinInfo.getDate() != null && examinInfo.getProcedure() != null) {
-			if (!examinInfo.getDate().equals("") && !examinInfo.getProcedure().equals("") && pat.isPresent()) {
+			if (examinInfo.getDate().toString().equals("") && !examinInfo.getProcedure().equals(""))
+				return false;
+			else if (!examinInfo.getDate().toString().equals("") && examinInfo.getProcedure().equals(""))
+				return false;
+			else if (!examinInfo.getDate().toString().equals("") && !examinInfo.getProcedure().equals("") && pat.isPresent()) {
 				addNextProcedure(examinInfo.getDate(), examinInfo.getProcedure(), pat, doctor);
 			}
 		}
