@@ -149,17 +149,21 @@ export default {
         console.log(error)
       })
     },
-    goSearchClinics(){
+    goSearchClinics(e){
+      e.preventDefault()
       this.doctorSearchResult = null
       let examination = document.getElementById("type").value
       let location = document.getElementById("location").value
       let date = document.getElementById("date").value
+      let rate = parseFloat(document.getElementById("rate").value)
+      console.log(rate)
       console.log(examination + location+" " + date)
       axios 
       .post("http://localhost:8080/clinic/search",{
         "location" : location,
         "examination":examination,
         "date":date,
+        "rate":rate,
       }).then(response=>{
         
           console.log(response.data)
@@ -236,10 +240,22 @@ export default {
              <input type="text" placeholder="location" id="location">
            </td>
            <td>
+             <select name="rate" placeholder="wanted or higher" id="rate">
+               <option value="0" selected disabled hidden> 
+               </option>
+               <option value="5">5</option>
+               <option value="6">6</option>
+               <option value="7">7</option>
+               <option value="8">8</option>
+               <option value="9">9</option>
+               <option value="10">10</option>
+             </select>
+           </td>
+           <td>
              <input type="date" placeholder="location" id="date">
            </td>
            <td>
-             <button @click="goSearchClinics()">Search</button>
+             <button @click="goSearchClinics($event)">Search</button>
            </td>
          </tr>
        </table>
