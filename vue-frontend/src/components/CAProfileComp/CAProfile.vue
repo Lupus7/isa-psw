@@ -12,11 +12,11 @@
                                     <img src="../../../public/assets/cadmin.gif" id="imgProfile" style="width: 150px; height: 150px; margin-bottom: 10px" class="img-thumbnail" />
                                      
                                      <div class="middle">                    
-                                        <button type="button" class="btn btn-success btn-block "  style=" border-radius: 6px; padding:5px ; margin-bottom: 10px">Change data </button>
+                                        <button type="button" @click="changeData($event)" class="btn btn-success btn-block "  style=" border-radius: 6px; padding:5px ; margin-bottom: 10px">Change data </button>
                                     </div>
                                   
                                     <div class="middle">              
-                                        <button type="button" class="btn btn-dark btn-block "  style=" border-radius: 6px;  color: white; padding:6px;" >Change password </button>
+                                        <button type="button" @click="changePassword($event)" class="btn btn-dark btn-block "  style=" border-radius: 6px;  color: white; padding:6px;" >Change password </button>
                                     </div>
 
                                 </div>
@@ -150,7 +150,16 @@ export default {
              e.preventDefault();
               this.$router.push("/rooms");
 
-        }
+        },
+        changeData(e){
+            e.preventDefault()
+            this.$router.push("/changeData");
+        },
+
+        changePassword(e){
+            e.preventDefault()
+            this.$router.push("/passwordChange");
+        },
         
     },
     created() {
