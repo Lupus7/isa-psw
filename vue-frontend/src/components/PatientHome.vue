@@ -19,6 +19,7 @@ export default {
             clinicSearchResult:[],
             klinikiniDoktori:[],
             prikaziKlinikineDoktore:false,
+            pretiso: false,
         }
     },
 
@@ -126,9 +127,11 @@ export default {
     },
 
     goSearchDoctor(){
+      this.clinicSearchResult = null
       let name = document.getElementById("doctorname").value 
       let surname = document.getElementById("doctorsurname").value
       let specialization = document.getElementById("doctorspecialization").value
+      this.pretiso = false
       //let date = document.getElementById("doctordate").value
       //console.log(name+" "+surname + specialization + date)
       axios
@@ -147,6 +150,7 @@ export default {
       })
     },
     goSearchClinics(){
+      this.doctorSearchResult = null
       let examination = document.getElementById("type").value
       let location = document.getElementById("location").value
       let date = document.getElementById("date").value
@@ -163,18 +167,17 @@ export default {
           document.getElementById("tabela").setAttribute("hidden","true") 
           document.getElementById("examinations").setAttribute("hidden","true")       
           document.getElementById("medfilediv").setAttribute("hidden","true")
-          document.getElementById("doctorresult").setAttribute("hidden","true")
+          //document.getElementById("doctorresult").setAttribute("hidden","true")
           
           document.getElementById("medfilediv").setAttribute("hidden","true")
           
           
-          document.getElementById("clinics").removeAttribute("hidden")
+          //document.getElementById("clinics").removeAttribute("hidden")
       }).catch(error=>console.log(error))
     },
 
     seeAvailableDoctors(id){
       console.log(id)
-      this.pretiso = true
       let url = 'http://localhost:8080/clinic/'+ id +'/getAvailableDoctors'
       console.log(url)
       axios
@@ -182,7 +185,7 @@ export default {
         console.log(response.data)
         this.prikaziKlinikineDoktore = true
         this.doctorSearchResult = response.data
-        document.getElementById("doctorresult").removeAttribute("hidden")
+      //  document.getElementById("doctorresult").removeAttribute("hidden")
       }).catch(error=>{
         console.log(error)
       })
@@ -299,7 +302,7 @@ export default {
           <td>{{res.clinic.address}}</td>
           <td>{{res.clinic.average}}</td>
           <td>{{res.cost}}</td>
-          <td><button @click="seeAvailableDoctors(res.clinic.id)">See available doctors</button></td>
+          <td><button clas="btn btn-secondary" @click="seeAvailableDoctors(res.clinic.id)">See available doctors</button></td>
         </tr>
       </tbody>
     </table>

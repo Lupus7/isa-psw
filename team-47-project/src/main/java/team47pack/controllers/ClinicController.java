@@ -27,6 +27,7 @@ public class ClinicController {
         ArrayList<ClinicSearchResult> rez = clinicService.search(csr);
         for (ClinicSearchResult c : rez) {
             System.out.println(c.getClinic().getAddress() + " " + c.getClinic().getDescription());
+            System.out.println("PRosek klinike : " + c.getClinic().calculateRate());
         }
         return rez;
     }
@@ -36,6 +37,8 @@ public class ClinicController {
     public List<Doctor> getDoctors(@PathVariable(value = "id") Long id) {
         System.out.println("DA li je ime klinike stiglo : " + id);
         Clinic clinic = clinicService.getClinic(id);
+        clinic.setAverage(clinic.calculateRate());
+        System.out.println("PROSEK JE: " + clinic.getAverage());
         if (clinic != null) {
             System.out.println("Uspesno vratio kliniku : " + clinic.getName() + clinic.getDescription());
             return clinic.getDoctors();

@@ -47,8 +47,16 @@ public class Clinic {
             inverseJoinColumns = @JoinColumn(name = "clinic_room_id", referencedColumnName = "id"))
     private List<Room> rooms;
 
+    //@Author bokimilinkovic
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "clinic_ratings",
+            joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "rate_id", referencedColumnName = "id"))
+    private List<Rate> ratings;
+
     // TODO : private List<Room> rooms;
     // TODO : private List<Procedure> procedures;
+    private Double average;
 
     public Clinic() {
     }
@@ -117,8 +125,29 @@ public class Clinic {
 	public void setRooms(List<Room> rooms) {
 		this.rooms = rooms;
 	}
-	
-	
-    
-    
+
+    public List<Rate> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rate> ratings) {
+        this.ratings = ratings;
+    }
+
+    public Double calculateRate(){
+        int sum = 0;
+        for (Rate r: this.ratings){
+            sum += r.getValue();
+        }
+        this.average = Double.valueOf(sum/this.ratings.size());
+        return Double.valueOf(sum/this.ratings.size());
+    }
+
+    public Double getAverage() {
+        return average;
+    }
+
+    public void setAverage(Double average) {
+        this.average = average;
+    }
 }

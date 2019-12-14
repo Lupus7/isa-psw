@@ -188,3 +188,15 @@ insert into procedure (id,date,type,patient_id) values(2,'03.07.2018 15:24','kon
 
 
 insert into examination(id,doctor_id) values(2,8);
+
+--Adding ratings
+insert into rate(id,value) values(1,5);
+insert into rate(id,value) values(2,6);
+insert into rate(id,value) values(3,7);
+insert into rate(id,value) values(4,8);
+
+insert into clinic_ratings(clinic_id,rate_id) values(1,1);
+insert into clinic_ratings(clinic_id,rate_id) values(1,2);
+insert into clinic_ratings(clinic_id,rate_id) values(1,3);
+insert into clinic_ratings(clinic_id,rate_id) values(2,4);
+
