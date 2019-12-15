@@ -7,6 +7,7 @@ import team47pack.models.Clinic;
 import team47pack.models.Doctor;
 import team47pack.models.dto.ClinicSearchRequest;
 import team47pack.models.dto.ClinicSearchResult;
+import team47pack.models.dto.RateRequest;
 import team47pack.security.TokenUtils;
 import team47pack.service.ClinicService;
 
@@ -23,7 +24,7 @@ public class ClinicController {
     @PostMapping(value = "/clinic/search", produces = "application/json", consumes = "application/json")
     @PreAuthorize("hasRole('PATIENT')")
     public ArrayList<ClinicSearchResult> searchForClinics(@RequestBody ClinicSearchRequest csr) {
-        ArrayList<ClinicSearchResult> rez = clinicService.search(csr);
+        ArrayList<ClinicSearchResult> rez = clinicService.search(csr);   
         return rez;
     }
 
@@ -31,9 +32,23 @@ public class ClinicController {
     @PreAuthorize("hasRole('PATIENT')")
     public List<Doctor> getDoctors(@PathVariable(value = "id") Long id) {
         Clinic clinic = clinicService.getClinic(id);
+        clinic.setAverage(clinic.calculateRate());
         if (clinic != null) {
-            return clinic.getDoctors();
+
+            List<Doctor> dd= clinic.getDoctors();
+            for(Doctor d: dd){
+                d.setAverage(d.calculateRate());        
+            }
+           return dd;
+
         }
         return null;
+    }
+
+    @PostMapping(value = "clinic/leaveRate")
+    @PreAuthorize("hasRole('PATIENT')")
+    public void leaveRate(@RequestBody RateRequest rateRequest){
+        boolean b = clinicService.leaveRate(rateRequest);
+       
     }
 }

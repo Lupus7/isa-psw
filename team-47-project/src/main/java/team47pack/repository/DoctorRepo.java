@@ -8,6 +8,7 @@ import team47pack.models.Doctor;
 import java.util.ArrayList;
 import java.util.Optional;
 
+
 @Repository
 public interface DoctorRepo extends JpaRepository<Doctor, Long>, JpaSpecificationExecutor<Doctor> {
 	Doctor findByEmail(String email);
@@ -22,5 +23,6 @@ public interface DoctorRepo extends JpaRepository<Doctor, Long>, JpaSpecificatio
 	ArrayList<Doctor> findByFirstNameContainingIgnoreCase(String firstname);
 
 	ArrayList<Doctor> findByLastNameContainingIgnoreCase(String lastname);
+
 
 }

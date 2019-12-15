@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import team47pack.models.Doctor;
 import team47pack.models.dto.DoctorInfoRequest;
+import team47pack.models.dto.RateRequest;
 import team47pack.models.dto.SearchDoctorRequest;
 import team47pack.security.TokenUtils;
 import team47pack.service.DoctorService;
@@ -55,12 +56,14 @@ public class DoctorController {
 		return ResponseEntity.ok("Update successful!");
 	}
 
-	// @---------------author:Jokara
 	@PostMapping(value = "/doctor/searchDoctor", produces = "application/json", consumes = "application/json")
 	@PreAuthorize("hasRole('PATIENT')")
-	public ArrayList<Doctor> searchForDoctor(@RequestBody SearchDoctorRequest req) {
-		System.out.println(req.getName() + " " + req.getSurname());
-		return doctorService.search2(req);
+	public ArrayList<Doctor> searchForDoctor(@RequestBody SearchDoctorRequest req){
+		ArrayList<Doctor> doc = doctorService.search2(req);
+		for(Doctor d:doc){
+			d.setAverage(d.calculateRate());
+		}
+		return doc;
 	}
 
 	// @@@ Author: Boki
@@ -68,6 +71,17 @@ public class DoctorController {
 	public Doctor getDoctor(@PathVariable(value = "id") String id) {
 
 		return doctorService.getDoctorByID(id);
+	}
+	// Author: bokimilinkovic
+	@PostMapping(value = "doctor/leaveRate")
+	@PreAuthorize("hasRole('PATIENT')")
+	public void leaveRate(@RequestBody RateRequest rateRequest){
+		System.out.println(rateRequest.getId() + " " +rateRequest.getValue());
+		boolean b = doctorService.leaveRate(rateRequest);
+		if(b){
+			System.out.println("USPESNO");
+		}
+		System.out.println("Nije");
 	}
 
 }

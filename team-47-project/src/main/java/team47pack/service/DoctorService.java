@@ -14,13 +14,16 @@ import org.springframework.stereotype.Service;
 import team47pack.models.Clinic;
 import team47pack.models.ClinicAdmin;
 import team47pack.models.Doctor;
+import team47pack.models.Rate;
 import team47pack.models.User;
 import team47pack.models.dto.DoctorInfoRequest;
+import team47pack.models.dto.RateRequest;
 import team47pack.models.dto.SearchDoctorRequest;
 import team47pack.repository.ClinicAdminRepo;
 import team47pack.repository.ClinicRepo;
 import team47pack.repository.DoctorRepo;
 import team47pack.repository.MedicalStaffRepo;
+import team47pack.repository.RateRepo;
 import team47pack.repository.UserRepo;
 
 @Service
@@ -40,6 +43,9 @@ public class DoctorService {
 
 	@Autowired
 	private MedicalStaffRepo medicalRepo;
+  
+  @Autowired
+	private RateRepo rateRepo;
 
 	public Doctor getDoctor(String email) {
 		Doctor d = (Doctor) userRepo.findByEmail(email);
@@ -108,6 +114,7 @@ public class DoctorService {
 		}
 	}
 
+  //@author:Bojan
 	public ArrayList<Doctor> search2(SearchDoctorRequest req) {
 		Specification<Doctor> spec = Specification.where(DoctorSpecification.doctorFirstName(req.getName()))
 				.and(DoctorSpecification.doctormLastName(req.getSurname()))
@@ -154,4 +161,16 @@ public class DoctorService {
 		return clinic.get().getDoctors();
 
 	}
+      
+  //@author:Bojan
+   public boolean leaveRate(RateRequest rateRequest) {
+			Doctor dd = doctorRepo.getOne(rateRequest.getId());
+			Rate rate = new Rate();
+			rate.setValue(rateRequest.getValue());
+			rateRepo.save(rate);
+			dd.getRatings().add(rate);
+			doctorRepo.save(dd);
+			return true;
+    }
+
 }

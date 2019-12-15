@@ -6,14 +6,16 @@ public class ClinicSearchRequest {
     private String location;
     private String examination;
     private Date date;
+    private Double rate;
 
     public ClinicSearchRequest() {
     }
 
-    public ClinicSearchRequest(String location, String examination,Date date) {
+    public ClinicSearchRequest(String location, String examination,Date date,Double rate) {
         this.location = location;
         this.examination = examination;
         this.date = date;
+        this.rate = rate;
     }
 
     public String getLocation() {
@@ -38,5 +40,13 @@ public class ClinicSearchRequest {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
     }
 }

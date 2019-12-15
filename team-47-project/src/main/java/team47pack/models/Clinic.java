@@ -1,5 +1,6 @@
 package team47pack.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import team47pack.models.dto.ClinicRegister;
 
 import javax.persistence.*;
@@ -47,8 +48,18 @@ public class Clinic {
             inverseJoinColumns = @JoinColumn(name = "clinic_room_id", referencedColumnName = "id"))
     private List<Room> rooms;
 
+    //@Author bokimilinkovic
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "clinic_ratings",
+            joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "rate_id", referencedColumnName = "id"))
+    private List<Rate> ratings;
+
     // TODO : private List<Room> rooms;
     // TODO : private List<Procedure> procedures;
+    //@Column(name="average")
+    private Double average;
 
     public Clinic() {
     }
@@ -117,8 +128,34 @@ public class Clinic {
 	public void setRooms(List<Room> rooms) {
 		this.rooms = rooms;
 	}
-	
-	
-    
-    
+
+    public List<Rate> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rate> ratings) {
+        this.ratings = ratings;
+    }
+
+    public Double calculateRate(){
+        int sum = 0;
+        if(this.ratings.size() != 0) {
+            for (Rate r : this.ratings) {
+                System.out.println(r.getValue());
+                sum += r.getValue();
+            }
+            this.average = Double.valueOf(sum / this.ratings.size());
+            System.out.println("Izracunat prosek: "+this.average);
+            return Double.valueOf(sum / this.ratings.size());
+        }
+        return 0.0;
+    }
+
+    public Double getAverage() {
+        return this.average;
+    }
+
+    public void setAverage(Double average) {
+        this.average = average;
+    }
 }
