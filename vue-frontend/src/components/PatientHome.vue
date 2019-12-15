@@ -315,6 +315,7 @@ export default {
           <th scope="col">Name</th>
           <th scope="col">Surname</th>
           <th scope="col">Specialization</th>
+          <th scope="col">Rating</th>
         </tr>
       </thead>
       <tbody>
@@ -323,6 +324,7 @@ export default {
           <td>{{d.firstName}}</td>
           <td>{{d.lastName}}</td>
           <td>{{d.specialization}}</td>
+          <td>{{d.average}}</td>
           <td><button type="button" class="btn btn-primary" @click="goToDoctorProfile(d.id)">Visit profile</button></td>
         </tr>
       </tbody>

@@ -44,7 +44,12 @@ public class DoctorController {
 	@PreAuthorize("hasRole('PATIENT')")
 	public ArrayList<Doctor> searchForDoctor(@RequestBody SearchDoctorRequest req){
 		System.out.println(req.getName() +" " +req.getSurname());
-		return doctorService.search2(req);
+		ArrayList<Doctor> doc = doctorService.search2(req);
+		for(Doctor d:doc){
+			d.setAverage(d.calculateRate());
+			System.out.println("AVERAGE: " + d.getAverage());
+		}
+		return doc;
 	}
 
 	//@@@ Author: Boki

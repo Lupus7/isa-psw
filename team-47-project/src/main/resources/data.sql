@@ -205,3 +205,8 @@ insert into clinic_ratings(clinic_id,rate_id) values(1,2);
 insert into clinic_ratings(clinic_id,rate_id) values(1,3);
 insert into clinic_ratings(clinic_id,rate_id) values(2,4);
 
+insert into doctor_ratings(doctor_id,rate_id) values(8,1);
+insert into doctor_ratings(doctor_id,rate_id) values(8,4);
+insert into doctor_ratings(doctor_id,rate_id) values(8,2);
+insert into doctor_ratings(doctor_id,rate_id) values(12,2);
+insert into doctor_ratings(doctor_id,rate_id) values(13,3);
