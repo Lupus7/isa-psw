@@ -43,7 +43,11 @@ public class ClinicController {
         System.out.println("PROSEK JE: " + clinic.getAverage());
         if (clinic != null) {
             System.out.println("Uspesno vratio kliniku : " + clinic.getName() + clinic.getDescription());
-            return clinic.getDoctors();
+            List<Doctor> dd= clinic.getDoctors();
+            for(Doctor d: dd){
+                d.setAverage(d.calculateRate());
+                return dd;
+            }
         }
         return null;
     }

@@ -6,11 +6,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import team47pack.models.Doctor;
+import team47pack.models.Rate;
 import team47pack.models.User;
 import team47pack.models.dto.DoctorInfoRequest;
+import team47pack.models.dto.RateRequest;
 import team47pack.models.dto.SearchDoctorRequest;
 import team47pack.repository.DoctorRepo;
 import team47pack.repository.MedicalStaffRepo;
+import team47pack.repository.RateRepo;
 import team47pack.repository.UserRepo;
 
 import java.util.ArrayList;
@@ -25,7 +28,8 @@ public class DoctorService {
 	    private DoctorRepo doctorRepo;
 		@Autowired
 	    private MedicalStaffRepo medicalRepo;
-
+		@Autowired
+		private RateRepo rateRepo;
 
 	    public Doctor getDoctor(String email) {
 	    	Doctor d = (Doctor) userRepo.findByEmail(email);
@@ -97,4 +101,14 @@ public class DoctorService {
 
 		return d;
 	}
+
+    public boolean leaveRate(RateRequest rateRequest) {
+			Doctor dd = doctorRepo.getOne(rateRequest.getId());
+			Rate rate = new Rate();
+			rate.setValue(rateRequest.getValue());
+			rateRepo.save(rate);
+			dd.getRatings().add(rate);
+			doctorRepo.save(dd);
+			return true;
+    }
 }

@@ -3,7 +3,7 @@
 <script>
 import axios from 'axios';
 import jwt_decode from 'jwt-decode'
-
+import {funToastr} from "../toastr.js"
 import LocalStorageService from "../LocalStorageService";
 
 
@@ -22,6 +22,8 @@ export default {
             prikaziKlinikineDoktore:false,
             pretiso: false,
             rateAClinic: false,
+            rateADoctor: false,
+          
         }
     },
 
@@ -199,6 +201,7 @@ export default {
     },
     showClinicRateForm(){
       this.rateAClinic = true
+    
     },
     cancelClinicRate(){
       this.rateAClinic=false
@@ -214,11 +217,34 @@ export default {
         "id": doctor_id,
       })
       .then(response=>{
-        console.log('uspesno ocenjena klinika')
+       funToastr("s","Successfuly ratted clinuic!","Rate!");
         document.getElementById("ClinicRate").setAttribute("hidden","true")
         document.getElementById("blabla").setAttribute("hidden","true")
         this.rateAClinic = false
-      }).catch(error=>{console.log("nije uspesno ocenjena")})
+      }).catch(error=>{funToastr("w","Unsuccessfully rated clinic!","Rate!");})
+    },
+    showDoctorRateForm(){
+      this.rateADoctor = true
+      
+    },
+    cancelDoctorRate(){
+      this.rateADoctor = false
+    },
+    leaveDoctorRate(e,doctor_id){
+      e.preventDefault()
+      let rate = parseInt(document.getElementById("DoctorRate").value)
+      console.log(rate +"   "+doctor_id)
+      axios
+      .post("doctor/leaveRate",{
+        "value" : rate,
+        "id": doctor_id,
+      })
+      .then(response=>{
+        funToastr("s","Successfuly ratted doctor!","Rate!");
+        document.getElementById("DoctorRate").setAttribute("hidden","true")
+        document.getElementById("blabla1").setAttribute("hidden","true")
+        this.rateADoctor = false
+      }).catch(error=>{funToastr("w","Unsuccessfully rated doctor!","Rate!");})
     }
     
     },
@@ -378,7 +404,20 @@ export default {
             <button @click="cancelClinicRate($event)" type="button" class="btn btn-danger">Cancel</button>
           </td>
 
-          <td><button type="button" class="btn btn-light">Rate a doctor</button></td>
+          <td><button type="button" id="blabla1" @click="showDoctorRateForm" class="btn btn-light">Rate a doctor</button></td>
+          <td v-if="rateADoctor ==true">
+            <select id="DoctorRate">
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+            <label>---></label>
+            <button @click="leaveDoctorRate($event,e.doctor_id)" type="button" class="btn btn-info">Post</button>
+            <button @click="cancelDoctorRate($event)" type="button" class="btn btn-danger">Cancel</button>
+          </td>
         </tr>
       </tbody>
       </table>
