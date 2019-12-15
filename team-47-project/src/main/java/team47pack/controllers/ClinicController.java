@@ -7,6 +7,7 @@ import team47pack.models.Clinic;
 import team47pack.models.Doctor;
 import team47pack.models.dto.ClinicSearchRequest;
 import team47pack.models.dto.ClinicSearchResult;
+import team47pack.models.dto.RateRequest;
 import team47pack.security.TokenUtils;
 import team47pack.service.ClinicService;
 
@@ -45,5 +46,16 @@ public class ClinicController {
             return clinic.getDoctors();
         }
         return null;
+    }
+
+    @PostMapping(value = "clinic/leaveRate")
+    @PreAuthorize("hasRole('PATIENT')")
+    public void leaveRate(@RequestBody RateRequest rateRequest){
+        System.out.println(rateRequest.getId() + " " +rateRequest.getValue());
+        boolean b = clinicService.leaveRate(rateRequest);
+        if(b){
+            System.out.println("USPESNO");
+        }
+        System.out.println("Nije");
     }
 }

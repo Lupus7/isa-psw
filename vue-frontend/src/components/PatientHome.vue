@@ -8,6 +8,7 @@ import LocalStorageService from "../LocalStorageService";
 
 
 
+
 export default {
     data(){
         return{
@@ -20,6 +21,7 @@ export default {
             klinikiniDoktori:[],
             prikaziKlinikineDoktore:false,
             pretiso: false,
+            rateAClinic: false,
         }
     },
 
@@ -194,6 +196,29 @@ export default {
         console.log(error)
       })
       
+    },
+    showClinicRateForm(){
+      this.rateAClinic = true
+    },
+    cancelClinicRate(){
+      this.rateAClinic=false
+    },
+    leaveClinicRate(event,doctor_id){
+      event.preventDefault()
+
+      let rate = parseInt(document.getElementById("ClinicRate").value)
+      console.log(rate +"   "+doctor_id)
+      axios
+      .post("clinic/leaveRate",{
+        "value" : rate,
+        "id": doctor_id,
+      })
+      .then(response=>{
+        console.log('uspesno ocenjena klinika')
+        document.getElementById("ClinicRate").setAttribute("hidden","true")
+        document.getElementById("blabla").setAttribute("hidden","true")
+        this.rateAClinic = false
+      }).catch(error=>{console.log("nije uspesno ocenjena")})
     }
     
     },
@@ -336,6 +361,22 @@ export default {
         <tr v-for="e in this.examinations" :key="e.id">
           <td>{{e.type}}</td>
           <td>{{e.date}}</td>
+          <td><button id="blabla" type="button" @click="showClinicRateForm" class="btn btn-light">Rate a clinic</button></td>
+          <td v-if="rateAClinic ==true">
+            <select id="ClinicRate">
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+            <label>---></label>
+            <button @click="leaveClinicRate($event,e.doctor_id)" type="button" class="btn btn-info">Post</button>
+            <button @click="cancelClinicRate($event)" type="button" class="btn btn-danger">Cancel</button>
+          </td>
+
+          <td><button type="button" class="btn btn-light">Rate a doctor</button></td>
         </tr>
       </tbody>
       </table>

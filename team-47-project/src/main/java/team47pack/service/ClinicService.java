@@ -5,16 +5,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import team47pack.models.Clinic;
-import team47pack.models.ClinicAdmin;
-import team47pack.models.Doctor;
-import team47pack.models.Examination;
+import team47pack.models.*;
 import team47pack.models.dto.ClinicAndAdmin;
 import team47pack.models.dto.ClinicSearchRequest;
 import team47pack.models.dto.ClinicSearchResult;
+import team47pack.models.dto.RateRequest;
 import team47pack.repository.ClinicAdminRepo;
 import team47pack.repository.ClinicRepo;
 import team47pack.repository.ExaminationRepo;
+import team47pack.repository.RateRepo;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,6 +29,9 @@ public class ClinicService {
 
     @Autowired
     ExaminationRepo exRepo;
+
+    @Autowired
+    RateRepo rateRepo;
 
     // @author: Lupus7 (Sinisa Canak)
     public List<ClinicAndAdmin> getClinics() {
@@ -119,5 +121,23 @@ public class ClinicService {
         Clinic c= clinicRepo.getOne(id);
         System.out.println("Klinika iz repozitorijuma : " + c.getDescription() + c.getName());
         return c;
+    }
+
+    public boolean leaveRate(RateRequest rateRequest) {
+        List<Clinic> klinike = clinicRepo.findAll();
+        for(Clinic c: klinike){
+            for(Doctor d: c.getDoctors()){
+                if(d.getId() == rateRequest.getId()){
+                    System.out.println("To je ta klinika: " + c.getName() +" " +c.getDescription());
+                    Rate rate = new Rate();
+                    rate.setValue(rateRequest.getValue());
+                    rateRepo.save(rate);
+                    c.getRatings().add(rate);
+                    clinicRepo.save(c);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

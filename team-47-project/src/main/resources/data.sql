@@ -92,6 +92,9 @@ ALTER SEQUENCE clinic_id_seq RESTART WITH 10;
 SELECT setval('procedure_id_seq', 21, true);
 ALTER SEQUENCE procedure_id_seq RESTART WITH 22;
 
+SELECT setval('rate_id_seq', 21, true);
+ALTER SEQUENCE rate_id_seq RESTART WITH 22;
+
 insert into authority (name) values ('ROLE_PATIENT');
 insert into authority (name) values ('ROLE_DOCTOR');
 insert into authority (name) values ('ROLE_NURSE');

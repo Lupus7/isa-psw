@@ -1,5 +1,6 @@
 package team47pack.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import team47pack.models.dto.ClinicRegister;
 
 import javax.persistence.*;
@@ -48,6 +49,7 @@ public class Clinic {
     private List<Room> rooms;
 
     //@Author bokimilinkovic
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "clinic_ratings",
             joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"),
