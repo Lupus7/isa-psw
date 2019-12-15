@@ -58,6 +58,10 @@ insert into users (is_accepted, address, city, email, enabled, first_name, last_
 insert into clinic_admin (id,clinic) values (9, 1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
+            values(true,'test','test','cadmin',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','cadmin',14);
+insert into clinic_admin (id,clinic) values (14, 2);
+
+insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'SECRET','Novi Sad','admin@team47.com',true,'SECRET','SECRET','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','Serbia','SECRET','0000',10);
 insert into clinic_centre_admin (id) values (1);
 
@@ -112,6 +116,7 @@ insert into user_authority (user_id, authority_id) values (13,2);
 insert into user_authority (user_id, authority_id) values (9,4);
 insert into user_authority (user_id, authority_id) values (10,5); 
 insert into user_authority (user_id, authority_id) values (11,3);
+insert into user_authority (user_id, authority_id) values (14,4);
 
 insert into clinic(id,name,address,description) values (1,'klinika1','dr.andre','lepa bas onako');
 insert into clinic(id,name,address,description) values (2,'klinika2','Ulica 2','nije najsrecnija');
@@ -131,6 +136,7 @@ insert into user_authority (user_id, authority_id) values (10,6);
 insert into user_authority (user_id, authority_id) values (11,6);
 insert into user_authority (user_id, authority_id) values (12,6);
 insert into user_authority (user_id, authority_id) values (13,6);
+insert into user_authority (user_id, authority_id) values (14,6);
 
 -- Doctors
 insert into doctors()
@@ -138,11 +144,12 @@ insert into examination(id,type,date,patient_id,doctor_id) values(1,'obican preg
 insert into examination(id,type,date,patient_id,doctor_id) values(2,'operacija','07.10.2019 15:24',3,8);
 insert into examination(id,type,date,patient_id,doctor_id) values(3,'kontrola','04.09.2018 20:24',2,8);
 
--------------------------------------- Dodavanje doktora,cadmin u kliniku 1
+-------------------------------------- Dodavanje doktora,cadmin u klinike
 insert into clinic_doctor values(1,8);
 insert into clinic_doctor values(2,12);
 insert into clinic_doctor values(2,13);
 insert into clinic_admins values(1,9);
+insert into clinic_admins values(2,14);
 -------------------------------------
 
 ------------------------------------- Dodavanje room u klinike
