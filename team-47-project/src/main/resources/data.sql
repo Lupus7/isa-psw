@@ -92,6 +92,9 @@ ALTER SEQUENCE clinic_id_seq RESTART WITH 10;
 SELECT setval('procedure_id_seq', 21, true);
 ALTER SEQUENCE procedure_id_seq RESTART WITH 22;
 
+SELECT setval('rate_id_seq', 21, true);
+ALTER SEQUENCE rate_id_seq RESTART WITH 22;
+
 insert into authority (name) values ('ROLE_PATIENT');
 insert into authority (name) values ('ROLE_DOCTOR');
 insert into authority (name) values ('ROLE_NURSE');
@@ -134,7 +137,7 @@ insert into user_authority (user_id, authority_id) values (13,6);
 
 -- Doctors
 insert into doctors()
-insert into examination(id,type,date,patient_id,doctor_id) values(1,'obican pregled','04.09.2020 15:24',2,8);
+insert into examination(id,type,date,patient_id,doctor_id) values(1,'obican pregled','04.09.2020 15:24',2,13);
 insert into examination(id,type,date,patient_id,doctor_id) values(2,'operacija','07.10.2019 15:24',3,8);
 insert into examination(id,type,date,patient_id,doctor_id) values(3,'kontrola','04.09.2018 20:24',2,8);
 
@@ -188,3 +191,22 @@ insert into procedure (id,date,type,patient_id) values(2,'03.07.2018 15:24','kon
 
 
 insert into examination(id,doctor_id) values(2,8);
+insert into examination(id,doctor_id) values(1,12);
+--insert into examination(id,doctor_id) values(2,13);
+
+--Adding ratings
+insert into rate(id,value) values(1,5);
+insert into rate(id,value) values(2,6);
+insert into rate(id,value) values(3,7);
+insert into rate(id,value) values(4,8);
+
+insert into clinic_ratings(clinic_id,rate_id) values(1,1);
+insert into clinic_ratings(clinic_id,rate_id) values(1,2);
+insert into clinic_ratings(clinic_id,rate_id) values(1,3);
+insert into clinic_ratings(clinic_id,rate_id) values(2,4);
+
+insert into doctor_ratings(doctor_id,rate_id) values(8,1);
+insert into doctor_ratings(doctor_id,rate_id) values(8,4);
+insert into doctor_ratings(doctor_id,rate_id) values(8,2);
+insert into doctor_ratings(doctor_id,rate_id) values(12,2);
+insert into doctor_ratings(doctor_id,rate_id) values(13,3);

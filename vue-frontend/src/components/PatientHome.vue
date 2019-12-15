@@ -3,8 +3,9 @@
 <script>
 import axios from 'axios';
 import jwt_decode from 'jwt-decode'
-
+import {funToastr} from "../toastr.js"
 import LocalStorageService from "../LocalStorageService";
+
 
 
 
@@ -19,6 +20,10 @@ export default {
             clinicSearchResult:[],
             klinikiniDoktori:[],
             prikaziKlinikineDoktore:false,
+            pretiso: false,
+            rateAClinic: false,
+            rateADoctor: false,
+          
         }
     },
 
@@ -126,9 +131,11 @@ export default {
     },
 
     goSearchDoctor(){
+      this.clinicSearchResult = null
       let name = document.getElementById("doctorname").value 
       let surname = document.getElementById("doctorsurname").value
       let specialization = document.getElementById("doctorspecialization").value
+      this.pretiso = false
       //let date = document.getElementById("doctordate").value
       //console.log(name+" "+surname + specialization + date)
       axios
@@ -146,16 +153,21 @@ export default {
         console.log(error)
       })
     },
-    goSearchClinics(){
+    goSearchClinics(e){
+      e.preventDefault()
+      this.doctorSearchResult = null
       let examination = document.getElementById("type").value
       let location = document.getElementById("location").value
       let date = document.getElementById("date").value
+      let rate = parseFloat(document.getElementById("rate").value)
+      console.log(rate)
       console.log(examination + location+" " + date)
       axios 
       .post("http://localhost:8080/clinic/search",{
         "location" : location,
         "examination":examination,
         "date":date,
+        "rate":rate,
       }).then(response=>{
         
           console.log(response.data)
@@ -163,18 +175,17 @@ export default {
           document.getElementById("tabela").setAttribute("hidden","true") 
           document.getElementById("examinations").setAttribute("hidden","true")       
           document.getElementById("medfilediv").setAttribute("hidden","true")
-          document.getElementById("doctorresult").setAttribute("hidden","true")
+          //document.getElementById("doctorresult").setAttribute("hidden","true")
           
           document.getElementById("medfilediv").setAttribute("hidden","true")
           
           
-          document.getElementById("clinics").removeAttribute("hidden")
+          //document.getElementById("clinics").removeAttribute("hidden")
       }).catch(error=>console.log(error))
     },
 
     seeAvailableDoctors(id){
       console.log(id)
-      this.pretiso = true
       let url = 'http://localhost:8080/clinic/'+ id +'/getAvailableDoctors'
       console.log(url)
       axios
@@ -182,11 +193,58 @@ export default {
         console.log(response.data)
         this.prikaziKlinikineDoktore = true
         this.doctorSearchResult = response.data
-        document.getElementById("doctorresult").removeAttribute("hidden")
+      //  document.getElementById("doctorresult").removeAttribute("hidden")
       }).catch(error=>{
         console.log(error)
       })
       
+    },
+    showClinicRateForm(){
+      this.rateAClinic = true
+    
+    },
+    cancelClinicRate(){
+      this.rateAClinic=false
+    },
+    leaveClinicRate(event,doctor_id){
+      event.preventDefault()
+
+      let rate = parseInt(document.getElementById("ClinicRate").value)
+      console.log(rate +"   "+doctor_id)
+      axios
+      .post("clinic/leaveRate",{
+        "value" : rate,
+        "id": doctor_id,
+      })
+      .then(response=>{
+       funToastr("s","Successfuly ratted clinuic!","Rate!");
+        document.getElementById("ClinicRate").setAttribute("hidden","true")
+        document.getElementById("blabla").setAttribute("hidden","true")
+        this.rateAClinic = false
+      }).catch(error=>{funToastr("w","Unsuccessfully rated clinic!","Rate!");})
+    },
+    showDoctorRateForm(){
+      this.rateADoctor = true
+      
+    },
+    cancelDoctorRate(){
+      this.rateADoctor = false
+    },
+    leaveDoctorRate(e,doctor_id){
+      e.preventDefault()
+      let rate = parseInt(document.getElementById("DoctorRate").value)
+      console.log(rate +"   "+doctor_id)
+      axios
+      .post("doctor/leaveRate",{
+        "value" : rate,
+        "id": doctor_id,
+      })
+      .then(response=>{
+        funToastr("s","Successfuly ratted doctor!","Rate!");
+        document.getElementById("DoctorRate").setAttribute("hidden","true")
+        document.getElementById("blabla1").setAttribute("hidden","true")
+        this.rateADoctor = false
+      }).catch(error=>{funToastr("w","Unsuccessfully rated doctor!","Rate!");})
     }
     
     },
@@ -233,10 +291,22 @@ export default {
              <input type="text" placeholder="location" id="location">
            </td>
            <td>
+             <select name="rate" placeholder="wanted or higher" id="rate">
+               <option value="0" selected disabled hidden> 
+               </option>
+               <option value="5">5</option>
+               <option value="6">6</option>
+               <option value="7">7</option>
+               <option value="8">8</option>
+               <option value="9">9</option>
+               <option value="10">10</option>
+             </select>
+           </td>
+           <td>
              <input type="date" placeholder="location" id="date">
            </td>
            <td>
-             <button @click="goSearchClinics()">Search</button>
+             <button @click="goSearchClinics($event)">Search</button>
            </td>
          </tr>
        </table>
@@ -271,6 +341,7 @@ export default {
           <th scope="col">Name</th>
           <th scope="col">Surname</th>
           <th scope="col">Specialization</th>
+          <th scope="col">Rating</th>
         </tr>
       </thead>
       <tbody>
@@ -279,6 +350,7 @@ export default {
           <td>{{d.firstName}}</td>
           <td>{{d.lastName}}</td>
           <td>{{d.specialization}}</td>
+          <td>{{d.average}}</td>
           <td><button type="button" class="btn btn-primary" @click="goToDoctorProfile(d.id)">Visit profile</button></td>
         </tr>
       </tbody>
@@ -299,7 +371,7 @@ export default {
           <td>{{res.clinic.address}}</td>
           <td>{{res.clinic.average}}</td>
           <td>{{res.cost}}</td>
-          <td><button @click="seeAvailableDoctors(res.clinic.id)">See available doctors</button></td>
+          <td><button clas="btn btn-secondary" @click="seeAvailableDoctors(res.clinic.id)">See available doctors</button></td>
         </tr>
       </tbody>
     </table>
@@ -317,6 +389,35 @@ export default {
         <tr v-for="e in this.examinations" :key="e.id">
           <td>{{e.type}}</td>
           <td>{{e.date}}</td>
+          <td><button id="blabla" type="button" @click="showClinicRateForm" class="btn btn-light">Rate a clinic</button></td>
+          <td v-if="rateAClinic ==true">
+            <select id="ClinicRate">
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+            <label>---></label>
+            <button @click="leaveClinicRate($event,e.doctor_id)" type="button" class="btn btn-info">Post</button>
+            <button @click="cancelClinicRate($event)" type="button" class="btn btn-danger">Cancel</button>
+          </td>
+
+          <td><button type="button" id="blabla1" @click="showDoctorRateForm" class="btn btn-light">Rate a doctor</button></td>
+          <td v-if="rateADoctor ==true">
+            <select id="DoctorRate">
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+            <label>---></label>
+            <button @click="leaveDoctorRate($event,e.doctor_id)" type="button" class="btn btn-info">Post</button>
+            <button @click="cancelDoctorRate($event)" type="button" class="btn btn-danger">Cancel</button>
+          </td>
         </tr>
       </tbody>
       </table>
