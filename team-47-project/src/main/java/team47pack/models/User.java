@@ -1,7 +1,5 @@
 package team47pack.models;
 
-
-
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -21,6 +19,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.joda.time.DateTime;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,9 +29,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class User implements UserDetails {
 
 	@Id
@@ -69,16 +69,14 @@ public class User implements UserDetails {
 	@Column(name = "enabled")
 	protected boolean enabled;
 
-	@Column(name = "last_password_reset_date", nullable=true)
+	@Column(name = "last_password_reset_date", nullable = true)
 	protected Timestamp lastPasswordResetDate;
 
-	@Column(name="isAccepted", unique=false, nullable=false)
+	@Column(name = "isAccepted", unique = false, nullable = false)
 	protected boolean accepted;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "user_authority",
-			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+	@JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
 	private List<Authority> authorities;
 
 	public String getEmail() {
@@ -127,7 +125,9 @@ public class User implements UserDetails {
 		return uniqueNum;
 	}
 
-	public boolean isAccepted() { return accepted; }
+	public boolean isAccepted() {
+		return accepted;
+	}
 
 	@Override
 	public boolean isEnabled() {
@@ -157,7 +157,7 @@ public class User implements UserDetails {
 
 	public void setPassword(String password) {
 		Timestamp now = new Timestamp(DateTime.now().getMillis());
-		this.setLastPasswordResetDate( now );
+		this.setLastPasswordResetDate(now);
 		this.password = password;
 	}
 
@@ -197,7 +197,9 @@ public class User implements UserDetails {
 		this.authorities = authorities;
 	}
 
-	public void setAccepted(boolean isAccepted) { this.accepted = isAccepted; }
+	public void setAccepted(boolean isAccepted) {
+		this.accepted = isAccepted;
+	}
 
 	@JsonIgnore
 	@Override
@@ -218,10 +220,7 @@ public class User implements UserDetails {
 	}
 
 	public User() {
-		
+
 	}
-	
-	
-	
-	
+
 }
