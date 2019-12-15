@@ -3,6 +3,7 @@ package team47pack.controllers;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import team47pack.models.ClinicAdmin;
+import team47pack.models.Doctor;
 import team47pack.models.HolidayTimeOff;
 import team47pack.service.ClinicAdminService;
 import team47pack.service.EmailService;
@@ -54,6 +56,7 @@ public class ClinicAdminController {
 			return ResponseEntity.status(400).body("Could not accept");
 	}
 
+	// --------------------------------------------holiday requests
 	@PostMapping(value = "/request-list/accept")
 	public ResponseEntity<String> acceptRequest(@RequestBody String json) throws JSONException {
 		JSONObject obj = new JSONObject(json);
@@ -111,5 +114,35 @@ public class ClinicAdminController {
 			return ResponseEntity.ok("Successful");
 		} else
 			return ResponseEntity.status(400).body("Could not accept");
+	}
+
+	// ------------------------------------------------------------------------------------------------
+	// doctors
+	@PostMapping(value = "/addDoctor", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<String> addDoctor(@RequestBody String json, Principal user) throws JSONException {
+		JSONObject obj = new JSONObject(json);
+
+		if (clinicAdminService.addDoctor(obj, user.getName())) {
+			return ResponseEntity.ok("Doctor added!");
+		} else
+			return ResponseEntity.status(400).body("Unsuccessful!");
+	}
+
+	@PostMapping(value = "/removeDoctor", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<String> removeDoctor(@RequestBody String json, Principal user) throws JSONException {
+		JSONObject obj = new JSONObject(json);
+
+		if (clinicAdminService.removeDoctor(obj, user.getName())) {
+			return ResponseEntity.ok("Doctor removed!");
+		} else
+			return ResponseEntity.status(400).body("Unsuccessful!");
+	}
+
+	@PostMapping(value = "/searchDoctor", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<ArrayList<Doctor>> getDoctors(@RequestBody String json, Principal user) throws JSONException {
+		JSONObject obj = new JSONObject(json);
+
+		return ResponseEntity.ok(clinicAdminService.searchDoctor(obj, user.getName()));
+
 	}
 }
