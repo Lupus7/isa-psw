@@ -113,70 +113,82 @@ export default {
             if (!this.doctor || !this.date)
                 this.valid = 0
             else {
-                this.calendarEvents = axios.get('/calendar/doc-info/' + this.doctor + "/" + this.date)
+                axios
+                    .get('/calendar/doc-info/' + this.doctor + "/" + this.date)
+                    .then(response => {
+                        this.calendarEvents = response.data
 
-                if (!this.calendarEvents || this.calendarEvents.status) {
-                    this.valid = 0
-                    return;
-                }
+                        if (!this.calendarEvents || this.calendarEvents.length == 0) {
+                            this.valid = 0
+                            return;
+                        }
 
-                this.calendarView = 'timeGridDay'
-                this.calendarHeader.left = ''
-                this.calendarHeader.right= ''
+                        this.calendarView = 'timeGridDay'
+                        this.calendarHeader.left = ''
+                        this.calendarHeader.right= ''
 
-                if (this.calendarEvents[0].shift === 1) {
-                    this.showTimes = ['05:00', '15:00']
-                    this.shift = ['06:00', '14:00']
-                }
-                else {
-                    this.showTimes = ['13:00', '23:00']
-                    this.shift = ['14:00', '22:00']
-                }
+                        if (this.calendarEvents[0].shift === 1) {
+                            this.showTimes = ['05:00', '15:00']
+                            this.shift = ['06:00', '14:00']
+                        }
+                        else {
+                            this.showTimes = ['13:00', '23:00']
+                            this.shift = ['14:00', '22:00']
+                        }
 
-                this.valid = 2
+                        this.valid = 2
+                    })
             }  
         }
         else if (role === "ROLE_CADMIN") {
             if (this.mode === "room") {
-                this.calendarEvents = axios.get('/calendar/room-info')
+                axios
+                    .get('/calendar/room-info')
+                    .then(response => {
+                        this.calendarEvents = response.data
 
-                if (!this.calendarEvents || this.calendarEvents.status) {
-                    this.valid = 0
-                    return;
-                }
+                        if (!this.calendarEvents || this.calendarEvents.length == 0) {
+                            this.valid = 0
+                            return;
+                        }
 
-                this.calendarView = 'timeGridWeek'
-                this.calendarHeader.left = 'dayGridMonth,timeGridWeek,timeGridDay'
-                this.calendarHeader.right= 'prev,today,next'
-                this.showTimes = ['05:00', '23:00']
-                this.shift = ['06:00', '22:00']
-                this.valid = 2
+                        this.calendarView = 'timeGridWeek'
+                        this.calendarHeader.left = 'dayGridMonth,timeGridWeek,timeGridDay'
+                        this.calendarHeader.right= 'prev,today,next'
+                        this.showTimes = ['05:00', '23:00']
+                        this.shift = ['06:00', '22:00']
+                        this.valid = 2
+                    })
             }
             else {
                 this.valid = 0
             }
         }
         else if (role === "ROLE_DOCTOR" || role === "ROLE_NURSE") {
-            this.calendarEvents = axios.get('/calendar/schedule')
+            axios
+                .get('/calendar/schedule')
+                .then(response => {
+                        this.calendarEvents = response.data
 
-            if (!this.calendarEvents || this.calendarEvents.status) {
-                this.valid = 0
-                return;
-            }
+                        if (!this.calendarEvents || this.calendarEvents.length == 0) {
+                            this.valid = 0
+                            return;
+                        }
 
-            this.calendarView = 'timeGridWeek'
-            this.calendarHeader.left = 'dayGridMonth,timeGridWeek,timeGridDay, listWeek'
-            this.calendarHeader.right= 'prev,today,next'
+                        this.calendarView = 'timeGridWeek'
+                        this.calendarHeader.left = 'dayGridMonth,timeGridWeek,timeGridDay, listWeek'
+                        this.calendarHeader.right= 'prev,today,next'
 
-            if (this.calendarEvents[0].shift === 1) {
-                this.showTimes = ['05:00', '15:00']
-                this.shift = ['06:00', '14:00']
-            }
-            else {
-                this.showTimes = ['13:00', '23:00']
-                this.shift = ['14:00', '22:00']
-            }
-            this.valid = 2
+                        if (this.calendarEvents[0].shift === 1) {
+                            this.showTimes = ['05:00', '15:00']
+                            this.shift = ['06:00', '14:00']
+                        }
+                        else {
+                            this.showTimes = ['13:00', '23:00']
+                            this.shift = ['14:00', '22:00']
+                        }
+                        this.valid = 2
+                })
         }
         else
             this.valid = 0
