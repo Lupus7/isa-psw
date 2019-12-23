@@ -14,26 +14,30 @@ public class Room {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected Long id;
+	private Long id;
 
 	@Column(name = "name", unique = false, nullable = false)
-	protected String name;
+	private String name;
 
 	@Column(name = "number", unique = false, nullable = false)
-	protected int number;
+	private int number;
+
+	@Column(name = "roomtype", unique = false, nullable = false)
+	private String type;
 
 	@Column(name = "clinic_id", unique = false, nullable = false)
-	protected int clinicId;
+	private int clinicId;
 
 	public Room() {
 
 	}
 
-	public Room(String name, int number, int i) {
+	public Room(String name, int number, int i, String type) {
 		super();
 		this.name = name;
 		this.number = number;
 		this.clinicId = i;
+		this.type = type;
 	}
 
 	public Long getId() {
@@ -67,5 +71,15 @@ public class Room {
 	public void setClinicId(int clinicId) {
 		this.clinicId = clinicId;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
 
 }
