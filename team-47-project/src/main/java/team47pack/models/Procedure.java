@@ -19,6 +19,10 @@ public abstract class Procedure {
 
     @Column
     protected String type;
+    
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="room",referencedColumnName = "id",nullable = true)
+    protected Room room;
 
     @Column
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -33,11 +37,12 @@ public abstract class Procedure {
 		
 	}
 
-	public Procedure(Long id, String type, Date date, Patient patient) {
+	public Procedure(Long id, String type, Date date, Patient patient, Room room) {
 		this.id = id;
 		this.type = type;
 		this.date = date;
 		this.patient = patient;
+		this.room = room;
 	}
 
 	public Long getId() {
@@ -72,6 +77,15 @@ public abstract class Procedure {
 		this.patient = patient;
 	}
 
+	public Room getRoom() {
+		return room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+	
+	
     
 
 }
