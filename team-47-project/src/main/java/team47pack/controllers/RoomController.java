@@ -33,16 +33,17 @@ public class RoomController {
 	@PreAuthorize("hasRole('CADMIN')")
 	public ResponseEntity<String> addRoom(@RequestBody String json, Principal user) throws JSONException {
 		JSONObject obj = new JSONObject(json);
-		if (obj == null || obj.get("name") == null || obj.get("number") == null)
+		if (obj == null || obj.get("name") == null || obj.get("number") == null || obj.get("type") == null)
 			return ResponseEntity.status(400).body("Could not accept!");
 
-		if (obj.get("name").equals("") || obj.get("number").equals(""))
+		if (obj.get("name").equals("") || obj.get("number").equals("") || obj.get("type").equals(""))
 			return ResponseEntity.status(401).body("Empty fields!");
 
 		String name = (String) obj.get("name");
 		int number = obj.getInt("number");
+		String type = (String) obj.get("type");
 
-		if (!roomService.addRoom(name, number, user.getName()))
+		if (!roomService.addRoom(name, number, type, user.getName()))
 			return ResponseEntity.status(400).body("Unsuccessful!");
 
 		return ResponseEntity.ok("Room added!");
@@ -72,17 +73,18 @@ public class RoomController {
 	@PreAuthorize("hasRole('CADMIN')")
 	public ResponseEntity<String> editRoom(@RequestBody String json, Principal user) throws JSONException {
 		JSONObject obj = new JSONObject(json);
-		if (obj == null || obj.get("id") == null || obj.get("name") == null || obj.get("number") == null)
+		if (obj == null || obj.get("id") == null || obj.get("name") == null || obj.get("number") == null || obj.get("type") == null)
 			return ResponseEntity.status(400).body("Could not accept!");
 
-		if (obj.get("id").equals("") || obj.get("name").equals("") || obj.get("number").equals(""))
+		if (obj.get("id").equals("") || obj.get("name").equals("") || obj.get("number").equals("") || obj.get("type").equals(""))
 			return ResponseEntity.status(401).body("Empty fields!");
 
 		int id = obj.getInt("id");
 		int number = obj.getInt("number");
 		String name = obj.getString("name");
+		String type = obj.getString("type");
 
-		if (!roomService.editRoom(id, name, number, user.getName()))
+		if (!roomService.editRoom(id, name, number, type, user.getName()))
 			return ResponseEntity.status(402).body("Name already taken!");
 
 		return ResponseEntity.ok("Room edited!");
