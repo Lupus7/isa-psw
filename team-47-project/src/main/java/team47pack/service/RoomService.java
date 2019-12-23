@@ -37,7 +37,7 @@ public class RoomService {
 		return rooms;
 	}
 
-	public boolean addRoom(String name, int number, String email) {
+	public boolean addRoom(String name, int number, String type,String email) {
 		ClinicAdmin ca = clinicAdminRepo.findByEmail(email);
 		if (ca == null)
 			return false;
@@ -46,7 +46,7 @@ public class RoomService {
 		if (room != null && room.getClinicId() == ca.getClinic())
 			return false;
 
-		roomRepo.save(new Room(name, number, ca.getClinic()));
+		roomRepo.save(new Room(name, number, ca.getClinic(), type));
 
 		return true;
 	}
@@ -71,7 +71,7 @@ public class RoomService {
 
 	}
 
-	public boolean editRoom(int id, String name, int number, String email) {
+	public boolean editRoom(int id, String name, int number, String type, String email) {
 		ClinicAdmin ca = clinicAdminRepo.findByEmail(email);
 		if (ca == null)
 			return false;
@@ -88,6 +88,7 @@ public class RoomService {
 		if (!name.equals(room.getName()))
 			room.setName(name);
 		room.setNumber(number);
+		room.setType(type);
 
 		roomRepo.save(room);
 

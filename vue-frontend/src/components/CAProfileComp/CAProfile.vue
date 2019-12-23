@@ -18,6 +18,7 @@
                                     <div class="middle">              
                                         <button type="button" @click="changePassword($event)" class="btn btn-dark btn-block "  style=" border-radius: 6px;  color: white; padding:6px;" >Change password </button>
                                     </div>
+                                    
 
                                 </div>
                                 <div class="userData ml-3">
@@ -29,13 +30,16 @@
                                
                             <div class="ml-auto" style="margin-top: 0vh " >
                                   
-                                    <div class="middle">
-                                        
-                                        <button type="button" class="btn btn-primary btn-block " @click="showReqs" style=" border-radius: 6px;  color: white; padding:8px;margin-right:50px;margin-bottom: 15px " >Staff requests </button>
+                                    <div class="middle">                                       
+                                        <button type="button" class="btn btn-block " @click="showReqs" style=" border-radius: 6px;  color: white; padding:8px;margin-right:50px;margin-bottom: 15px; background:#fe6f02 " >Staff requests </button>
                                     </div>
-                                    <div class="middle">
-                                      
-                                        <button type="button" class="btn btn-block " @click="rooms" style=" border-radius: 6px;  color: white; padding:8px; background:#ff795b" >Rooms </button>
+
+                                    <div class="middle">                                     
+                                        <button type="button" class="btn btn-block " @click="rooms" style=" border-radius: 6px;  color: white; padding:8px; background:#ae4102" >Rooms </button> 
+                                    </div>
+
+                                     <div class="middle">
+                                        <button type="button" class="btn btn-block " @click="doctors" style=" border-radius: 6px;  color: white; padding:8px; background:#3964eb; margin-top: 15px;" >Doctors </button>
                                     </div>
                                    
                                 </div>
@@ -159,6 +163,11 @@ export default {
         changePassword(e){
             e.preventDefault()
             this.$router.push("/passwordChange");
+        },
+
+        doctors(e){
+            e.preventDefault()
+            this.$router.push("/caDoctors");
         },
         
     },

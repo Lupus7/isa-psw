@@ -1,47 +1,5 @@
 <template>
     <div>
-
-
-         <div class="wrapper" v-if=" show "  >
-            <div style=" padding-left:2vh; padding-right:175vh">
-                <div class="modal-header" style="margin-left:2px; margin-right: 100vh; ">
-                    <h3 v-if="addForm"> Add New Room</h3>
-                    <h3 v-if="editForm"> Edit Room</h3>
-                </div>
-            </div>
-                    
-                <div class="panel-body" style="padding-left:2vh; padding-right: 175vh; " >
-                    <br>
-                    <form accept-charset="UTF-8" role="form"  >
-
-                        <div class="control-group" >
-                            <label  class="control-label" style=" font-size: 2vh" >Name of room:</label>
-                            <div class="form-group">
-                                <input class="form-control"  style=" font-size: 2vh; "  placeholder="Name of room..." v-model="nameF" />
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label  class="control-label" style=" font-size: 2vh">Number of room:</label>
-                            <div class="form-group">
-                                <input class="form-control"  style=" font-size: 2vh"  placeholder="Number..." v-model="numberF" />
-                            </div>
-                        </div>
-                        
-                        <br>
-                        <div class="modal-footer" >
-                            <button v-if="addForm" class="btn btn-success " style="font-size:20px" @click="add($event)">Add</button>
-                            <button v-if="editForm" class="btn btn-success " style="font-size:20px" @click="edit($event)">Edit</button>
-                            <button class="btn btn-danger " @click="cancel($event)">Cancel</button>
-                        </div>      
-                    </form>
-                                
-                </div>
-
-                 <br>
-        </div>
-
-       
-
         <div class="panel-body"  >
             
         <table class="table table-striped table-hoover" >
@@ -54,6 +12,7 @@
                 <tr class="table-secondary">
                     <th align="justify"  style="font-size:18px">Id</th>
                     <th align="justify"  style="font-size:18px">Name</th>
+                    <th align="justify"  style="font-size:18px">Type</th>
                     <th align="justify"  style="font-size:18px">Number</th>
                     <th> </th>
                     <th> </th>
@@ -67,6 +26,7 @@
                 
                     <td>{{room.id}}</td>
                     <td>{{room.name}}</td>
+                    <td>{{room.type}}</td>
                     <td>{{room.number}}</td>
                   
                     <td style="max-width: 80px">
@@ -88,6 +48,60 @@
         </div>
 
         
+        <br>
+
+          <div class="wrapper" v-if=" show "  >
+            <div style=" padding-left:2vh; padding-right:175vh">
+                <div class="modal-header" style="margin-left:2px; margin-right: 100vh; ">
+                    <h3 v-if="addForm"> Add New Room</h3>
+                    <h3 v-if="editForm"> Edit Room</h3>
+                </div>
+            </div>
+                    
+                <div class="panel-body" style="padding-left:2vh; padding-right: 175vh; " >
+                    <br>
+                    <form accept-charset="UTF-8" role="form"  >
+
+                        <div class="control-group" >
+                            <label  class="control-label" style=" font-size: 2vh" >Name of room:</label>
+                            <div class="form-group">
+                                <input class="form-control"  style=" font-size: 2vh; "  placeholder="Name of room..." v-model="nameF" />
+                            </div>
+                        </div>
+
+                         <div class="control-group">
+                            <label  class="control-label" style=" font-size: 2vh">Number of room:</label>
+                            <div class="form-group">
+                                <input class="form-control"  style=" font-size: 2vh"  placeholder="Number..." v-model="numberF" />
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label  class="control-label" style=" font-size: 2vh">Room type:</label>
+                            <div class="form-group">
+                                  <select class="form-control" style="font-size: 2vh" v-model="typeF"  >
+                                    <option align="justify" >Operation</option>
+                                    <option align="justify" >Examination</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <br>
+                        <div class="modal-footer" >
+                            <button v-if="addForm" class="btn btn-success " style="font-size:20px" @click="add($event)">Add</button>
+                            <button v-if="editForm" class="btn btn-success " style="font-size:20px" @click="edit($event)">Edit</button>
+                            <button class="btn btn-danger " @click="cancel($event)">Cancel</button>
+                        </div>      
+                    </form>
+                                
+                </div>
+
+                 <br>
+        </div>
+
+
+
+
         <br>
 
         <div class="jumbobox"  >
@@ -149,6 +163,7 @@ export default {
             addForm: false,
             nameF: "",
             numberF: "",
+            typeF: "",
             idF:""
         }
     },
@@ -168,6 +183,7 @@ export default {
             this.nameF = "";
             this.numberF = "";
             this.idF = ""
+            this.typeF = ""
 
         },
         showEdit(room){
@@ -177,6 +193,7 @@ export default {
             this.nameF = room.name;
             this.numberF = room.number;
             this.idF = room.id;
+            this.typeF = room.type;
 
         },
         cancel(){
@@ -186,7 +203,7 @@ export default {
         add(e){
 
             e.preventDefault();
-            axios.post('http://localhost:8080/room/addRoom', { "name": this.nameF, "number": this.numberF }).then(response => { 
+            axios.post('http://localhost:8080/room/addRoom', { "name": this.nameF, "number": this.numberF,"type":this.typeF }).then(response => { 
             
                 if(response.status == 200){
                     this.getRooms();
@@ -204,7 +221,7 @@ export default {
         edit(e){
 
             e.preventDefault();
-            axios.post('http://localhost:8080/room/editRoom', { "name": this.nameF, "number": this.numberF, "id":this.idF }).then(response => { 
+            axios.post('http://localhost:8080/room/editRoom', { "name": this.nameF, "number": this.numberF, "id":this.idF, "type":this.typeF }).then(response => { 
                 
                 if(response.status == 200){
                     this.getRooms();

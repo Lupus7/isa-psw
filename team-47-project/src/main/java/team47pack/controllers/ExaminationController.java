@@ -32,7 +32,6 @@ public class ExaminationController {
     public List<ExaminationDTO> getAllExams(Principal user){
         List<ExaminationDTO> ret = new ArrayList<>();
         Patient patient = patientService.getPatient(user.getName());
-        System.out.println("IZZZZ" + patient.getUsername());
         List<Examination> list =  examinationService.getByPatientId(patient.getId());
         for(Examination e: list){
             ret.add(new ExaminationDTO(e));
@@ -43,12 +42,8 @@ public class ExaminationController {
     @PreAuthorize("hasRole('PATIENT')")
     public List<Examination> getAll(Principal user){
         Patient patient = patientService.getPatient(user.getName());
-        List<Examination> ret = examinationService.getAll();
-        for(Examination e:ret){
-            System.out.println("Nazad u servisu");
-            System.out.println(e.getId() +" " +e.getDate() +" " +e.getPatient().getEmail());
-        }
-        return ret;
+        return examinationService.getAll();
+ 
     }
 
     // @author: Lupus7 (Sinisa Canak)
