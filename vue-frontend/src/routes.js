@@ -37,6 +37,12 @@ const router = new Router({
                 import ("./components/CAProfileComp/CAProfile")
         },
         {
+            path: "/caDoctors",
+            name: "CADoctors",
+            component: () =>
+                import ("./components/CAProfileComp/Doctors")
+        },
+        {
             path: "/patientProfile",
             name: "PatientProfile",
             component: () =>
