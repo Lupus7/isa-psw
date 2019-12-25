@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import team47pack.models.dto.CalendarEvent;
 import team47pack.service.CalendarService;
 
+import java.security.Principal;
 import java.util.List;
 
 // @author: Lupus7 (Sinisa Canak)
@@ -33,7 +34,7 @@ public class CalendarController {
 
     @GetMapping(value="/room-info")
     @PreAuthorize("hasRole('CADMIN')")
-    public List<CalendarEvent> roomInfo() {
-        return null;
+    public List<CalendarEvent> roomInfo(Principal user) {
+        return calendarService.roomInfo(user.getName());
     }
 }
