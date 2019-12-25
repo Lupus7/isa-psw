@@ -3,6 +3,7 @@ package team47pack.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import team47pack.models.Examination;
+import team47pack.models.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,4 +18,6 @@ public interface ExaminationRepo extends JpaRepository<Examination,Long>, JpaSpe
     
    Optional<Examination> findByDoctorId(Long id);
    List<Examination> findAllByDoctorId(Long id);
+
+   List<Examination> findAllByRoomId(Long id);
 }
