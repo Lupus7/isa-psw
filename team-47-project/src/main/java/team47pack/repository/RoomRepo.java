@@ -9,7 +9,7 @@ import team47pack.models.Room;
 //@author:Jokara
 public interface RoomRepo extends JpaRepository<Room, Long> {
 
-	ArrayList<Room> findByClinicId(int clinicId);
+	ArrayList<Room> findAllByClinicId(int clinicId);
 
 	Room findByName(String name);
 

@@ -187,8 +187,8 @@ insert into med_file_en(id,description,diagnosis_id)  values(2,'opis bolesti 2',
 insert into medicalfile_entries(medical_file_id,entries_id) values(2,1);
 insert into medicalfile_entries(medical_file_id,entries_id) values(2,2);
 
-SELECT setval('med_en_id_seq', 2, true);
-ALTER SEQUENCE procedure_id_seq RESTART WITH 3;
+SELECT setval('med_en_id_seq', 6, true);
+ALTER SEQUENCE procedure_id_seq RESTART WITH 7;
 
 ALTER SEQUENCE diag_id_seq RESTART WITH 10;
 ALTER SEQUENCE pres_id_seq RESTART WITH 10;
@@ -196,9 +196,19 @@ ALTER SEQUENCE pres_id_seq RESTART WITH 10;
 insert into procedure (id,date,type,patient_id) values(1,'04.09.2020 15:24','obican pregled',2);
 insert into procedure (id,date,type,patient_id) values(2,'03.07.2018 15:24','kontrola',2);
 
+insert into procedure (id,date,type,patient_id, room) values(3, '01.08.2020 15:00', 'obican pregled', 2, 8);
+insert into procedure (id,date,type,patient_id, room) values(4, '01.08.2020 17:00', 'kontrola', 3, 8);
+insert into procedure (id,date,type,patient_id, room) values(5, '01.08.2020 15:00', 'obican pregled', 4, 9);
+insert into procedure (id,date,type,patient_id, room) values(6, '01.08.2020 17:00', 'kontrola', 5, 9;
 
 insert into examination(id,doctor_id) values(2,8);
 insert into examination(id,doctor_id) values(1,12);
+
+insert into examination(id,doctor_id) values(3, 13);
+insert into examination(id,doctor_id) values(4, 12);
+insert into examination(id,doctor_id) values(5, 13);
+insert into examination(id,doctor_id) values(6, 12);
+
 --insert into examination(id,doctor_id) values(2,13);
 
 --Adding ratings

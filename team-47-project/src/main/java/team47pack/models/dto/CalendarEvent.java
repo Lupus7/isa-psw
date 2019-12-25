@@ -1,6 +1,9 @@
 package team47pack.models.dto;
 
+import team47pack.models.Doctor;
 import team47pack.models.Examination;
+import team47pack.models.Patient;
+import team47pack.models.Room;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,7 +25,36 @@ public class CalendarEvent {
     private Integer shift;
 
     public CalendarEvent(Examination examination) {
+        initForPatient(examination);
+    }
+
+    public CalendarEvent(Examination examination, String type) {
+        if (type.contentEquals("CADMIN_ROOM"))
+            initForCAdmin(examination);
+        else
+            initForPatient(examination);
+    }
+
+    private void initForPatient(Examination examination) {
         this.title = "";
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        cal.setTime(examination.getDate());
+        this.start = format.format(cal.getTime());
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        this.end = format.format(cal.getTime());
+        this.backgroundColor = "#aaf";
+        this.textColor = "#000";
+        this.shift = examination.getDoctor().getShift();
+    }
+
+    public void initForCAdmin(Examination examination) {
+        Doctor doctor = examination.getDoctor();
+        Patient patient = examination.getPatient();
+        Room room = examination.getRoom();
+        this.title = "Doctor " + doctor.getFirstName() + " " + doctor.getLastName() +
+                " has examination appointed for " + patient.getFirstName() + " " + patient.getLastName() +
+                " in room number: " + room.getNumber() + ", \"" + room.getName() + "\".";
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         cal.setTime(examination.getDate());

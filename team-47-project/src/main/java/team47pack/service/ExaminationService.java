@@ -147,4 +147,7 @@ public class ExaminationService {
 
 	}
 
+    public List<Examination> findAllByRoom(Long id) {
+		return examinationRepo.findAllByRoomId(id);
+    }
 }

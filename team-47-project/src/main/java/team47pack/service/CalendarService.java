@@ -2,12 +2,16 @@ package team47pack.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team47pack.models.ClinicAdmin;
 import team47pack.models.Doctor;
 import team47pack.models.Examination;
+import team47pack.models.Room;
 import team47pack.models.dto.CalendarEvent;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +23,12 @@ public class CalendarService {
 
     @Autowired
     private ExaminationService examinationService;
+
+    @Autowired
+    private ClinicAdminService clinicAdminService;
+
+    @Autowired
+    private RoomService roomService;
 
     public List<CalendarEvent> docInfo(String email, String date) {
         if (email == null || date == null)
@@ -63,5 +73,23 @@ public class CalendarService {
     }
 
 
+    public List<CalendarEvent> roomInfo(String adminMail) {
+        List<Room> rooms = roomService.getRooms(adminMail);
+
+        if (rooms == null || rooms.size() == 0)
+            return Collections.emptyList();
+
+        List<CalendarEvent> events = new ArrayList<>();
+
+        rooms.forEach(room -> {
+            List<Examination> examinations = examinationService.findAllByRoom(room.getId());
+
+            examinations.forEach(examination -> {
+                events.add(new CalendarEvent(examination, "CADMIN_ROOM"));
+            });
+        });
+
+        return events;
+    }
 }
 
