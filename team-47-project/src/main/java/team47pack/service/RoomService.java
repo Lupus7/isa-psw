@@ -32,7 +32,7 @@ public class RoomService {
 		ArrayList<Room> rooms = new ArrayList<>();
 		if (ca == null)
 			return rooms;
-		rooms = (ArrayList<Room>) roomRepo.findByClinicId(ca.getClinic());
+		rooms = (ArrayList<Room>) roomRepo.findAllByClinicId(ca.getClinic());
 
 		return rooms;
 	}
