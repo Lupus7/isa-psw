@@ -1,6 +1,7 @@
 package team47pack.service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +38,7 @@ public class RoomService {
 		return rooms;
 	}
 
-	public boolean addRoom(String name, int number, String type,String email) {
+	public boolean addRoom(String name, int number, String type, String email) {
 		ClinicAdmin ca = clinicAdminRepo.findByEmail(email);
 		if (ca == null)
 			return false;
@@ -62,8 +63,11 @@ public class RoomService {
 		if (room == null)
 			return false;
 
-		Clinic clinic = clinicRepo.getOne(Long.parseLong("" + ca.getClinic()));
-		clinic.getRooms().remove(room);
+		Optional<Clinic> clinic = clinicRepo.findById(Long.parseLong("" + ca.getClinic()));
+		if (!clinic.isPresent())
+			return false;
+
+		clinic.get().getRooms().remove(room);
 
 		roomRepo.deleteById(Long.parseLong("" + id));
 
@@ -76,21 +80,21 @@ public class RoomService {
 		if (ca == null)
 			return false;
 
-		Room room = roomRepo.getOne(Long.parseLong("" + id));
-		if (room == null)
+		Optional<Room> room = roomRepo.findById(Long.parseLong("" + id));
+		if (!room.isPresent())
 			return false;
 
 		// provera
 		Room room1 = roomRepo.findByName(name);
-		if (room1 != null && room1.getClinicId() == ca.getClinic() && !room1.getName().equals(room.getName()))
+		if (room1 != null && room1.getClinicId() == ca.getClinic() && !room1.getName().equals(room.get().getName()))
 			return false;
 
-		if (!name.equals(room.getName()))
-			room.setName(name);
-		room.setNumber(number);
-		room.setType(type);
+		if (!name.equals(room.get().getName()))
+			room.get().setName(name);
+		room.get().setNumber(number);
+		room.get().setType(type);
 
-		roomRepo.save(room);
+		roomRepo.save(room.get());
 
 		return true;
 	}
@@ -99,6 +103,9 @@ public class RoomService {
 		ClinicAdmin ca = clinicAdminRepo.findByEmail(email);
 		ArrayList<Room> rooms = new ArrayList<>();
 		if (ca == null)
+			return rooms;
+
+		if (obj.get("name") == null || obj.get("number") == null)
 			return rooms;
 
 		if (obj.get("name").equals("") && obj.get("number").equals(""))

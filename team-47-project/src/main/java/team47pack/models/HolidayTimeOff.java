@@ -59,8 +59,8 @@ public class HolidayTimeOff {
 		this.accepted = accepted;
 		this.staff = staff;
 	}
-	
-	public HolidayTimeOff(Date beginDate, Date endDate, String typeRequest, String reason,MedicalStaff staff) {
+
+	public HolidayTimeOff(Date beginDate, Date endDate, String typeRequest, String reason, MedicalStaff staff) {
 		super();
 		this.beginDate = beginDate;
 		this.endDate = endDate;
