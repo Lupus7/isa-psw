@@ -4,7 +4,10 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +49,8 @@ public class ClinicController {
 			return dd;
 
 		}
-		return null;
+
+		return new ArrayList<>();
 	}
 
 	@PostMapping(value = "clinic/leaveRate")
@@ -55,12 +59,24 @@ public class ClinicController {
 		boolean b = clinicService.leaveRate(rateRequest);
 
 	}
-	
+
 	// @author:Jokara
 	@GetMapping(value = "clinic/getInfo")
 	@PreAuthorize("hasRole('CADMIN')")
 	public Clinic getClinicInfo(Principal user) {
 
 		return clinicService.getClinicInfo(user.getName());
+	}
+
+	// @author:Jokara
+	@PostMapping(value = "clinic/updateInfo", produces = "application/json", consumes = "application/json")
+	@PreAuthorize("hasRole('CADMIN')")
+	public ResponseEntity<String> updateInfo(@RequestBody String json, Principal user) throws JSONException {
+		JSONObject obj = new JSONObject(json);
+
+		if (clinicService.updateInfo(obj, user.getName()))
+			return ResponseEntity.ok("Clinic info successfulty updated!");
+		else
+			return ResponseEntity.status(400).body("Could not add!");
 	}
 }
