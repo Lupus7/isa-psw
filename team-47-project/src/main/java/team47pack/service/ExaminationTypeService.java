@@ -39,10 +39,10 @@ public class ExaminationTypeService {
 		if (ca == null || obj == null)
 			return false;
 
-		if (obj.getString("name") == null)
+		if (obj.getString("name") == null || obj.getString("specialization") == null || obj.getString("price") == null)
 			return false;
 
-		if (obj.getString("name").equals(""))
+		if (obj.getString("name").equals("") || obj.getString("specialization").equals("") || obj.getString("price").equals("") )
 			return false;
 
 		ExaminationType check = examinTypeRepo.findByName(obj.getString("name"));
@@ -51,7 +51,8 @@ public class ExaminationTypeService {
 			return false;
 
 		Long clinicId = Long.parseLong("" + ca.getClinic());
-		ExaminationType et = new ExaminationType(clinicId, obj.getString("name"));
+		float price = Float.parseFloat(obj.getString("price"));
+		ExaminationType et = new ExaminationType(clinicId, obj.getString("name"), obj.getString("specialization"), price);
 
 		examinTypeRepo.save(et);
 
@@ -64,10 +65,10 @@ public class ExaminationTypeService {
 		if (ca == null || obj == null)
 			return false;
 
-		if (obj.getString("name") == null || obj.getString("id") == null)
+		if (obj.getString("name") == null || obj.getString("id") == null || obj.getString("specialization") == null || obj.getString("price") == null)
 			return false;
 
-		if (obj.getString("name").equals("") || obj.getString("id").equals(""))
+		if (obj.getString("name").equals("") || obj.getString("id").equals("") || obj.getString("specialization").equals("") || obj.getString("price").equals(""))
 			return false;
 
 		Optional<ExaminationType> et = examinTypeRepo.findById(Long.parseLong(obj.getString("id")));
@@ -81,6 +82,9 @@ public class ExaminationTypeService {
 			return false;
 
 		et.get().setName(obj.getString("name"));
+		et.get().setSpecialization(obj.getString("specialization"));
+		float price = Float.parseFloat(obj.getString("price"));
+		et.get().setPrice(price);
 
 		examinTypeRepo.save(et.get());
 
@@ -98,7 +102,7 @@ public class ExaminationTypeService {
 		if (!et.isPresent())
 			return false;
 
-		examinTypeRepo.deleteById(id);
+		examinTypeRepo.delete(et.get());
 
 		return true;
 
