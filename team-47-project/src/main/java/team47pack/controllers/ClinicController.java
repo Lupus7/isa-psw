@@ -50,7 +50,7 @@ public class ClinicController {
 
 		}
 
-		return new ArrayList<>();
+		return null;
 	}
 
 	@PostMapping(value = "clinic/leaveRate")
