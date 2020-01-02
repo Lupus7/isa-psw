@@ -35,12 +35,13 @@
                                     </div>
 
                                     <div class="middle">                                     
-                                        <button type="button" class="btn btn-block " @click="rooms" style=" border-radius: 6px;  color: white; padding:8px; background:#ae4102" >Rooms </button> 
+                                        <button type="button" class="btn btn-block " @click="clinic" style=" border-radius: 6px;  color: white; padding:8px; background:#3964eb; margin-bottom: 15px;" >Clinic Profile </button> 
                                     </div>
 
-                                     <div class="middle">
-                                        <button type="button" class="btn btn-block " @click="doctors" style=" border-radius: 6px;  color: white; padding:8px; background:#3964eb; margin-top: 15px;" >Doctors </button>
+                                    <div class="middle">                                     
+                                        <button type="button" class="btn btn-block btn-warning " @click="exmnTypes" style=" border-radius: 6px;  color: white; padding:8px; margin-top: 15px; " >Examination Types </button> 
                                     </div>
+
                                    
                                 </div>
 
@@ -150,11 +151,6 @@ export default {
             this.$router.push("/requestsTable");
 
         },
-        rooms(e){
-             e.preventDefault();
-              this.$router.push("/rooms");
-
-        },
         changeData(e){
             e.preventDefault()
             this.$router.push("/changeData");
@@ -164,10 +160,13 @@ export default {
             e.preventDefault()
             this.$router.push("/passwordChange");
         },
-
-        doctors(e){
+        clinic(e){
             e.preventDefault()
-            this.$router.push("/caDoctors");
+            this.$router.push("/clinicProfile");
+        },
+        exmnTypes(e){
+            e.preventDefault()
+            this.$router.push("/examinTypes");
         },
         
     },
