@@ -69,6 +69,21 @@ const router = new Router({
                 import ("./components/UserProfile")
         },
         {
+            path: "/clinicProfile",
+            name: "ClinicProfile",
+
+            component: () =>
+                import ("./components/CAProfileComp/ClinicProfile")
+        },
+
+        {
+            path: "/examinTypes",
+            name: "ExaminTypes",
+
+            component: () =>
+                import ("./components/CAProfileComp/ExaminTypes")
+        },
+        {
             path: "/changeData",
             name: "ChangeData",
             component: () =>
