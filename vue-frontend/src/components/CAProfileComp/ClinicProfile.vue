@@ -29,8 +29,12 @@
                                         <button type="button" class="btn btn-block " @click="rooms" style=" border-radius: 6px;  color: white; padding:10px; background:#ae4102; margin-right:80px" >Rooms </button> 
                                     </div>
 
-                                     <div class="middle">
+                                    <div class="middle">
                                         <button type="button" class="btn btn-block " @click="doctors" style=" border-radius: 6px;  color: white; padding:10px; background:#3964eb; margin-top: 15px;" >Doctors </button>
+                                    </div>
+
+                                    <div class="middle">
+                                        <button type="button" class="btn btn-block btn-warning " @click="priceList" style=" border-radius: 6px;  color: white; padding:10px; margin-top: 15px;" >Pricelist </button>
                                     </div>
                                    
                                 </div>
@@ -76,7 +80,7 @@
                                                 <label style="font-weight:bold;">About</label>
                                             </div>
                                             <div class="col-md-8 col-6">
-                                                <textarea class="form-control" :disabled=true v-text="clinic.description"> 
+                                                <textarea class="form-control" rows="4" :disabled=true v-text="clinic.description"> 
 
                                                 </textarea>
 
@@ -131,6 +135,10 @@ export default {
             e.preventDefault()
             this.$router.push("/changeClinicData");
         },
+        priceList(e){
+            e.preventDefault()
+            this.$router.push("/priceList");
+        }
     },
     created() {
         this.getClinic();
