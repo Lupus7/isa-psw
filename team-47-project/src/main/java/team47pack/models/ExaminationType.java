@@ -18,18 +18,26 @@ public class ExaminationType {
 
 	@Column
 	private String name;
-	
-	@Column(name="clinic", unique=false, nullable=false)
+
+	@Column
+	private String specialization;
+
+	@Column
+	private float price;
+
+	@Column(name = "clinic", unique = false, nullable = false)
 	private Long clinic;
 
 	public ExaminationType() {
 
 	}
 
-	public ExaminationType(Long clinicId, String name) {
+	public ExaminationType(Long clinicId, String name, String specialization, float price) {
 		super();
 		this.clinic = clinicId;
 		this.name = name;
+		this.specialization = specialization;
+		this.price = price;
 	}
 
 	public Long getId() {
@@ -55,8 +63,21 @@ public class ExaminationType {
 	public void setClinic(Long clinic_id) {
 		this.clinic = clinic_id;
 	}
-	
-	
 
-	
+	public String getSpecialization() {
+		return specialization;
+	}
+
+	public void setSpecialization(String specialization) {
+		this.specialization = specialization;
+	}
+
+	public float getPrice() {
+		return price;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
+	}
+
 }
