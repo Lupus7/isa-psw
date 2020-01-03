@@ -227,3 +227,20 @@ insert into doctor_ratings(doctor_id,rate_id) values(8,4);
 insert into doctor_ratings(doctor_id,rate_id) values(8,2);
 insert into doctor_ratings(doctor_id,rate_id) values(12,2);
 insert into doctor_ratings(doctor_id,rate_id) values(13,3);
+
+--Add examination types
+insert into examinationtype (id,name,specialization,price,clinic_id) values (1,'Control','General Practise',5,2);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (2,'Regular check','General Practise',2.5,2);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (3,'Control','Stomatologist',2,2);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (4,'Build in prosthesis','Stomatologist',72,2);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (5,'Eyelid Surgery','Plastic surgeon',1200,2);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (6,'Facelift','Plastic surgeon',3000,2);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (7,'Taking out tooth','Stomatologist',12,2);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (8,'Control','General Practise',6,1);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (9,'Regular check','General Practise',1.5,1);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (10,'Control','Stomatologist',2,2);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (11,'Build in prosthesis','Stomatologist',45,1);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (12,'Eyelid Surgery','Plastic surgeon',1700,1);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (13,'Facelift','Plastic surgeon',5000,1);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (14,'Taking out tooth','Stomatologist',7.55,1);
+ALTER SEQUENCE examinationtype_id_seq RESTART WITH 15;

@@ -25,7 +25,7 @@ public class ExaminationType {
 	@Column
 	private float price;
 
-	@Column(name = "clinic", unique = false, nullable = false)
+	@Column(name = "clinic_id", unique = false, nullable = false)
 	private Long clinic;
 
 	public ExaminationType() {

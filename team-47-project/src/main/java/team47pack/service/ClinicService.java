@@ -1,11 +1,23 @@
 package team47pack.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import team47pack.models.*;
+
+import team47pack.models.Clinic;
+import team47pack.models.ClinicAdmin;
+import team47pack.models.Doctor;
+import team47pack.models.Examination;
+import team47pack.models.Rate;
 import team47pack.models.dto.ClinicAndAdmin;
 import team47pack.models.dto.ClinicSearchRequest;
 import team47pack.models.dto.ClinicSearchResult;
@@ -14,11 +26,6 @@ import team47pack.repository.ClinicAdminRepo;
 import team47pack.repository.ClinicRepo;
 import team47pack.repository.ExaminationRepo;
 import team47pack.repository.RateRepo;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClinicService {
@@ -155,5 +162,36 @@ public class ClinicService {
 			}
 		}
 		return false;
+	}
+	
+	// @author:Jokara
+	public boolean updateInfo(JSONObject obj, String email) throws JSONException {
+		ClinicAdmin ca = clinicAdminRepo.findByEmail(email);
+		if (ca == null)
+			return false;
+		Long idClinic = Long.parseLong("" + ca.getClinic());
+		Optional<Clinic> cl = clinicRepo.findById(idClinic);
+		if (!cl.isPresent())
+			return false;
+		Clinic clinic = cl.get();
+
+		if (obj == null || obj.getString("name") == null || obj.getString("address") == null
+				|| obj.getString("description") == null)
+			return false;
+		if (obj.getString("name").equals("") || obj.getString("address").equals("")
+				|| obj.getString("description").equals(""))
+			return false;
+		
+		String name = obj.getString("name");
+		String address = obj.getString("address");
+		String description = obj.getString("description");
+		
+		clinic.setName(name);
+		clinic.setAddress(address);
+		clinic.setDescription(description);
+		
+		clinicRepo.save(clinic);
+
+		return true;
 	}
 }
