@@ -38,22 +38,34 @@ public class NextProcedure {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = true)
 	private Patient patient;
-	
+
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="doctor_id", referencedColumnName = "id", nullable = true)
+	@JoinColumn(name = "doctor_id", referencedColumnName = "id", nullable = true)
 	private Doctor doctor;
 
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "examinationtype_id", referencedColumnName = "id", nullable = true)
+	private ExaminationType examinationtype;
 
 	public NextProcedure() {
 
 	}
 
-	public NextProcedure(String type, Date date, Patient patient,Doctor doctor) {
+	public NextProcedure(String type, Date date, Patient patient, Doctor doctor) {
 
 		this.type = type;
 		this.date = date;
 		this.patient = patient;
 		this.doctor = doctor;
+	}
+
+	public NextProcedure(String type, Date date, Patient patient, Doctor doctor, ExaminationType etx) {
+
+		this.type = type;
+		this.date = date;
+		this.patient = patient;
+		this.doctor = doctor;
+		this.examinationtype = etx;
 	}
 
 	public Long getId() {
@@ -95,7 +107,13 @@ public class NextProcedure {
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
 	}
-	
-	
+
+	public ExaminationType getExaminationtype() {
+		return examinationtype;
+	}
+
+	public void setExaminationtype(ExaminationType examinationtype) {
+		this.examinationtype = examinationtype;
+	}
 
 }
