@@ -31,6 +31,12 @@ public class ExaminationTypeController {
 	public List<ExaminationType> getExaminTypes(Principal user) {
 		return examinationTypeService.getExaminTypes(user.getName());
 	}
+	
+	@GetMapping(value = "/getNextExmType")
+	@PreAuthorize("hasRole('DOCTOR')")
+	public List<ExaminationType> getNextExmType(Principal user) {
+		return examinationTypeService.getNextExmType(user.getName());
+	}
 
 	@PostMapping(value = "/addExaminType", produces = "application/json", consumes = "application/json")
 	@PreAuthorize("hasRole('CADMIN')")

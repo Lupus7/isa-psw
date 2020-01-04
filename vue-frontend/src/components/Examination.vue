@@ -68,6 +68,15 @@
                                 </div>
                             </div>
 
+                            <div v-if="procedure==='Examination'" class="control-group" style="padding-left:20px; padding-right:700px">
+                                <label class="control-label">Type of Examination:</label>
+                                <div class="form-group">
+                                    <select class="form-control" v-model="type">
+                                        <option v-for="(ext, index) in examTypes" :key="index" :value="ext"> {{ext.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="control-group" style="padding-left:20px; padding-right:700px">
                                 <label class="control-label" >Date:</label>
                                 <div class="form-group">
@@ -112,6 +121,8 @@ export default {
 
             procedure :"",
             date: "",
+            type:"",
+            examTypes:""
         }
     },
     props: {
@@ -120,6 +131,11 @@ export default {
         }
     },
     methods: {
+
+        getExamTypes(){
+            axios.get('http://localhost:8080/ca/getNextExmType').then(response => { this.examTypes = response.data; })
+        },
+
         getPatiendData() {
             axios
                 .get('http://localhost:8080/patient/' + this.id)
@@ -127,6 +143,7 @@ export default {
                     this.patient = response.data;
                 })
         },
+        
         getCodebookData() {
             axios
                 .get('http://localhost:8080/codebook/diagnosis')
@@ -155,13 +172,22 @@ export default {
             }
         },
         confirm() {
+            
+            if(this.procedure !== 'Examination')
+                this.type = ''
+            else{
+                this.type = this.type.id
+                console.log(this.type)
+            }
+
             let reqData = { 
                 patientId: this.patient.id,
                 desc: this.examDesc,
                 diag: this.diag,
                 prescs: this.prescs,
                 procedure: this.procedure,
-                date: this.date
+                date: this.date,
+                idType: this.type
             }
             axios
                 .post('http://localhost:8080/patient/examination', reqData)
@@ -175,6 +201,7 @@ export default {
     created() {
         this.getPatiendData()
         this.getCodebookData()
+        this.getExamTypes()
     },
     watch: {
         selDiag: {

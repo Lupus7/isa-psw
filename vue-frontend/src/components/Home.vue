@@ -3,7 +3,7 @@
         <password-change v-if="this.firstLogin === true  "> PasswordChange </password-change>
         <patientHome v-else-if="this.role=='ROLE_PATIENT' && this.firstLogin === false " />
         <NurseHome v-else-if="this.role=='ROLE_NURSE' && this.firstLogin === false" />
-        <a href="#/search" v-else-if="this.role=='ROLE_DOCTOR' && this.firstLogin === false">SEARCH</a>
+        <DoctorHome v-else-if="this.role=='ROLE_DOCTOR' && this.firstLogin === false"/>
         <div class="container" v-else-if="this.role=='ROLE_CADMIN' && this.firstLogin === false">
             <Calendar mode="room"/>
         </div>
@@ -17,6 +17,7 @@ import patientHome from './PatientHome'
 import jwt_decode from 'jwt-decode'
 import LocalStorageService from "../LocalStorageService"
 import NurseHome from './NurseHome'
+import DoctorHome from './DoctorHome'
 import Calendar from './Calendar'
 import PasswordChange from './PasswordChange'
 import axios from 'axios'
@@ -51,6 +52,7 @@ export default {
         PasswordChange,
         patientHome,
         NurseHome,
+        DoctorHome,
         Calendar
     }
 

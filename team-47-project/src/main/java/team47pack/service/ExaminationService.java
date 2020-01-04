@@ -1,12 +1,5 @@
 package team47pack.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import team47pack.models.*;
-import team47pack.models.dto.ExaminInfo;
-import team47pack.models.dto.PrescriptionDTO;
-import team47pack.repository.*;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +7,33 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import team47pack.models.Clinic;
+import team47pack.models.ClinicAdmin;
+import team47pack.models.Diagnosis;
+import team47pack.models.Doctor;
+import team47pack.models.Examination;
+import team47pack.models.ExaminationType;
+import team47pack.models.MedFileEntry;
+import team47pack.models.MedicalFile;
+import team47pack.models.NextProcedure;
+import team47pack.models.Patient;
+import team47pack.models.Prescription;
+import team47pack.models.PrescriptionVerification;
+import team47pack.models.dto.ExaminInfo;
+import team47pack.models.dto.PrescriptionDTO;
+import team47pack.repository.ClinicRepo;
+import team47pack.repository.DiagnosisRepo;
+import team47pack.repository.DoctorRepo;
+import team47pack.repository.ExaminationRepo;
+import team47pack.repository.ExaminationTypeRepo;
+import team47pack.repository.MedEntryRepo;
+import team47pack.repository.MedFileRepo;
+import team47pack.repository.NextProcedureRepo;
+import team47pack.repository.PrescriptionRepo;
 
 @Service
 public class ExaminationService {
@@ -37,6 +57,9 @@ public class ExaminationService {
 	private EmailService emailService;
 	@Autowired
 	private ClinicRepo clinicRepo;
+
+	@Autowired
+	private ExaminationTypeRepo exmTypeRepo;
 
 	@Autowired
 	private PatientService patientService;
@@ -107,13 +130,17 @@ public class ExaminationService {
 
 		// @------author: Jokara nextProcedure
 
-		if (examinInfo.getDate() != null && examinInfo.getProcedure() != null) {
-			if (examinInfo.getDate().toString().equals("") && !examinInfo.getProcedure().equals(""))
+		if (examinInfo.getDate() != null && examinInfo.getProcedure() != null && examinInfo.getIdType() != null) {
+			if (examinInfo.getDate().toString().equals("") && !examinInfo.getProcedure().equals("")) {
+				if (examinInfo.getProcedure().equals("Examination") && examinInfo.getIdType().equals(""))
+					return false;
+				else if (examinInfo.getProcedure().equals("Operation") && !examinInfo.getIdType().equals(""))
+					return false;
+			} else if (!examinInfo.getDate().toString().equals("") && examinInfo.getProcedure().equals(""))
 				return false;
-			else if (!examinInfo.getDate().toString().equals("") && examinInfo.getProcedure().equals(""))
-				return false;
-			else if (!examinInfo.getDate().toString().equals("") && !examinInfo.getProcedure().equals("") && pat.isPresent()) {
-				addNextProcedure(examinInfo.getDate(), examinInfo.getProcedure(), pat, doctor);
+			else if (!examinInfo.getDate().toString().equals("") && !examinInfo.getProcedure().equals("")
+					&& pat.isPresent()) {
+				addNextProcedure(examinInfo.getDate(), examinInfo.getProcedure(), examinInfo.getIdType(), pat, doctor);
 			}
 		}
 
@@ -121,33 +148,49 @@ public class ExaminationService {
 	}
 
 	// @------author: Jokara
-	public void addNextProcedure(Date date, String procedure, Optional<Patient> pat, String d) throws ParseException {
+	public void addNextProcedure(Date date, String procedure, String type, Optional<Patient> pat, String d)
+			throws ParseException {
 
 		Doctor doctor = doctorRepo.findByEmail(d);
 		Date dateT = new Date();
 
 		if (dateT.compareTo(date) <= 0) {
-			NextProcedure np = new NextProcedure(procedure, date, pat.get(), doctor);
-			nextProcedureRepo.save(np);
-			Clinic clinic = clinicRepo.getOne(doctor.getClinicId());
-			List<ClinicAdmin> admins = (List<ClinicAdmin>) clinic.getClinicAdmins();
+			if (type.equals("")) {
+				NextProcedure np = new NextProcedure(procedure, date, pat.get(), doctor);
+				nextProcedureRepo.save(np);
+			} else {
+				Optional<ExaminationType> ext = exmTypeRepo.findById(Long.parseLong(type));
+				if (ext.isPresent()) {
+					NextProcedure np = new NextProcedure(procedure, date, pat.get(), doctor, ext.get());
+					nextProcedureRepo.save(np);
+				}
 
-			DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-			String dateE = formatter.format(date);
-			String body = "Dear Sir/Madam \n \nYou have new " + procedure + " request made by doctor:  "
-					+ doctor.getFirstName() + " " + doctor.getLastName() + "!\n" + "Select a room for this " + procedure
-					+ " until " + dateE
-					+ " or system will automatically assign room for this request! \n \n All the best!";
+			}
 
-			for (ClinicAdmin ca : admins) {
-				emailService.sendSimpleMessage(ca.getEmail(), "New " + procedure + "!", body);
+			System.out.println("Snimio!");
+
+			Optional<Clinic> clinic = clinicRepo.findById(doctor.getClinicId());
+			if (clinic.isPresent()) {
+
+				List<ClinicAdmin> admins = (List<ClinicAdmin>) clinic.get().getClinicAdmins();
+
+				DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+				String dateE = formatter.format(date);
+				String body = "Dear Sir/Madam \n \nYou have new " + procedure + " request made by doctor:  "
+						+ doctor.getFirstName() + " " + doctor.getLastName() + "!\n" + "Select a room for this "
+						+ procedure + " until " + dateE
+						+ " or system will automatically assign room for this request! \n \n All the best!";
+
+				for (ClinicAdmin ca : admins)
+					emailService.sendSimpleMessage(ca.getEmail(), "New " + procedure + "!", body);
+
 			}
 
 		}
 
 	}
 
-    public List<Examination> findAllByRoom(Long id) {
+	public List<Examination> findAllByRoom(Long id) {
 		return examinationRepo.findAllByRoomId(id);
-    }
+	}
 }

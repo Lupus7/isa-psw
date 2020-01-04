@@ -22,6 +22,7 @@ public class ExaminInfo {
 
 	private Date date;
 	private String procedure;
+	private String idType;
 
 	public ExaminInfo() {
 	}
@@ -34,6 +35,17 @@ public class ExaminInfo {
 		this.prescs = prescs;
 		this.date = date;
 		this.procedure = procedure;
+	}
+	
+	public ExaminInfo(Long patientId, String desc, DiagnosisDTO diag, List<PrescriptionDTO> prescs, Date date,
+			String procedure, String id) {
+		this.patientId = patientId;
+		this.desc = desc;
+		this.diag = diag;
+		this.prescs = prescs;
+		this.date = date;
+		this.procedure = procedure;
+		this.idType = id;
 	}
 
 	public Long getPatientId() {
@@ -83,5 +95,15 @@ public class ExaminInfo {
 	public void setProcedure(String procedure) {
 		this.procedure = procedure;
 	}
+
+	public String getIdType() {
+		return idType;
+	}
+
+	public void setIdType(String idType) {
+		this.idType = idType;
+	}
+	
+	
 
 }

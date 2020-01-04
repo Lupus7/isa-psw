@@ -9,5 +9,6 @@ import team47pack.models.NextProcedure;
 public interface NextProcedureRepo extends JpaRepository<NextProcedure, Long> {
 	
 	 Optional<NextProcedure> findByDoctorId(Long id);
+	 Optional<NextProcedure> findByExaminationtypeId(Long id);
 
 }

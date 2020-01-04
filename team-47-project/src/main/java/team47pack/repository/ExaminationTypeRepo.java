@@ -24,4 +24,6 @@ public interface ExaminationTypeRepo extends JpaRepository<ExaminationType, Long
 
 	ArrayList<ExaminationType> findByNameContainingIgnoreCaseAndIdAndClinic(String name, Long id, Long clinicId);
 
+	ArrayList<ExaminationType> findByClinicAndSpecialization(Long clinicId, String specialization);
+
 }
