@@ -40,7 +40,7 @@ insert into nurse values (7);
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','doctor1',true,'Jovana','Jovanic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor1',8);
 insert into medical_staff (id,on_vacation,clinic_id) values (8,false,1);            
-insert into doctor (id,specialization,shift) values (8,'Ginecologist',1);
+insert into doctor (id,specialization,shift) values (8,'General Practise',1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','doctor2',true,'Zivko','Zivkovic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor2',12);
@@ -143,10 +143,6 @@ insert into user_authority (user_id, authority_id) values (14,6);
 
 -- Doctors
 insert into doctors()
-insert into examination(id,type,date,patient_id,doctor_id,room) values(1,'obican pregled','04.09.2020 15:24',2,13,8);
-insert into examination(id,type,date,patient_id,doctor_id,room) values(2,'operacija','07.10.2019 15:24',3,8,3);
-insert into examination(id,type,date,patient_id,doctor_id,room) values(3,'kontrola','04.09.2018 20:24',2,8,4);
-
 -------------------------------------- Dodavanje doktora,cadmin u klinike
 insert into clinic_doctor values(1,8);
 insert into clinic_doctor values(2,12);
@@ -188,28 +184,17 @@ insert into medicalfile_entries(medical_file_id,entries_id) values(2,1);
 insert into medicalfile_entries(medical_file_id,entries_id) values(2,2);
 
 SELECT setval('med_en_id_seq', 6, true);
-ALTER SEQUENCE procedure_id_seq RESTART WITH 7;
-
 ALTER SEQUENCE diag_id_seq RESTART WITH 10;
 ALTER SEQUENCE pres_id_seq RESTART WITH 10;
 
-insert into procedure (id,date,type,patient_id) values(1,'04.09.2020 15:24','obican pregled',2);
-insert into procedure (id,date,type,patient_id) values(2,'03.07.2018 15:24','kontrola',2);
+insert into procedure (id,date,type,patient_id, room) values(1,'04.09.2020 15:24','Examination', 2, 1);
+insert into procedure (id,date,type,patient_id, room) values(2,'03.07.2018 15:24','Examination', 2, 2);
+insert into procedure (id,date,type,patient_id, room) values(3, '01.08.2020 15:00', 'Examination', 2, 8);
+insert into procedure (id,date,type,patient_id, room) values(4, '01.08.2020 17:00', 'Examination', 3, 8);
+insert into procedure (id,date,type,patient_id, room) values(5, '01.08.2020 15:00', 'Examination', 4, 9);
+insert into procedure (id,date,type,patient_id, room) values(6, '01.08.2020 17:00', 'Examination', 5, 9;
 
-insert into procedure (id,date,type,patient_id, room) values(3, '01.08.2020 15:00', 'obican pregled', 2, 8);
-insert into procedure (id,date,type,patient_id, room) values(4, '01.08.2020 17:00', 'kontrola', 3, 8);
-insert into procedure (id,date,type,patient_id, room) values(5, '01.08.2020 15:00', 'obican pregled', 4, 9);
-insert into procedure (id,date,type,patient_id, room) values(6, '01.08.2020 17:00', 'kontrola', 5, 9;
-
-insert into examination(id,doctor_id) values(2,8);
-insert into examination(id,doctor_id) values(1,12);
-
-insert into examination(id,doctor_id) values(3, 13);
-insert into examination(id,doctor_id) values(4, 12);
-insert into examination(id,doctor_id) values(5, 13);
-insert into examination(id,doctor_id) values(6, 12);
-
---insert into examination(id,doctor_id) values(2,13);
+ALTER SEQUENCE procedure_id_seq RESTART WITH 7;
 
 --Adding ratings
 insert into rate(id,value) values(1,5);
@@ -244,3 +229,11 @@ insert into examinationtype (id,name,specialization,price,clinic_id) values (12,
 insert into examinationtype (id,name,specialization,price,clinic_id) values (13,'Facelift','Plastic surgeon',5000,1);
 insert into examinationtype (id,name,specialization,price,clinic_id) values (14,'Taking out tooth','Stomatologist',7.55,1);
 ALTER SEQUENCE examinationtype_id_seq RESTART WITH 15;
+
+-- add examinType to examination
+insert into examination(id,doctor_id, examinationtype_id) values(1,8,8);
+insert into examination(id,doctor_id, examinationtype_id) values(2,8,9);
+insert into examination(id,doctor_id, examinationtype_id) values(3,12,4);
+insert into examination(id,doctor_id, examinationtype_id) values(4,12,7);
+insert into examination(id,doctor_id, examinationtype_id) values(5,13,6);
+insert into examination(id,doctor_id, examinationtype_id) values(6,13,5);
