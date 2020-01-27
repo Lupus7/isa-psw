@@ -142,7 +142,7 @@ insert into user_authority (user_id, authority_id) values (13,6);
 insert into user_authority (user_id, authority_id) values (14,6);
 
 -- Doctors
-insert into doctors()
+--insert into doctors()
 -------------------------------------- Dodavanje doktora,cadmin u klinike
 insert into clinic_doctor values(1,8);
 insert into clinic_doctor values(2,12);

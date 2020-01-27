@@ -1,10 +1,5 @@
 package team47pack.service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,20 +7,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import team47pack.models.Clinic;
-import team47pack.models.ClinicAdmin;
-import team47pack.models.Doctor;
-import team47pack.models.Examination;
-import team47pack.models.Rate;
+import team47pack.models.*;
 import team47pack.models.dto.ClinicAndAdmin;
 import team47pack.models.dto.ClinicSearchRequest;
 import team47pack.models.dto.ClinicSearchResult;
 import team47pack.models.dto.RateRequest;
-import team47pack.repository.ClinicAdminRepo;
-import team47pack.repository.ClinicRepo;
-import team47pack.repository.ExaminationRepo;
-import team47pack.repository.RateRepo;
+import team47pack.repository.*;
+
+import java.util.*;
 
 @Service
 public class ClinicService {
@@ -40,6 +29,9 @@ public class ClinicService {
 
 	@Autowired
 	RateRepo rateRepo;
+
+	@Autowired
+	ExaminationTypeRepo exTypeRepo;
 
 	@Autowired
 	ClinicAdminRepo clinicAdminRepo;
@@ -71,56 +63,70 @@ public class ClinicService {
 		ArrayList<Clinic> clinics1 = new ArrayList<>();
 		clinics1 = retriveClinics(csr.getLocation());
 		if (clinics1.size() != 0) {
-			System.out.println("Klinika: " + clinics1.get(0).getAddress() + clinics1.get(0).getName());
+			for(Clinic c: clinics1){
+				System.out.println("Klinika : " + c.getName() + c.getAddress());
+			}
 		}
-		if (csr.getRate() != null) {
-			for (int i = 0; i < clinics1.size(); i++) {
-				Clinic c = clinics1.get(i);
-				System.out.println("Iteriramo kroz" + c.getName() + c.getDescription());
-				c.setAverage(c.calculateRate());
-				if (c.getAverage() < csr.getRate()) {
-					System.out.println("BRISE SE OVA: " + c.getName() + " " + c.getDescription());
-					clinics1.remove(i);
+		System.out.println("Prosek koji trazimo : " + csr.getRate());
+		ArrayList<Integer> indexestoremove = new ArrayList<>();
+		int size = clinics1.size();
+		if (csr.getRate() != 0.0) {
+			for (int i=0;i<clinics1.size();i++) {
+				System.out.println("Iteriramo kroz" + clinics1.get(i).getName() + clinics1.get(i).getDescription());
+				clinics1.get(i).setAverage(clinics1.get(i).calculateRate());
+				System.out.println("CALCULATED RATE :" + clinics1.get(i).getAverage());
+				if (clinics1.get(i).getAverage() < csr.getRate()) {
+					System.out.println("BRISE SE OVA: " + clinics1.get(i).getName() + " " + clinics1.get(i).getDescription() + " sa prosekom " + clinics1.get(i).getAverage());
+					indexestoremove.add(clinics1.get(i).getId().intValue());
+				}
+			}
+		}else{
+			for (int i=0;i<clinics1.size();i++) {
+				clinics1.get(i).setAverage(clinics1.get(i).calculateRate());
+			}
+		}
+		for(int i = 0 ; i<indexestoremove.size();i++){
+			Iterator<Clinic> iter = clinics1.iterator();
+			while(iter.hasNext()){
+				Clinic cl = iter.next();
+				if(cl.getId().intValue() == indexestoremove.get(i)){
+					iter.remove();
 				}
 			}
 		}
 		System.out.println("PRitmao one koje su ostale");
 		for (Clinic c : clinics1) {
-			System.out.println(c.getAddress() + c.getName() + c.getDescription());
+			System.out.println(c.getAddress() + c.getName() + c.getDescription() + c.getAverage());
 		}
-		ArrayList<Examination> examinations = retrieveExamination(csr.getExamination());
-		if (examinations.size() != 0) {
-			System.out.println(examinations.get(0).getId() + " " + examinations.get(0).getType());
-		} else {
-			System.out.println("EXAMINATIONS SU NULL");
-		}
+		ArrayList<ExaminationType> examinationsTypes = retrieveExamination(csr.getExamination());
+		System.out.println("EXAMINATION TYPE SIZE " + examinationsTypes.size());
 		ArrayList<ClinicSearchResult> result = new ArrayList<>();
-		for (Clinic c : clinics1) {
-			for (Doctor d : c.getDoctors()) {
-				for (Examination e : examinations) {
-					if (d.getId().intValue() == e.getDoctor().getId().intValue()) {
+		if(csr.getExamination().equals("")){ // AKO je ovo prazan string, vracamo
+			for(Clinic c:clinics1){
+				ClinicSearchResult res = new ClinicSearchResult();
+				res.setClinic(c);
+				result.add(res);
+			}
+		}else{
+			for(ExaminationType et: examinationsTypes){
+				for(Clinic c: clinics1){
+					if (et.getClinic() == c.getId()){
 						ClinicSearchResult res = new ClinicSearchResult();
-						System.out.println("Ovo je isto::::");
-						System.out.println(d.getId().intValue() + " " + e.getDoctor().getId().intValue());
 						res.setClinic(c);
-						res.setCost(3000);
+						res.setCost((int)et.getPrice());
 						result.add(res);
-						break;
 					}
 				}
 			}
 		}
-		if (result.size() != 0) {
-			System.out.println(result.get(0).getClinic().getAddress() + " " + result.get(0).getClinic().getName() + " "
-					+ result.get(0).getCost());
-		}
-		return result;
+
+		return removeDuplicated(result);
 
 	}
 
-	public ArrayList<Examination> retrieveExamination(String type) {
-		Specification<Examination> spec = Specification.where(ClinicSpecification.examinationType(type));
-		return new ArrayList<>(new HashSet<>(exRepo.findAll(spec, PageRequest.of(0, 10, Sort.by("type"))).toList()));
+	public ArrayList<ExaminationType> retrieveExamination(String name) {
+		Specification<ExaminationType> spec = Specification.where(ClinicSpecification.examinationType(name));
+		return new ArrayList<>(new HashSet<>(exTypeRepo.findAll(spec, PageRequest.of(0, 10, Sort.by("name"))).toList()));
 	}
 
 	public ArrayList<Clinic> retriveClinics(String address) {
@@ -194,4 +200,31 @@ public class ClinicService {
 
 		return true;
 	}
+
+	public Clinic getClinicByDoktorID(Long id) {
+		List<Clinic>klinike = clinicRepo.findAll();
+		for(Clinic c: klinike){
+			for(Doctor d: c.getDoctors()){
+				System.out.println("Doctor : " + d.getUsername() + d.getId());
+				if(d.getId() == id){
+					System.out.println("We found doctor: "  + d.getUsername());
+					return c;
+				}
+			}
+		}
+		System.out.println("Nema klinike");
+		return null;
+	}
+	public static ArrayList<ClinicSearchResult> removeDuplicated(ArrayList<ClinicSearchResult> rr){
+		ArrayList<ClinicSearchResult> newList = new ArrayList<>();
+		for(ClinicSearchResult c : rr){
+			if(!newList.contains(c)){
+				newList.add(c);
+			}
+		}
+		LinkedHashSet<ClinicSearchResult> hashet = new LinkedHashSet<>(newList);
+		ArrayList<ClinicSearchResult> rett = new ArrayList<>(hashet);
+		return rett;
+	}
 }
+

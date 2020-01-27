@@ -1,14 +1,9 @@
 package team47pack.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import team47pack.models.ClinicAdmin;
 import team47pack.models.Doctor;
 import team47pack.models.ExaminationType;
@@ -17,6 +12,10 @@ import team47pack.repository.ClinicAdminRepo;
 import team47pack.repository.DoctorRepo;
 import team47pack.repository.ExaminationTypeRepo;
 import team47pack.repository.NextProcedureRepo;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExaminationTypeService {
@@ -172,4 +171,7 @@ public class ExaminationTypeService {
 		return new ArrayList<>();
 	}
 
+	public List<ExaminationType> findByClinicID(Long id) {
+		return examinTypeRepo.findByClinic(id);
+	}
 }

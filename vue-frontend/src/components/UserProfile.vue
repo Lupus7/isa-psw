@@ -154,6 +154,7 @@
 <script>
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
+import {funToastr} from "../toastr.js"
 import LocalStorageService from "../LocalStorageService";
 
 export default {
@@ -236,7 +237,8 @@ export default {
             axios
             .post(url)
             .then(response=>{
-                console.log(response.data);
+               funToastr("s","Successfuly appointed Examination!");
+               this.$router.push("/")
             })
             .catch(error=>{
                 console.log(error)
