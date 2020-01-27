@@ -1,17 +1,17 @@
 package team47pack.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import team47pack.models.ExaminationType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import team47pack.models.ExaminationType;
-
-public interface ExaminationTypeRepo extends JpaRepository<ExaminationType, Long> {
+public interface ExaminationTypeRepo extends JpaRepository<ExaminationType, Long> , JpaSpecificationExecutor<ExaminationType> {
 
 	List<ExaminationType> findByClinic(Long clinic_id);
-
+	List<ExaminationType>findAll();
 	ExaminationType findByName(String name);
 
 	Optional<ExaminationType> findById(Long id);

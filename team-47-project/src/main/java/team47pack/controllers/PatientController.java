@@ -10,10 +10,7 @@ import team47pack.models.dto.FilterPatientRequest;
 import team47pack.models.dto.MedicalFileDto;
 import team47pack.models.dto.SearchPatientRequest;
 import team47pack.security.TokenUtils;
-import team47pack.service.DiagnosisService;
-import team47pack.service.DoctorService;
-import team47pack.service.ExaminationService;
-import team47pack.service.PatientService;
+import team47pack.service.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -36,6 +33,13 @@ public class PatientController {
 	private ExaminationService examinationService;
 	@Autowired
 	private DiagnosisService diagnosisService;
+
+	@Autowired
+	private ExaminationTypeService examinationTypeService;
+
+	@Autowired
+	private ClinicService clinicService;
+
 
 	@GetMapping(value = "/patients")
 	public List<Patient> posts() {
@@ -119,7 +123,18 @@ public class PatientController {
 
 		Patient pat = patientService.getPatient(user.getName());
 		Doctor doc = doctorService.getDoctorByID(id.toString());
-		Examination examination = new Examination(spec,new Date(),pat,doc,false);
+		Clinic clin = clinicService.getClinicByDoktorID(id);
+		System.out.println("Klinika u kojoj radi doktor je : " + clin.toString());
+		List<ExaminationType> ex = examinationTypeService.findByClinicID(clin.getId());
+		ExaminationType temp = new ExaminationType();
+		for(ExaminationType e: ex){
+			if(e.getSpecialization().equals(spec) && !e.getName().equals("Control")){
+				temp = e;
+				System.out.println("This is examination type: " + e.getName() + e.getSpecialization());
+				break;
+			}
+		}
+		Examination examination = new Examination(spec,new Date(),pat,doc,false,temp);
 		examinationService.save(examination);
 		return ResponseEntity.ok().body("Successfully send procedure request appointment");
 	}
