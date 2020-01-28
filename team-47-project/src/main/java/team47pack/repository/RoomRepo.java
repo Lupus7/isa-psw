@@ -19,4 +19,6 @@ public interface RoomRepo extends JpaRepository<Room, Long> {
 
 	ArrayList<Room> findByNumberAndClinicId(int number, int clinicId);
 
+	ArrayList<Room> findByTypeContainingIgnoreCaseAndClinicId(String value, int clinic);
+
 }
