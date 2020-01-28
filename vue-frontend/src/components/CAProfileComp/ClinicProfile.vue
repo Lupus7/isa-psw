@@ -36,6 +36,10 @@
                                     <div class="middle">
                                         <button type="button" class="btn btn-block btn-warning " @click="priceList" style=" border-radius: 6px;  color: white; padding:10px; margin-top: 15px;" >Pricelist </button>
                                     </div>
+
+                                    <div class="middle">
+                                        <button type="button" class="btn btn-block btn-secondary " @click="examRequest" style=" border-radius: 6px;  color: white; padding:10px; margin-top: 15px;" >Examination requests </button>
+                                    </div>
                                    
                                 </div>
 
@@ -138,6 +142,10 @@ export default {
         priceList(e){
             e.preventDefault()
             this.$router.push("/priceList");
+        },
+        examRequest(e){
+            e.preventDefault()
+            this.$router.push("/examRequests");
         }
     },
     created() {
