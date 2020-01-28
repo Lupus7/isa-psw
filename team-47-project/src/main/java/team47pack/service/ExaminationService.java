@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import team47pack.models.Clinic;
@@ -25,6 +29,7 @@ import team47pack.models.Prescription;
 import team47pack.models.PrescriptionVerification;
 import team47pack.models.dto.ExaminInfo;
 import team47pack.models.dto.PrescriptionDTO;
+import team47pack.repository.ClinicAdminRepo;
 import team47pack.repository.ClinicRepo;
 import team47pack.repository.DiagnosisRepo;
 import team47pack.repository.DoctorRepo;
@@ -57,6 +62,9 @@ public class ExaminationService {
 	private EmailService emailService;
 	@Autowired
 	private ClinicRepo clinicRepo;
+	
+	@Autowired
+	private ClinicAdminRepo caRepo;
 
 	@Autowired
 	private ExaminationTypeRepo exmTypeRepo;
@@ -193,4 +201,5 @@ public class ExaminationService {
 	public List<Examination> findAllByRoom(Long id) {
 		return examinationRepo.findAllByRoomId(id);
 	}
+
 }
