@@ -1,6 +1,7 @@
 package team47pack.controllers;
 
 import java.security.Principal;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -95,13 +96,18 @@ public class RoomController {
 	@PreAuthorize("hasRole('CADMIN')")
 	public ResponseEntity<?> searchRoom(@RequestBody String json, Principal user) throws JSONException {
 		JSONObject obj = new JSONObject(json);
-		if (obj == null || obj.get("name") == null || obj.get("number") == null)
-			return ResponseEntity.status(400).body("Could not accept!");
-
 		ArrayList<Room> rooms = roomService.searchRoom(obj, user.getName());
 
 		return ResponseEntity.ok(rooms);
 
 	}
+	
+	@PostMapping(value = "/room/filter", produces = "application/json", consumes = "application/json")
+	@PreAuthorize("hasRole('CADMIN')")
+	public ArrayList<Room> filter(@RequestBody String json, Principal user) throws JSONException {
+		JSONObject obj = new JSONObject(json);
+		return roomService.filter(obj,user.getName());
+	}
+
 
 }
