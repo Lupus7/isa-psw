@@ -141,6 +141,13 @@ const router = new Router({
                 import ("./components/CAProfileComp/StaffRequests")
         },
         {
+            path: "/examRequests",
+            name: "ExamRequests",
+            props: true,
+            component: () =>
+                import ("./components/CAProfileComp/ExamRequests")
+        },
+        {
             path: '/prescriptions',
             props: true,
             name: "Prescriptions",
@@ -150,8 +157,22 @@ const router = new Router({
         {
             path: "/rooms",
             name: "Rooms",
+            props: true,
             component: () =>
                 import ("./components/CAProfileComp/Rooms")
+        },
+        {
+            path: "/calendarRoom",
+            name: "CalendarRoom",
+            props: true,
+            component: () =>
+                import ("./components/CAProfileComp/CalendarRoom")
+        },
+        {
+            path: "/calendarDoctor",
+            name: "CalendarDoctor",
+            component: () =>
+                import ("./components/CalendarDoctor")
         },
     ]
 });
