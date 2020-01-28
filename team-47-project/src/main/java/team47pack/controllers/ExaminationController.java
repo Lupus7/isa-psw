@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import team47pack.models.Examination;
+import team47pack.models.NextProcedure;
 import team47pack.models.Patient;
 import team47pack.models.dto.ExaminInfo;
 import team47pack.models.dto.ExaminationDTO;
@@ -54,4 +55,6 @@ public class ExaminationController {
                 ResponseEntity.ok("Successful") :
                 ResponseEntity.status(400).body("Invalid information");
     }
+    
+    
 }
