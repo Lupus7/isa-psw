@@ -1,10 +1,21 @@
 package team47pack.models;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 //@author:Jokara
@@ -27,6 +38,13 @@ public class Room {
 
 	@Column(name = "clinic_id", unique = false, nullable = false)
 	private int clinicId;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "takendates",
+            joinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "roomarrange_id", referencedColumnName = "id"))
+	private List<RoomArrange> takenDates;
+
 
 	public Room() {
 
@@ -38,6 +56,7 @@ public class Room {
 		this.number = number;
 		this.clinicId = i;
 		this.type = type;
+		this.takenDates = new ArrayList<RoomArrange>();
 	}
 
 	public Long getId() {
@@ -79,7 +98,14 @@ public class Room {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
 
+	public List<RoomArrange> getTakenDates() {
+		return takenDates;
+	}
+
+	public void setTakenDates(List<RoomArrange> takenDates) {
+		this.takenDates = takenDates;
+	}
+
+	
 }
