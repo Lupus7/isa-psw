@@ -1,6 +1,11 @@
 package team47pack.controllers;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +20,7 @@ import team47pack.service.*;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -99,13 +105,19 @@ public class PatientController {
 
 		return patientService.searchPatients(req);
 	}
-
+	
 	// @author:Jokara-------------------------------------------------------------------------------------------
 	@PostMapping(value = "/patient/filterPatients", produces = "application/json", consumes = "application/json")
 	@PreAuthorize("hasRole('NURSE') or hasRole('DOCTOR')")
 	public ArrayList<Patient> filterPatients(@RequestBody FilterPatientRequest req) {
 
 		return patientService.filterPatients(req);
+	}
+	
+	@PostMapping(value = "patient/sort/{type}")
+	@PreAuthorize("hasRole('NURSE') or hasRole('DOCTOR') or hasRole('CADMIN') or hasRole('CCADMIN') ")
+	public List<Patient> getSortPatients(@PathVariable(value = "type") String typ) {
+		return patientService.getSortedPatients(typ);
 	}
 
 	// @author:Jokara-------------------------------------------------------------------------------------------

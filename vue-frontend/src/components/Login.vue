@@ -63,7 +63,7 @@ export default {
                     if (response.data){
                         const lss = LocalStorageService.getService();
                         lss.setToken(response.data);
-                        funToastr("s","Successfuly logged in!","Login!");
+                        funToastr("s","Redirecting to Home Page!","Login!");
                     }else {
                         funToastr("d","Bad credentials!","Login!");
                         return;

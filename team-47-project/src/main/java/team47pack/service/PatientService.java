@@ -1,6 +1,13 @@
 package team47pack.service;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import team47pack.models.Clinic;
@@ -22,7 +29,8 @@ public class PatientService {
 	private ClinicRepo clinicRepository;
 
 	public List<Patient> getAllPatients() {
-		return patientRepository.findAll();
+		Pageable page = PageRequest.of(0, 15);
+		return patientRepository.findAll(page).getContent();
 	}
 
 	public List<Clinic> getAllClinics() {
@@ -53,7 +61,6 @@ public class PatientService {
 				break;
 			}
 		}
-		System.out.println("RETURN : "   + ret.getUsername() + ret.getEmail());
 		return ret;
 	}
 
@@ -141,6 +148,49 @@ public class PatientService {
 			return null;
 
 		return p.get();
+	}
+
+	public List<Patient> getSortedPatients(String type) {
+		if(type.equals(""))
+			return new ArrayList<>();
+		
+		int tip  = Integer.parseInt(type);
+		
+		if(tip == 1) {
+			Pageable sort = PageRequest.of(0, 15, Sort.by("id"));
+			Page<Patient> page = patientRepository.findAll(sort);
+			return page.getContent();
+		}else if(tip == 2) {
+			Pageable sort = PageRequest.of(0, 15, Sort.by("firstName"));
+			Page<Patient> page = patientRepository.findAll(sort);
+			return page.getContent();
+		}else if(tip == 3) {
+			Pageable sort = PageRequest.of(0, 15, Sort.by("lastName"));
+			Page<Patient> page = patientRepository.findAll(sort);
+			return page.getContent();
+		}else if(tip == 4) {
+			Pageable sort = PageRequest.of(0, 15, Sort.by("address"));
+			Page<Patient> page = patientRepository.findAll(sort);
+			return page.getContent();
+		}else if(tip == 5) {
+			Pageable sort = PageRequest.of(0, 15, Sort.by("city"));
+			Page<Patient> page = patientRepository.findAll(sort);
+			return page.getContent();
+		}else if(tip == 6) {
+			Pageable sort = PageRequest.of(0, 15, Sort.by("state"));
+			Page<Patient> page = patientRepository.findAll(sort);
+			return page.getContent();
+		}else if(tip == 7) {
+			Pageable sort = PageRequest.of(0, 15, Sort.by("telephone"));
+			Page<Patient> page = patientRepository.findAll(sort);
+			return page.getContent();
+		}else if(tip == 8) {
+			Pageable sort = PageRequest.of(0, 15, Sort.by("uniqueNum"));
+			Page<Patient> page = patientRepository.findAll(sort);
+			return page.getContent();
+		}
+		
+		return new ArrayList<>();
 	}
 
 }

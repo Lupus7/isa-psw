@@ -16,6 +16,7 @@
                     <th align="justify"  style="font-size:18px">Number</th>
                     <th> </th>
                     <th> </th>
+                    <th> </th>
                 </tr>
             </thead>
 
@@ -34,6 +35,10 @@
                     </td>
                     <td style="max-width: 80px">
                         <button type="button" class="btn btn-danger" @click="remove(room)" style="padding-right:32px;padding-left:32px; font-size:17px">Remove</button>
+                    </td>
+
+                    <td style="max-width: 80px">
+                        <button type="button" class="btn btn-primary" @click="roomCalendar(room)" style="padding-right:32px;padding-left:32px; font-size:17px">Room Calendar</button>
                     </td>
 
 
@@ -105,36 +110,94 @@
         <br>
 
         <div class="jumbobox"  >
-            <div style=" margin-left:6px; margin-right: 100vh">
+            <div>
+                <div style=" margin-left:6px; margin-right: 100vh">
+                    <div class="modal-header" style="margin-left:2px; margin-right: 100vh; ">
+                        <h3>Search</h3>
+                    </div>
+                </div>
+                        
+                    <div class="panel-body" style="margin-left:8px; margin-right: 100vh; " >
+                        <br>
+                        <form accept-charset="UTF-8" role="form"  >
+
+                            <div class="control-group" >
+                                <label  class="control-label" style=" font-size: 2vh" >Name of room:</label>
+                                <div class="form-group">
+                                    <input class="form-control"  style=" font-size: 2vh; "  placeholder="Name of room..." v-model="name" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label  class="control-label" style=" font-size: 2vh">Number of room:</label>
+                                <div class="form-group">
+                                    <input class="form-control"  style=" font-size: 2vh"  placeholder="Number..." v-model="number" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label  class="control-label" style=" font-size: 2vh">Date for arranging examination:</label>
+                                <div class="form-group">
+                                    <input class="form-control" type="date" style=" font-size: 2vh"  placeholder="Date..." v-model="date" />
+                                </div>
+                            </div>
+                            
+                            <br>
+                            <div class="modal-footer" >
+                                <button class="btn btn-success btn-lg" @click="search($event)">Confirm</button>
+                            </div>      
+                        </form>
+                                    
+                    </div>
+            </div>
+
+            <div>
+
+              <div class="wrapper">
+        
+            <div class="control-group" style="margin-left:8px"> 
+
+            <div style="style=margin-left:2px; margin-right: 100vh">
                 <div class="modal-header" style="margin-left:2px; margin-right: 100vh; ">
-                    <h3>Search</h3>
+                    <h3>Filter</h3>
                 </div>
             </div>
-                    
-                <div class="panel-body" style="margin-left:8px; margin-right: 100vh; " >
-                    <br>
-                    <form accept-charset="UTF-8" role="form"  >
+            <br>
+             <div class="panel-body" style="margin-left:10px; margin-right: 100vh; " >
+                <div class="control-group">
+                    <label  class="control-label" style=" font-size: 2vh"> Filter by:  </label>
+                    <div class="form-group">
 
-                        <div class="control-group" >
-                            <label  class="control-label" style=" font-size: 2vh" >Name of room:</label>
-                            <div class="form-group">
-                                <input class="form-control"  style=" font-size: 2vh; "  placeholder="Name of room..." v-model="name" />
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label  class="control-label" style=" font-size: 2vh">Number of room:</label>
-                            <div class="form-group">
-                                <input class="form-control"  style=" font-size: 2vh"  placeholder="Number..." v-model="number" />
-                            </div>
-                        </div>
-                        
-                        <br>
-                        <div class="modal-footer" >
-                            <button class="btn btn-success btn-lg" @click="search($event)">Confirm</button>
-                        </div>      
-                    </form>
-                                
+                        <select class="btn btn-primary" style="font-size: 2vh" v-model=" valueFilter" >
+                            <option align="justify">-Select option-</option>
+                            <option align="justify" >Name</option>
+                            <option align="justify" >Number</option>
+                            <option align="justify" >Type</option>
+                         
+                        </select>
+                    </div>
+                            
                 </div>
+
+                <div class="control-group" v-if=" this.valueFilter !== '-Select option-' " >
+                    <label class="control-label" style=" font-size: 2vh" >{{valueFilter}}:</label>
+                    <div class="form-group">
+                         <input class="form-control" style=" font-size: 2vh"  placeholder= "..." v-model="filterBy" />
+                    </div>
+                            
+                </div>
+             
+
+                 <br>
+                <div class="modal-footer">
+                    <button class="btn btn-success btn-lg" @click="filterConfirm($event)">Confirm</button>
+                </div> 
+             </div>     
+            
+            </div>
+            </div>
+
+            </div>
+
         </div>
 
                             
@@ -164,9 +227,14 @@ export default {
             nameF: "",
             numberF: "",
             typeF: "",
-            idF:""
+            idF:"",
+            date:"",
+            valueFilter:'',
+            filterBy:'',
+            convertedDate:''
         }
     },
+    props:["examReq"],
     methods:{
        
         getRooms(){
@@ -174,7 +242,10 @@ export default {
         },
         search(e){
             e.preventDefault();
-            axios.post('http://localhost:8080/room/search', { "name": this.name, "number": this.number }).then(response => { this.rooms = response.data; })
+            let dat = this.date.split("-");
+            let dd = dat[2]+"/"+dat[1]+"/"+dat[0];
+            this.convertedDate = dd;
+            axios.post('http://localhost:8080/room/search', { "name": this.name, "number": this.number, 'date':dd }).then(response => { this.rooms = response.data; })
         },
         showAdd(){
             this.show = true;
@@ -255,10 +326,28 @@ export default {
 
 
         },
+        roomCalendar(r){
+            this.$router.push({name:'CalendarRoom', params: {room:r,dateSearch:this.convertedDate,examReqs: this.examReq}});
+
+        },
+        filterConfirm(e){
+            e.preventDefault();
+            axios.post('http://localhost:8080/room/filter', {
+                    "filterBy":this.valueFilter,
+                    "valueFilter": this.filterBy,
+                                        
+                }).then(response=>{
+                    this.rooms = response.data;
+                }).finally(()=>{ 
+                        this.filterBy = "";
+
+            });  
+        },
         
     },
     created() {
         this.getRooms();
+        this.valueFilter = "-Select option-";
     }
     
 }

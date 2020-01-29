@@ -1,6 +1,9 @@
 package team47pack.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 import org.json.JSONException;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import team47pack.models.Clinic;
 import team47pack.models.ClinicAdmin;
+import team47pack.models.Patient;
 import team47pack.models.Room;
 import team47pack.repository.ClinicAdminRepo;
 import team47pack.repository.ClinicRepo;
@@ -104,19 +108,22 @@ public class RoomService {
 		ArrayList<Room> rooms = new ArrayList<>();
 		if (ca == null)
 			return rooms;
+		
+		//obj.get("date") == null,&& obj.get("date").equals("")
+	
 
 		if (obj.get("name") == null || obj.get("number") == null)
 			return rooms;
-
-		if (obj.get("name").equals("") && obj.get("number").equals(""))
-			return rooms;
+		
+		else if (obj.get("name").equals("") && obj.get("number").equals(""))
+			return roomRepo.findAllByClinicId(ca.getClinic());
 
 		else if (!obj.get("name").equals("") && obj.get("number").equals(""))
 			return roomRepo.findByNameContainingIgnoreCaseAndClinicId(obj.getString("name"), ca.getClinic());
 
 		else if (obj.get("name").equals("") && !obj.get("number").equals(""))
 			return roomRepo.findByNumberAndClinicId(obj.getInt("number"), ca.getClinic());
-
+		
 		else if (!obj.get("name").equals("") && !obj.get("number").equals("")) {
 
 			String name = obj.getString("name");
@@ -126,6 +133,32 @@ public class RoomService {
 		}
 
 		return rooms;
+	}
+
+	public ArrayList<Room> filter(JSONObject obj, String email) throws JSONException {
+		if (obj == null || obj.get("filterBy") == null || obj.get("valueFilter") == null)
+			return new ArrayList<>();
+		ClinicAdmin ca = clinicAdminRepo.findByEmail(email);
+		if (ca == null)
+			return new ArrayList<>();
+		
+		if (obj.get("filterBy").equals("") && obj.get("valueFilter").equals(""))
+			return new ArrayList<>();
+
+		String filterBy = (String) obj.get("filterBy");
+		String value = (String) obj.get("valueFilter");
+
+		if (filterBy.equals("Name")) {
+			return roomRepo.findByNameContainingIgnoreCaseAndClinicId(value, ca.getClinic());
+			
+		} else if (filterBy.equals("Number"))
+			return roomRepo.findByNumberAndClinicId(Integer.parseInt(value), ca.getClinic());
+		
+		else if (filterBy.equals("Type"))
+			return roomRepo.findByTypeContainingIgnoreCaseAndClinicId(value, ca.getClinic());		
+
+		return new ArrayList<>();
+		
 	}
 
 }

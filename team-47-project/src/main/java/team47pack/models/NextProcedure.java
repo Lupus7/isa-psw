@@ -29,10 +29,14 @@ public class NextProcedure {
 
 	@Column
 	private String type;
+	
+	@Column
+	private Long clinic;
+
 
 	@Column
 	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd.MM.yyyy hh:mm")
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date date;
 
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -57,6 +61,7 @@ public class NextProcedure {
 		this.date = date;
 		this.patient = patient;
 		this.doctor = doctor;
+		this.clinic = doctor.getClinicId();
 	}
 
 	public NextProcedure(String type, Date date, Patient patient, Doctor doctor, ExaminationType etx) {
@@ -65,6 +70,7 @@ public class NextProcedure {
 		this.date = date;
 		this.patient = patient;
 		this.doctor = doctor;
+		this.clinic = doctor.getClinicId();
 		this.examinationtype = etx;
 	}
 
@@ -115,5 +121,15 @@ public class NextProcedure {
 	public void setExaminationtype(ExaminationType examinationtype) {
 		this.examinationtype = examinationtype;
 	}
+
+	public Long getIdClinic() {
+		return clinic;
+	}
+
+	public void setIdClinic(Long idClinic) {
+		this.clinic = idClinic;
+	}
+	
+	
 
 }

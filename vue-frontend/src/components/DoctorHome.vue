@@ -32,7 +32,7 @@ export default {
     created() {
         this.cards.push(["../assets/list.png", "Patient List", "Get the list of all the patients.", "#/search"]);
         this.cards.push(["http://ssl.gstatic.com/accounts/ui/avatar_2x.png", "Profile", "Access your profile to view and/or change your personal information.", "#/userProfile"]);
-        this.cards.push(["../assets/calendar.png", "Work Calendar", "View all of the appointed examinations and operations. Get data about patients in the appointments", "/"]);
+        this.cards.push(["../assets/calendar.png", "Work Calendar", "View all of the appointed examinations and operations. Get data about patients in the appointments", "#/calendarDoctor"]);
         this.cards.push(["../assets/vacation.png", "Time off", "Make a request for taking a vacation or time off.", "#/holiday"]);
     }
 }

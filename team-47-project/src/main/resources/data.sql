@@ -237,3 +237,18 @@ insert into examination(id,doctor_id, examinationtype_id) values(3,12,4);
 insert into examination(id,doctor_id, examinationtype_id) values(4,12,7);
 insert into examination(id,doctor_id, examinationtype_id) values(5,13,6);
 insert into examination(id,doctor_id, examinationtype_id) values(6,13,5);
+
+---- add next procedure
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id) values (1,'Examination',2,'5.2.2020',12,1,1);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id) values (2,'Examination',2,'5.2.2020',12,2,2);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id) values (3,'Examination',2,'6.2.2020',13,3,1);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id) values (4,'Examination',2,'7.2.2020',13,4,2);
+ALTER SEQUENCE next_procedure_id_seq RESTART WITH 5;
+
+insert into roomarrange(id,room,date,time,taken) values (1,8,'5.2.2020','15:00-16:00',true);
+insert into roomarrange(id,room,date,time,taken) values (2,8,'5.2.2020','10:00-11:00',true);
+insert into roomarrange(id,room,date,time,taken) values (3,8,'5.2.2020','20:00-21:00',true);
+
+insert into takendates values(8,1);
+insert into takendates values(8,2);
+insert into takendates values(8,3);

@@ -116,15 +116,15 @@
                 </tr>
                 <tr class="table-secondary">
             
-                    <th  align="justify" style="font-size:18px" >Patient ID</th>
-                    <th  align="justify"  style="font-size:18px" >First Name</th>
-                    <th  align="justify" style="font-size:18px" >Last Name</th>
-                    <th  align="justify" style="font-size:18px" >Address</th>
-                    <th  align="justify" style="font-size:18px" >City</th>
-                    <th  align="justify" style="font-size:18px" >State</th>
-                    <th  align="justify" style="font-size:18px" >Telephone</th>
-                    <th  align="justify" style="font-size:18px" >Unique Number</th>
-                    <th align = "justify" style="font-size:18px"> Patient Profil </th> 
+                    <th type="link" align="justify" style="font-size:18px"  @click="sort(sortBy[0])" >Patient ID</th>
+                    <th type="link" align="justify"  style="font-size:18px" @click="sort(sortBy[1])" >First Name</th>
+                    <th type="link"  align="justify" style="font-size:18px" @click="sort(sortBy[2])" >Last Name</th>
+                    <th type="link"  align="justify" style="font-size:18px" @click="sort(sortBy[3])" >Address</th>
+                    <th type="link"  align="justify" style="font-size:18px" @click="sort(sortBy[4])" >City</th>
+                    <th type="link"  align="justify" style="font-size:18px" @click="sort(sortBy[5])" >State</th>
+                    <th type="link"  align="justify" style="font-size:18px" @click="sort(sortBy[6])" >Telephone</th>
+                    <th type="link"  align="justify" style="font-size:18px" @click="sort(sortBy[7])" >Unique Number</th>
+                    <th type="link" align = "justify" style="font-size:18px"> Patient Profil </th> 
                 </tr>
                 </thead>
 
@@ -184,7 +184,8 @@ export default {
             hide : false,
             hideB: false,   
             valueFilter: "All",
-            filterBy: ""   
+            filterBy: "",
+            sortBy : [1,2,3,4,5,6,7,8]   
         }
     },
     methods:{
@@ -259,10 +260,20 @@ export default {
                 });  
             }
             
-		},
+        },
+        sort(type){
+                    
+            let url = 'http://localhost:8080/patient/sort/';
+            url+=type;
+            axios.post(url).then(response=>{
+                       this.patients = response.data;
+
+                    });            
+        }
     },
     mounted(){
-        this.getRole()
+        this.getRole();
+        this.valueFilter = "-Select option-";
     }  
 }
 </script>
