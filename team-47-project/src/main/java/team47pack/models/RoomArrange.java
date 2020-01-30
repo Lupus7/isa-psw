@@ -24,6 +24,9 @@ public class RoomArrange {
 	private Long room;
 	
 	@Column
+	private Long nextExamination;
+	
+	@Column
 	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date date;
@@ -39,12 +42,13 @@ public class RoomArrange {
 	}	
 	
 	
-	public RoomArrange(Long room, Date date, String time, boolean taken) {
+	public RoomArrange(Long room, Date date, String time, boolean taken,Long exam) {
 		super();
 		this.room = room;
 		this.date = date;
 		this.time = time;
 		this.taken = taken;
+		this.nextExamination = exam;
 	}
 
 
@@ -79,6 +83,18 @@ public class RoomArrange {
 	public void setTaken(boolean taken) {
 		this.taken = taken;
 	}
+
+
+	public Long getNextExamination() {
+		return nextExamination;
+	}
+
+
+	public void setNextExamination(Long nextExamination) {
+		this.nextExamination = nextExamination;
+	}
+	
+	
 	
 	
 }
