@@ -52,6 +52,11 @@ insert into users (is_accepted, address, city, email, enabled, first_name, last_
 insert into medical_staff (id,on_vacation,clinic_id) values (13,false,2);            
 insert into doctor (id,specialization,shift) values (13,'Plastic surgeon',2);
 
+insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
+            values(true,'test','test','doctor4',true,'Milos','Panic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor4',15);
+insert into medical_staff (id,on_vacation,clinic_id) values (15,false,2);            
+insert into doctor (id,specialization,shift) values (15,'Plastic surgeon',2);
+
 --------------------------------
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','test9',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test9',9);
@@ -120,6 +125,7 @@ insert into user_authority (user_id, authority_id) values (9,4);
 insert into user_authority (user_id, authority_id) values (10,5); 
 insert into user_authority (user_id, authority_id) values (11,3);
 insert into user_authority (user_id, authority_id) values (14,4);
+insert into user_authority (user_id, authority_id) values (15,2);
 
 insert into clinic(id,name,address,description) values (1,'klinika1','dr.andre','lepa bas onako');
 insert into clinic(id,name,address,description) values (2,'klinika2','Ulica 2','nije najsrecnija');
@@ -140,6 +146,7 @@ insert into user_authority (user_id, authority_id) values (11,6);
 insert into user_authority (user_id, authority_id) values (12,6);
 insert into user_authority (user_id, authority_id) values (13,6);
 insert into user_authority (user_id, authority_id) values (14,6);
+insert into user_authority (user_id, authority_id) values (15,6);
 
 -- Doctors
 --insert into doctors()
@@ -147,6 +154,7 @@ insert into user_authority (user_id, authority_id) values (14,6);
 insert into clinic_doctor values(1,8);
 insert into clinic_doctor values(2,12);
 insert into clinic_doctor values(2,13);
+insert into clinic_doctor values(2,15);
 insert into clinic_admins values(1,9);
 insert into clinic_admins values(2,14);
 -------------------------------------
@@ -239,15 +247,16 @@ insert into examination(id,doctor_id, examinationtype_id) values(5,13,6);
 insert into examination(id,doctor_id, examinationtype_id) values(6,13,5);
 
 ---- add next procedure
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id) values (1,'Examination',2,'5.2.2020',12,1,1);
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id) values (2,'Examination',2,'5.2.2020',12,2,2);
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id) values (3,'Examination',2,'6.2.2020',13,3,1);
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id) values (4,'Examination',2,'7.2.2020',13,4,2);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (1,'Examination',2,'05.02.2020',12,1,1,true);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (2,'Examination',2,'05.02.2020',12,2,2,true);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (3,'Examination',2,'06.02.2020',13,3,1,true);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (4,'Examination',2,'07.02.2020',13,4,2,false);
 ALTER SEQUENCE next_procedure_id_seq RESTART WITH 5;
 
-insert into roomarrange(id,room,date,time,taken) values (1,8,'5.2.2020','15:00-16:00',true);
-insert into roomarrange(id,room,date,time,taken) values (2,8,'5.2.2020','10:00-11:00',true);
-insert into roomarrange(id,room,date,time,taken) values (3,8,'5.2.2020','20:00-21:00',true);
+insert into roomarrange(id,room,date,time,taken,next_examination) values (1,8,'05.02.2020','15:00-16:00',true,1);
+insert into roomarrange(id,room,date,time,taken,next_examination) values (2,8,'05.02.2020','10:00-11:00',true,2);
+insert into roomarrange(id,room,date,time,taken,next_examination) values (3,8,'05.02.2020','20:00-21:00',true,3);
+ALTER SEQUENCE roomarrange_id_seq RESTART WITH 4;
 
 insert into takendates values(8,1);
 insert into takendates values(8,2);
