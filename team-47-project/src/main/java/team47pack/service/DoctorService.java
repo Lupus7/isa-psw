@@ -43,8 +43,8 @@ public class DoctorService {
 
 	@Autowired
 	private MedicalStaffRepo medicalRepo;
-  
-  @Autowired
+
+	@Autowired
 	private RateRepo rateRepo;
 
 	public Doctor getDoctor(String email) {
@@ -114,14 +114,14 @@ public class DoctorService {
 		}
 	}
 
-  //@author:Bojan
+	// @author:Bojan
 	public ArrayList<Doctor> search2(SearchDoctorRequest req) {
 		Specification<Doctor> spec = Specification.where(DoctorSpecification.doctorFirstName(req.getName()))
 				.and(DoctorSpecification.doctormLastName(req.getSurname()))
 				.and(DoctorSpecification.doctorSpecialization(req.getSpecialization()));
 		ArrayList<Doctor> doctors = new ArrayList<>(
 				new HashSet<>(doctorRepo.findAll(spec, PageRequest.of(0, 10, Sort.by("firstName"))).toList()));
-		
+
 		ArrayList<Doctor> ds = new ArrayList<>();
 		for (Doctor d : doctors) {
 			if (d.isEnabled())
@@ -161,16 +161,28 @@ public class DoctorService {
 		return clinic.get().getDoctors();
 
 	}
-      
-  //@author:Bojan
-   public boolean leaveRate(RateRequest rateRequest) {
-			Doctor dd = doctorRepo.getOne(rateRequest.getId());
-			Rate rate = new Rate();
-			rate.setValue(rateRequest.getValue());
-			rateRepo.save(rate);
-			dd.getRatings().add(rate);
-			doctorRepo.save(dd);
-			return true;
-    }
+
+	// @author:Bojan
+	public boolean leaveRate(RateRequest rateRequest) {
+		Doctor dd = doctorRepo.getOne(rateRequest.getId());
+		Rate rate = new Rate();
+		rate.setValue(rateRequest.getValue());
+		rateRepo.save(rate);
+		dd.getRatings().add(rate);
+		doctorRepo.save(dd);
+		return true;
+	}
+
+	// @author:Jokara
+	public List<Doctor> getClinicDoctors(String spec, String email) {
+		String specialization = spec.replace("%20", " ");
+		ClinicAdmin ca = clinicAdminRepo.findByEmail(email);
+		if(ca == null)
+			return new ArrayList<>();
+		Long clinicId = Long.parseLong(""+ca.getClinic());
+
+		
+		return doctorRepo.findBySpecializationAndClinicId(specialization,clinicId);
+	}
 
 }
