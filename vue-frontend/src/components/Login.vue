@@ -59,7 +59,6 @@ export default {
                         "password": this.password
 
                 }).then(response=>{
-                    console.log("---LLLLLL"+response.data)
                     if (response.data){
                         const lss = LocalStorageService.getService();
                         lss.setToken(response.data);

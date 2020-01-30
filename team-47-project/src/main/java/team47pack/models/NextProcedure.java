@@ -32,7 +32,9 @@ public class NextProcedure {
 	
 	@Column
 	private Long clinic;
-
+	
+	@Column
+	private boolean arranged;
 
 	@Column
 	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -62,6 +64,7 @@ public class NextProcedure {
 		this.patient = patient;
 		this.doctor = doctor;
 		this.clinic = doctor.getClinicId();
+		this.arranged = false;
 	}
 
 	public NextProcedure(String type, Date date, Patient patient, Doctor doctor, ExaminationType etx) {
@@ -72,6 +75,7 @@ public class NextProcedure {
 		this.doctor = doctor;
 		this.clinic = doctor.getClinicId();
 		this.examinationtype = etx;
+		this.arranged = false;
 	}
 
 	public Long getId() {
@@ -129,6 +133,15 @@ public class NextProcedure {
 	public void setIdClinic(Long idClinic) {
 		this.clinic = idClinic;
 	}
+
+	public boolean isArranged() {
+		return arranged;
+	}
+
+	public void setArranged(boolean arranged) {
+		this.arranged = arranged;
+	}
+	
 	
 	
 
