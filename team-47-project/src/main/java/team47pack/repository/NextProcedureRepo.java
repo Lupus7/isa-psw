@@ -14,7 +14,7 @@ public interface NextProcedureRepo extends JpaRepository<NextProcedure, Long> {
 
 	Optional<NextProcedure> findByExaminationtypeId(Long id);
 
-	Page<NextProcedure> findByClinic(Long clinicId, Pageable sort);
+	Page<NextProcedure> findByClinicAndArranged(Long clinicId, boolean b, Pageable sort);
 
 
 }
