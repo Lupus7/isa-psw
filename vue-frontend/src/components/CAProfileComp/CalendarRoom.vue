@@ -15,7 +15,7 @@
                 <div class="panel-body">
                     <br>
                     <form accept-charset="UTF-8" role="form">
-                    <fieldset>
+                    
                          <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label >Room Name:</label>
@@ -34,24 +34,35 @@
                             </div>
                                 <div class="form-group col-md-6">
                                 <label>Date of Examination:</label>
-                                 <textarea v-if="this.dateSearch != ''  "  class="form-control" v-text="this.dateSearch" disabled rows="1" style="resize:none"/>
+                                 <textarea v-if="this.dateSearch != ''  "  class="form-control" v-text="this.date" disabled rows="1" style="resize:none"/>
                                  <textarea v-else class="form-control" v-text="this.date" disabled rows="1" style="resize:none"/>
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label >Free Appointments:</label>
+
+                         <div class="form-row">
+                            <div class="form-group col-md-6">
+                               <label >Free Appointments:</label>
                                  <div class="form-group">
-                                    <select class="form-control">
+                                    <select class="form-control" v-model="chosenAppForm">
                                         <option v-for="(ap, index) in this.freeAp" :key="index"> {{ap}} </option>
                                     </select>
                                 </div>
-                            </div>                            
+                            </div>
+                                <div class="form-group col-md-6">
+                                <label>Select another Doctor:</label>
+                                     <select class="form-control" v-model="newDoctor">
+                                        <option v-for="(doc, index) in this.doctors" :key="index"> {{doc.firstName}} {{doc.lastName}} </option>
+                                    </select>
+                            </div>
                         </div>
                         
-                        <center> <input class="btn btn-lg btn-success btn-block" type="submit" value="Arrange"> </center>
-                    </fieldset>
+                        
+                        
+                        <center> <button class="btn btn-lg btn-success btn-block"  @click="arrangeRoom()" > Arrange </button> </center>
+                        <br>
+                        <center> <button class="btn btn-lg btn-danger btn-block"  @click="backRooms()" > Back to Rooms </button> </center>
+                   
                     </form>
                     <hr/>
                     
@@ -69,6 +80,9 @@
 
 <script>
 import Calendar from '../Calendar'
+import axios from 'axios'
+import {funToastr} from "../../toastr.js"
+
 export default {
     data() {
         return {
@@ -78,7 +92,10 @@ export default {
                 "12:00-13:00","13:00-14:00","14:00-15:00","15:00-16:00","16:00-17:00","17:00-18:00",
                 "18:00-19:00","19:00-20:00","20:00-21:00","21:00-22:00"
             ],
-            takenAp:[]
+            takenAp:[],
+            chosenAppForm:"",
+            doctors:[],
+            newDoctor:''
         }
         
     },
@@ -92,12 +109,18 @@ export default {
                 let dat = new Date(td.date);      
                 let s = dat.toLocaleString().split(",");
                 let s1 = s[0].split("/");
-                let dateTD = s1[1]+"."+s1[0]+"."+s1[2]
-                if(this.dateSearch != ''){
-                    if(this.dateSearch == this.date)
-                        this.takenAp.push(td.time);
-                }
-                else if(dateTD == this.date){
+                let day = s1[1]
+                let month = s1[0]
+                let year = s1[2]
+                if(day.length === 1)
+                    day = '0'+day.toString()
+                if(month.length === 1)
+                    month = '0'+month.toString()
+                let dateTD = day+"."+month+"."+year
+                
+                console.log(dateTD)
+                console.log(this.date)
+                if(dateTD === this.date){
                     this.takenAp.push(td.time);
                 }
             }
@@ -113,15 +136,87 @@ export default {
             }
               
         },
+        arrangeRoom(){
+            let newD = this.date.split(".")
+            let newDate = newD[0]+"/"+newD[1]+"/"+newD[2] 
+            let idDoctor = 'none';
+            for( var i = 0; i < this.doctors.length; i++){ 
+                if ( this.newDoctor === (this.doctors[i].firstName+' '+this.doctors[i].lastName)) {
+                    idDoctor = this.doctors[i].id;
+                    break;
+                }
+            }
+
+            axios.post('http://localhost:8080/ca/arrangeExamination', {
+                "idNextProcedure": this.examReqs.examinationtype.id,
+                "idRoom": this.room.id,
+                "date": newDate,
+                "time": this.chosenAppForm,
+                "idDoctorNew": idDoctor,
+            }).then(response => { 
+                 if(response.status == 200){
+                        funToastr("s",response.data,"Room Arrange!");
+                    }else {
+                        funToastr("d","Error!","Room Arrange!");
+                        return;
+                    }
+             }).finally(()=>{ 
+
+                     setTimeout(() =>{                    
+                 
+                        this.$router.push("/CAProfile");       
+                        this.$router.go("/CAProfile");
+                             
+                    },1600);
+
+                });   
+        },
+        backRooms(){
+            this.$router.push({name: 'Rooms', params: {examReq: this.examReqs }});
+
+        },
+        getClinicDoctors(){
+            let url = 'http://localhost:8080/ca/getClinicDoctors/';
+            url += this.examReqs.doctor.specialization;
+            console.log(this.examReqs.doctor.specialization)
+            axios.get(url).then(response => { 
+                this.doctors = response.data; 
+                 for( var i = 0; i < this.doctors.length; i++){ 
+                    if ( this.examReqs.doctor.id === this.doctors[i].id) {
+                        this.doctors.splice(i, 1); 
+                        i--;
+                    }
+                }
+               
+             })
+        }
+
+
+        
     },
+    
     created(){
         // ako je dateSearch null => uzima se datum iz examReq
-        let dat = new Date(this.examReqs.date);      
-        let s = dat.toLocaleString().split(",");
-        let s1 = s[0].split("/");
-        this.date = s1[1]+"."+s1[0]+"."+s1[2]
+        if(this.dateSearch === "none"){
+            let dat = new Date(this.examReqs.date);      
+            let s = dat.toLocaleString().split(",");
+            let s1 = s[0].split("/");
+            let day = s1[1]
+            let month = s1[0]
+            let year = s1[2]
+            if(day.length === 1)
+                day = '0'+day.toString()
+            if(month.length === 1)
+                month = '0'+month.toString()
+            this.date = day+"."+month+"."+year
+        }else{  
+            let s = this.dateSearch.toLocaleString().split("/");
+            this.date = s[0]+"."+s[1]+"."+s[2]
+        }
+        
 
         this.getFreeDates();
+        this.getClinicDoctors();
     }
 }
 </script>
