@@ -231,7 +231,7 @@ export default {
             date:"",
             valueFilter:'',
             filterBy:'',
-            convertedDate:''
+            convertedDate:"",
         }
     },
     props:["examReq"],
@@ -245,7 +245,8 @@ export default {
             let dat = this.date.split("-");
             let dd = dat[2]+"/"+dat[1]+"/"+dat[0];
             this.convertedDate = dd;
-            axios.post('http://localhost:8080/room/search', { "name": this.name, "number": this.number, 'date':dd }).then(response => { this.rooms = response.data; })
+            if(this.name !== '' && this.number !== '')
+                axios.post('http://localhost:8080/room/search', { "name": this.name, "number": this.number, 'date':dd }).then(response => { this.rooms = response.data; })
         },
         showAdd(){
             this.show = true;
@@ -327,7 +328,10 @@ export default {
 
         },
         roomCalendar(r){
-            this.$router.push({name:'CalendarRoom', params: {room:r,dateSearch:this.convertedDate,examReqs: this.examReq}});
+            if(this.convertedDate !== '')
+                this.$router.push({name:'CalendarRoom', params: {room:r,dateSearch:this.convertedDate,examReqs: this.examReq}});
+            else
+                this.$router.push({name:'CalendarRoom', params: {room:r,dateSearch:"none",examReqs: this.examReq}});
 
         },
         filterConfirm(e){
