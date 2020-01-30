@@ -59,14 +59,21 @@ export default {
             axios.get('http://localhost:8080/ca/getNextExamins').then(response => { this.examins = response.data; })
         },
         dateConvert(d){
-            let dat = new Date(d);       
+            let dat = new Date(d);  
             let s = dat.toLocaleString().split(",");
             let s1 = s[0].split("/");
-            this.dateConv = s1[1]+"."+s1[0]+"."+s1[2]
+            let day = s1[1]
+            let month = s1[0]
+            let year = s1[2]
+            if(day.length === 1)
+                day = '0'+day.toString()
+            if(month.length === 1)
+                month = '0'+month.toString()
+            this.dateConv = day+"."+month+"."+year
         },
         arrangeRoom(ex){
             this.$router.push({name: 'Rooms', params: {examReq: ex }});
-
+            
         }
     },
     created(){
