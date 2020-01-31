@@ -250,14 +250,18 @@ insert into examination(id,doctor_id, examinationtype_id) values(6,13,5);
 insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (1,'Examination',2,'05.02.2020',12,1,1,true);
 insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (2,'Examination',2,'05.02.2020',12,2,2,true);
 insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (3,'Examination',2,'06.02.2020',13,3,1,true);
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (4,'Examination',2,'07.02.2020',13,4,2,false);
-ALTER SEQUENCE next_procedure_id_seq RESTART WITH 5;
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (4,'Examination',2,'05.02.2020',13,4,2,false);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (5,'Examination',2,'05.02.2020',12,2,2,false);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (6,'Examination',2,'06.02.2020',13,2,2,false);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged) values (7,'Examination',2,'07.02.2020',12,1,2,false);
+ALTER SEQUENCE next_procedure_id_seq RESTART WITH 8;
 
-insert into roomarrange(id,room,date,time,taken,next_examination) values (1,8,'05.02.2020','15:00-16:00',true,1);
-insert into roomarrange(id,room,date,time,taken,next_examination) values (2,8,'05.02.2020','10:00-11:00',true,2);
-insert into roomarrange(id,room,date,time,taken,next_examination) values (3,8,'05.02.2020','20:00-21:00',true,3);
+insert into roomarrange(id,room,date,time,taken,next_examination,clinic) values (1,8,'05.02.2020',15,true,1,2);
+insert into roomarrange(id,room,date,time,taken,next_examination,clinic) values (2,8,'05.02.2020',10,true,2,2);
+insert into roomarrange(id,room,date,time,taken,next_examination,clinic) values (3,8,'05.02.2020',20,true,3,2);
 ALTER SEQUENCE roomarrange_id_seq RESTART WITH 4;
 
 insert into takendates values(8,1);
 insert into takendates values(8,2);
 insert into takendates values(8,3);
+ALTER SEQUENCE takendates_id_seq RESTART WITH 4;
