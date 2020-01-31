@@ -3,7 +3,6 @@
     
 
    <div class="container">
-
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -15,6 +14,9 @@
                                     <img v-if=" this.role === 'ROLE_DOCTOR'"  src="../../public/assets/doctor.jpg" style="width: 150px; height: 150px margin-top: -2vh " class="img-thumbnail" />
                                     <img v-if=" this.role === 'ROLE_NURSE'"  src="../../public/assets/nurse.png" style="width: 150px; height: 150px margin-top: -2vh " class="img-thumbnail" />
                                 </div>
+                                <div v-if="this.role === 'ROLE_PATIENT'">
+                                    <Calendar v-bind:doctor="this.user.email" v-bind:date="this.wantedDate"></Calendar>
+                                 </div>
                                 <div class="userData ml-3">
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.email}}</h2>
                                     <h4 v-if=" this.role === 'ROLE_DOCTOR' || this.role === 'ROLE_PATIENT' " class="d-block" style="font-size: 1.5rem; font-weight: bold">Doctor</h4>
@@ -153,6 +155,7 @@
 
 <script>
 import axios from 'axios'
+import Calendar from './Calendar'
 import jwt_decode from 'jwt-decode'
 import {funToastr} from "../toastr.js"
 import LocalStorageService from "../LocalStorageService";
@@ -166,11 +169,14 @@ export default {
             holiday : "",
             role: "",
             workTime: "",
+            idDoc: '',
+            wantedDate: '',
                    
         }
     },
-    props:{
-        id: String,
+    props:["id"],
+    components:{
+        Calendar
     },
     methods:{
         getDoctor(){
@@ -184,15 +190,19 @@ export default {
         },
         getDoctorId(){
             let url = 'http://localhost:8080/doctor/';
-            url += this.id
+            url += this.idDoc
             axios.get(url).then(response => { 
                 this.user = response.data;
                 if(this.user.shift === 1)
                     this.workTime = "06:00 - 14:00";
                 else if(this.user.shift === 2)
                     this.workTime = "14:00 - 22:00";
+                    console.log('doktor: ' + this.user.email + '   datum : ' + this.wantedDate)
                 
             })
+            .catch(error=>console.log(error))
+            
+            
         },
 
         getNurse(){
@@ -248,7 +258,16 @@ export default {
 
     },
     created(){
-
+        console.log(this.id)
+        if(this.id.includes("T")){
+            let s = this.id.split("T")
+            this.idDoc=s[0]
+            this.wantedDate=s[1]
+        }else{
+            this.idDoc=this.id
+        }
+       
+        //console.log('PROPS :' + this.dateSearch + ' id mu je ;' + this.brojic)
         this.getRole();
 
         if(this.role === "ROLE_DOCTOR")
