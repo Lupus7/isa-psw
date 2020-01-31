@@ -12,8 +12,11 @@ import javax.persistence.Temporal;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "roomarrange")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RoomArrange {
 
 	@Id
@@ -24,6 +27,9 @@ public class RoomArrange {
 	private Long room;
 	
 	@Column
+	private Long clinic;
+	
+	@Column
 	private Long nextExamination;
 	
 	@Column
@@ -32,7 +38,7 @@ public class RoomArrange {
 	private Date date;
 	
 	@Column
-	private String time;
+	private int time;
 	
 	@Column
 	private boolean taken;
@@ -42,13 +48,14 @@ public class RoomArrange {
 	}	
 	
 	
-	public RoomArrange(Long room, Date date, String time, boolean taken,Long exam) {
+	public RoomArrange(Long room, Date date, int time, boolean taken,Long exam,Long clinic) {
 		super();
 		this.room = room;
 		this.date = date;
 		this.time = time;
 		this.taken = taken;
 		this.nextExamination = exam;
+		this.clinic = clinic;
 	}
 
 
@@ -71,10 +78,10 @@ public class RoomArrange {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public String getTime() {
+	public int getTime() {
 		return time;
 	}
-	public void setTime(String time) {
+	public void setTime(int time) {
 		this.time = time;
 	}
 	public boolean isTaken() {
@@ -93,6 +100,17 @@ public class RoomArrange {
 	public void setNextExamination(Long nextExamination) {
 		this.nextExamination = nextExamination;
 	}
+
+
+	public Long getClinic() {
+		return clinic;
+	}
+
+
+	public void setClinic(Long clinic) {
+		this.clinic = clinic;
+	}
+	
 	
 	
 	
