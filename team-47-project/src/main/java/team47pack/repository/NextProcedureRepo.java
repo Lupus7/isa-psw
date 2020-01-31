@@ -1,5 +1,6 @@
 package team47pack.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -16,5 +17,6 @@ public interface NextProcedureRepo extends JpaRepository<NextProcedure, Long> {
 
 	Page<NextProcedure> findByClinicAndArranged(Long clinicId, boolean b, Pageable sort);
 
+	List<NextProcedure> findByArrangedAndType(boolean b, String string);
 
 }
