@@ -95,7 +95,8 @@ export default {
             takenAp:[],
             chosenAppForm:"",
             doctors:[],
-            newDoctor:''
+            newDoctor:'',
+            timeID:""
         }
         
     },
@@ -121,7 +122,8 @@ export default {
                 console.log(dateTD)
                 console.log(this.date)
                 if(dateTD === this.date){
-                    this.takenAp.push(td.time);
+
+                    this.takenAp.push(this.changeToString(td.time));
                 }
             }
 
@@ -147,11 +149,12 @@ export default {
                 }
             }
 
+            this.changeToInt();
             axios.post('http://localhost:8080/ca/arrangeExamination', {
-                "idNextProcedure": this.examReqs.examinationtype.id,
+                "idNextProcedure": this.examReqs.id,
                 "idRoom": this.room.id,
                 "date": newDate,
-                "time": this.chosenAppForm,
+                "time": this.timeID,
                 "idDoctorNew": idDoctor,
             }).then(response => { 
                  if(response.status == 200){
@@ -189,7 +192,81 @@ export default {
                 }
                
              })
-        }
+        },
+        changeToInt(){
+
+            if(this.chosenAppForm === "06:00-07:00"){
+                this.timeID = 6;
+            }else if(this.chosenAppForm === "07:00-08:00"){
+                this.timeID = 7;
+            }else if(this.chosenAppForm === "08:00-09:00"){
+                this.timeID = 8;
+            }else if(this.chosenAppForm === "09:00-10:00"){
+                this.timeID = 9;
+            }else if(this.chosenAppForm === "10:00-11:00"){
+                this.timeID = 10;
+            }else if(this.chosenAppForm === "11:00-12:00"){
+                this.timeID = 11;
+            }else if(this.chosenAppForm === "12:00-13:00"){
+                this.timeID = 12;
+            }else if(this.chosenAppForm === "13:00-14:00"){
+                this.timeID = 13;
+            }else if(this.chosenAppForm === "14:00-15:00"){
+                this.timeID = 14;
+            }else if(this.chosenAppForm === "15:00-16:00"){
+                this.timeID = 15;
+            }else if(this.chosenAppForm === "16:00-17:00"){
+                this.timeID = 16;
+            }else if(this.chosenAppForm === "17:00-18:00"){
+                this.timeID = 17;
+            }else if(this.chosenAppForm === "18:00-19:00"){
+                this.timeID = 18;
+            }else if(this.chosenAppForm === "19:00-20:00"){
+                this.timeID = 19;
+            }else if(this.chosenAppForm === "20:00-21:00"){
+                this.timeID = 20;
+            }else if(this.chosenAppForm === "21:00-22:00"){
+                this.timeID = 21;
+            }
+
+        },
+         changeToString(int){
+            if(int === 6)
+                return "06:00-07:00"
+            else if(int === 7)
+                return "07:00-08:00"
+            else if(int === 8)
+                return "08:00-09:00"
+            else if(int === 9)
+                return "09:00-10:00"
+            else if(int === 10)
+                return "10:00-11:00"    
+            else if(int === 11)
+                return "11:00-12:00"
+            else if(int === 12)
+                return "12:00-13:00"
+            else if(int === 13)
+                return "13:00-14:00"
+            else if(int === 14)
+                return "14:00-15:00"
+            else if(int === 15)
+                return "15:00-16:00"
+            else if(int === 16)
+                return "16:00-17:00"
+            else if(int === 17)
+                return "17:00-18:00"    
+            else if(int === 18)
+                return "18:00-19:00"
+            else if(int === 19)
+                return "19:00-20:00"
+            else if(int === 20)
+                return "20:00-21:00"
+            else if(int === 21)
+                return "21:00-22:00"
+           
+          
+
+        },
 
 
         
