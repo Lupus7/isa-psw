@@ -1,13 +1,10 @@
 package team47pack.models;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,6 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //@author:Jokara
 @Entity
@@ -39,7 +42,9 @@ public class Room {
 	@Column(name = "clinic_id", unique = false, nullable = false)
 	private int clinicId;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "takendates",
             joinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "roomarrange_id", referencedColumnName = "id"))
@@ -106,6 +111,8 @@ public class Room {
 	public void setTakenDates(List<RoomArrange> takenDates) {
 		this.takenDates = takenDates;
 	}
+	
+
 
 	
 }
