@@ -1,6 +1,7 @@
 package team47pack.repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -20,5 +21,7 @@ public interface RoomRepo extends JpaRepository<Room, Long> {
 	ArrayList<Room> findByNumberAndClinicId(int number, int clinicId);
 
 	ArrayList<Room> findByTypeContainingIgnoreCaseAndClinicId(String value, int clinic);
+
+	List<Room> findByType(String string);
 
 }
