@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.json.JSONException;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import team47pack.models.Clinic;
@@ -33,13 +36,13 @@ public class NextExaminationService {
 
 	@Autowired
 	private ClinicAdminRepo caRepo;
-	
+
 	@Autowired
 	private ClinicRepo clinicRepo;
 
 	@Autowired
 	private DoctorRepo doctorRepo;
-	
+
 	@Autowired
 	private EmailService emailService;
 
@@ -69,9 +72,9 @@ public class NextExaminationService {
 		if (ca == null)
 			return false;
 		Long clinicId = Long.parseLong("" + ca.getClinic());
-		
+
 		Optional<Clinic> clinic = clinicRepo.findById(clinicId);
-		if(!clinic.isPresent())
+		if (!clinic.isPresent())
 			return false;
 
 		if (obj.get("idNextProcedure") == null || obj.get("idRoom") == null || obj.get("date") == null
@@ -84,14 +87,14 @@ public class NextExaminationService {
 
 		Long idNextProcedure = obj.getLong("idNextProcedure");
 		Long idRoom = obj.getLong("idRoom");
-		String time = obj.getString("time");
+		int time = obj.getInt("time");
 		Date dateConv = new SimpleDateFormat("dd/MM/yyyy").parse(obj.getString("date"));
 
 		Optional<NextProcedure> nextP = nextProcedureRepo.findById(idNextProcedure);
-		if (!nextP.isPresent())
+		if (!nextP.isPresent() && nextP.get().isArranged())
 			return false;
 		Optional<Room> room = roomRepo.findById(idRoom);
-		if (!room.isPresent())
+		if (!room.isPresent() && room.get().getType().equals("Operation"))
 			return false;
 
 		Date dateT = new Date();
@@ -109,31 +112,130 @@ public class NextExaminationService {
 		nextP.get().setArranged(true);
 		nextP.get().setDate(dateConv);
 		nextP.get().setDoctor(doctor);
-		RoomArrange ra = new RoomArrange(room.get().getId(), dateConv, time, true, nextP.get().getId());
+		RoomArrange ra = new RoomArrange(room.get().getId(), dateConv, time, true, nextP.get().getId(), clinicId);
 		room.get().getTakenDates().add(ra);
 
 		roomArrangeRepo.save(ra);
 		nextProcedureRepo.save(nextP.get());
 		roomRepo.save(room.get());
-		
+
 		String[] s = dateConv.toString().split(" ");
-		String dateEmail = s[2]+"/"+s[1]+"/"+s[5];
+		String dateEmail = s[2] + "/" + s[1] + "/" + s[5];
 
 		String type = nextP.get().getExaminationtype().getName();
-		String bodyPatient = "Dear Sir/Madam \n \nYour examination request has been arranged for date: "+dateEmail+
-				", time: "+time + " and room: "+room.get().getName()+
-				"!\nDoctor who is going to examin you is "+doctor.getFirstName()+" "+doctor.getLastName() +
-				"!\nAll the best\n\n" + clinic.get().getName().toUpperCase();
-		
-		String bodyDoctor = "Dear Sir/Madam \n \nYou got a new examination.\nExamination has been arranged for date: "+
-				dateEmail+", time: "+time + " and in room: "+room.get().getName()+ 
-				"!\nAll the best\n\n" + "Admin Team";
+		String bodyPatient = "Dear Sir/Madam \n \nYour examination request has been arranged for date: " + dateEmail
+				+ ", time: " + time + ":00h and room: " + room.get().getName()
+				+ "!\nDoctor who is going to examin you is " + doctor.getFirstName() + " " + doctor.getLastName()
+				+ "!\nAll the best\n\n" + clinic.get().getName().toUpperCase();
+
+		String bodyDoctor = "Dear Sir/Madam \n \nYou got a new examination.\nExamination has been arranged for date: "
+				+ dateEmail + ", time: " + time + ":00h and in room: " + room.get().getName() + "!\nAll the best\n\n"
+				+ "Admin Team";
 
 		// izmena mail da radi
 		emailService.sendSimpleMessage("mail@gmail.com", type, bodyPatient);
 		emailService.sendSimpleMessage("mail@gmail.com", type, bodyDoctor);
 
 		return true;
+	}
+
+	// metoda koja automatski dodeljuje sobe na kraju dana
+	@Scheduled(cron = "59 59 11 * * ?")
+	//@Scheduled(cron = "0/5 * * * * ?")
+	public void arrangeExaminationRoomAutomatic() throws ParseException {
+
+		List<NextProcedure> nextProcedures = nextProcedureRepo.findByArrangedAndType(false, "Examination");
+		if (nextProcedures.isEmpty())
+			return;
+		List<Room> rooms = roomRepo.findByType("Examination");
+		Integer[] intervals = { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
+
+		for (Room r : rooms) {
+
+			boolean end = false;
+			for (NextProcedure npe : nextProcedures) {
+				if (npe.isArranged()) {
+					end = true;
+				} else {
+					end = false;
+					break;
+				}
+			}
+			if (end) {
+				System.out.println("All Examinations arranged!");
+				return;
+			}
+				
+
+			List<RoomArrange> ra = r.getTakenDates();
+
+			if (ra == null || ra.isEmpty()) {
+
+				if (r.getClinicId() == nextProcedures.get(0).getIdClinic() && !nextProcedures.get(0).isArranged()) {
+
+					RoomArrange raNew = new RoomArrange(r.getId(), nextProcedures.get(0).getDate(), intervals[0], true,
+							nextProcedures.get(0).getId(), nextProcedures.get(0).getIdClinic());
+					nextProcedures.get(0).setArranged(true);
+					r.getTakenDates().add(raNew);
+
+					roomArrangeRepo.save(raNew);
+					nextProcedureRepo.save(nextProcedures.get(0));
+					roomRepo.save(r);
+
+				}
+
+				/// mail
+
+			} else {
+
+				HashMap<Integer, Integer> map = new HashMap<>();
+				int t = 0;
+
+				boolean fill = false;
+				for (NextProcedure np : nextProcedures) {
+					
+					if(!fill) {
+						map = new HashMap<>();
+						for (int i = 0; i < ra.size(); i++) {
+							if(np.getDate().equals(ra.get(0).getDate()))
+								map.put(ra.get(i).getTime(), i);
+						}
+						fill = true;
+					}
+					
+
+
+					while (!np.isArranged()) {
+
+						if (r.getClinicId() == np.getIdClinic() && !np.isArranged()) {
+							if (!map.containsKey(intervals[t])) {
+
+								map.put(intervals[t], map.size() + 1);
+								RoomArrange raNew = new RoomArrange(r.getId(), np.getDate(), intervals[t], true, np.getId(),
+										np.getIdClinic());
+								np.setArranged(true);
+								r.getTakenDates().add(raNew);
+
+								roomArrangeRepo.save(raNew);
+								nextProcedureRepo.save(np);
+								roomRepo.save(r);
+								fill = false;
+								t=0;
+
+								/// mail
+
+							} else {
+								if (t < intervals.length - 1)
+									++t;
+							}
+
+						}
+					}
+				}
+
+			}
+		}
+
 	}
 
 }
