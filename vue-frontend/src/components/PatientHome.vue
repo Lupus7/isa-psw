@@ -23,6 +23,7 @@ export default {
             pretiso: false,
             rateAClinic: false,
             rateADoctor: false,
+            convertedDate: '',
           
         }
     },
@@ -88,8 +89,11 @@ export default {
       },
       goToDoctorProfile(id){
             console.log(id)
+            console.log('datum :' + this.convertedDate)
+            //this.$router.push({name:'UserProfile', params: {brojic:id, dateSearch:this.convertedDate}});
+            let temp = id+'T'+this.convertedDate
             let url = '/userProfile/'
-            url += id
+            url += temp
             this.$router.push(url)
         },
 
@@ -159,6 +163,7 @@ export default {
       let examination = document.getElementById("type").value
       let location = document.getElementById("location").value
       let date = document.getElementById("date").value
+      this.convertedDate = date
       let rate = parseFloat(document.getElementById("rate").value)
       console.log(rate)
       console.log(examination + location+" " + date)

@@ -64,7 +64,6 @@ const router = new Router({
         {
             path: "/userProfile",
             name: "UserProfile",
-
             component: () =>
                 import ("./components/UserProfile")
         },

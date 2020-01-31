@@ -119,7 +119,7 @@ export default {
                         this.calendarEvents = response.data
 
                         if (!this.calendarEvents || this.calendarEvents.length == 0) {
-                            this.valid = 0
+                            //this.valid = 0
                             return;
                         }
 
@@ -169,11 +169,6 @@ export default {
                 .get('/calendar/schedule')
                 .then(response => {
                         this.calendarEvents = response.data
-
-                        if (!this.calendarEvents || this.calendarEvents.length == 0) {
-                            this.valid = 0
-                            return;
-                        }
 
                         this.calendarView = 'timeGridWeek'
                         this.calendarHeader.left = 'dayGridMonth,timeGridWeek,timeGridDay, listWeek'
