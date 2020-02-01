@@ -84,6 +84,17 @@
                                 </div>
                             </div>
 
+                             <div class="control-group" style="padding-left:20px; padding-right:700px">
+                                <label class="control-label" >Time:</label>
+                                <div class="form-group">
+                                     <select class="form-control" v-model="timeF">
+                                        <option v-for="(ap, index) in this.freeApps" :key="index"> {{ap}} </option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
 
                             <br>
                             <div class="modal-footer" style=" border-top: 2px dashed #5f5f5f;" >
@@ -122,7 +133,13 @@ export default {
             procedure :"",
             date: "",
             type:"",
-            examTypes:""
+            examTypes:"",
+            timeF:'',
+            freeApps:[
+                "06:00-07:00","07:00-08:00","08:00-09:00","09:00-10:00","10:00-11:00","11:00-12:00",
+                "12:00-13:00","13:00-14:00","14:00-15:00","15:00-16:00","16:00-17:00","17:00-18:00",
+                "18:00-19:00","19:00-20:00","20:00-21:00","21:00-22:00"
+            ],
         }
     },
     props: {
@@ -187,7 +204,8 @@ export default {
                 prescs: this.prescs,
                 procedure: this.procedure,
                 date: this.date,
-                idType: this.type
+                idType: this.type,
+                pickedtime: this.changeToInt(),
             }
             axios
                 .post('http://localhost:8080/patient/examination', reqData)
@@ -196,8 +214,48 @@ export default {
                     this.$router.go("/")
                 })
         },
+
+        changeToInt(){
+
+            if(this.timeF === "06:00-07:00"){
+               return 6;
+            }else if(this.timeF  === "07:00-08:00"){
+                return 7;
+            }else if(this.timeF === "08:00-09:00"){
+                return 8;
+            }else if(this.timeF === "09:00-10:00"){
+                return 9;
+            }else if(this.timeF === "10:00-11:00"){
+                return 10;
+            }else if(this.timeF === "11:00-12:00"){
+                return 11;
+            }else if(this.timeF === "12:00-13:00"){
+                return 12;
+            }else if(this.timeF === "13:00-14:00"){
+                return 13;
+            }else if(this.timeF === "14:00-15:00"){
+                return 14;
+            }else if(this.timeF === "15:00-16:00"){
+                return 15;
+            }else if(this.timeF === "16:00-17:00"){
+                return 16;
+            }else if(this.timeF === "17:00-18:00"){
+                return 17;
+            }else if(this.timeF === "18:00-19:00"){
+                return 18;
+            }else if(this.timeF === "19:00-20:00"){
+                return 19;
+            }else if(this.timeF === "20:00-21:00"){
+                return 20;
+            }else if(this.timeF === "21:00-22:00"){
+                return 21;
+            }
+
+        },
        
     },
+    
+
     created() {
         this.getPatiendData()
         this.getCodebookData()

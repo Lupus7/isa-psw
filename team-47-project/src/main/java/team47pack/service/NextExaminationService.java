@@ -173,7 +173,7 @@ public class NextExaminationService {
 
 				if (r.getClinicId() == nextProcedures.get(0).getIdClinic() && !nextProcedures.get(0).isArranged()) {
 
-					RoomArrange raNew = new RoomArrange(r.getId(), nextProcedures.get(0).getDate(), intervals[0], true,
+					RoomArrange raNew = new RoomArrange(r.getId(), nextProcedures.get(0).getDate(), nextProcedures.get(0).getPickedtime(), true,
 							nextProcedures.get(0).getId(), nextProcedures.get(0).getIdClinic());
 					nextProcedures.get(0).setArranged(true);
 					r.getTakenDates().add(raNew);
@@ -208,7 +208,22 @@ public class NextExaminationService {
 					while (!np.isArranged()) {
 
 						if (r.getClinicId() == np.getIdClinic() && !np.isArranged()) {
-							if (!map.containsKey(intervals[t])) {
+							if(!map.containsKey(np.getPickedtime())) {
+								
+								map.put(np.getPickedtime(), map.size() + 1);
+								RoomArrange raNew = new RoomArrange(r.getId(), np.getDate(), np.getPickedtime(), true, np.getId(),
+										np.getIdClinic());
+								np.setArranged(true);
+								r.getTakenDates().add(raNew);
+
+								roomArrangeRepo.save(raNew);
+								nextProcedureRepo.save(np);
+								roomRepo.save(r);
+								fill = false;
+								t=0;
+
+								
+							}else if (!map.containsKey(intervals[t])) {
 
 								map.put(intervals[t], map.size() + 1);
 								RoomArrange raNew = new RoomArrange(r.getId(), np.getDate(), intervals[t], true, np.getId(),

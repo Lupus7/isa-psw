@@ -14,9 +14,7 @@
                                     <img v-if=" this.role === 'ROLE_DOCTOR'"  src="../../public/assets/doctor.jpg" style="width: 150px; height: 150px margin-top: -2vh " class="img-thumbnail" />
                                     <img v-if=" this.role === 'ROLE_NURSE'"  src="../../public/assets/nurse.png" style="width: 150px; height: 150px margin-top: -2vh " class="img-thumbnail" />
                                 </div>
-                                <div v-if="this.role === 'ROLE_PATIENT'">
-                                    <Calendar v-bind:doctor="this.user.email" v-bind:date="this.wantedDate"></Calendar>
-                                 </div>
+                               
                                 <div class="userData ml-3">
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.email}}</h2>
                                     <h4 v-if=" this.role === 'ROLE_DOCTOR' || this.role === 'ROLE_PATIENT' " class="d-block" style="font-size: 1.5rem; font-weight: bold">Doctor</h4>
@@ -148,8 +146,18 @@
 
                 </div>
             </div>
+
+             <div class="row" v-if="this.role === 'ROLE_PATIENT'">
+            <Calendar v-bind:doctor="this.user.email" v-bind:date="this.wantedDate"></Calendar>
         </div>
+
+
+        </div>
+
+        
+
     </div>
+
     
 </template>
 
@@ -174,7 +182,9 @@ export default {
                    
         }
     },
-    props:["id"],
+    props:{
+        id:String
+    },
     components:{
         Calendar
     },
@@ -240,10 +250,8 @@ export default {
    
         },
         sendExaminationRequest(id){
-            console.log(id)
-            console.log(this.user.specialization)
+          
             let url = "/patient/requests/" + id +"/"+this.user.specialization
-            console.log(url)
             axios
             .post(url)
             .then(response=>{
@@ -258,24 +266,23 @@ export default {
 
     },
     created(){
-        console.log(this.id)
-        if(this.id.includes("T")){
-            let s = this.id.split("T")
-            this.idDoc=s[0]
-            this.wantedDate=s[1]
-        }else{
-            this.idDoc=this.id
-        }
        
-        //console.log('PROPS :' + this.dateSearch + ' id mu je ;' + this.brojic)
         this.getRole();
 
-        if(this.role === "ROLE_DOCTOR")
+        if(this.role === "ROLE_DOCTOR"){
             this.getDoctor();
 
-        else if(this.role === "ROLE_NURSE")
+        }else if(this.role === "ROLE_NURSE")
             this.getNurse();
         else if(this.role === "ROLE_PATIENT")
+             if(this.id.includes("T")){
+                let s = this.id.split("T")
+                this.idDoc=s[0]
+                this.wantedDate=s[1]
+            }else{
+                this.idDoc=this.id
+            }
+
             this.getDoctorId();
       
         if(this.user.onVacation === true)
