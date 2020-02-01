@@ -56,6 +56,7 @@ const router = new Router({
         },
         {
             path: "/userProfile/:id",
+            name: "UserProfile",
             props: true,
             component: () =>
                 import ("./components/UserProfile")
