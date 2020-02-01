@@ -34,6 +34,9 @@ public class NextProcedure {
 	private Long clinic;
 	
 	@Column
+	private int pickedtime;
+	
+	@Column
 	private boolean arranged;
 
 	@Column
@@ -57,7 +60,7 @@ public class NextProcedure {
 
 	}
 
-	public NextProcedure(String type, Date date, Patient patient, Doctor doctor) {
+	public NextProcedure(String type, Date date, Patient patient, Doctor doctor,int t) {
 
 		this.type = type;
 		this.date = date;
@@ -65,9 +68,10 @@ public class NextProcedure {
 		this.doctor = doctor;
 		this.clinic = doctor.getClinicId();
 		this.arranged = false;
+		this.pickedtime = t;
 	}
 
-	public NextProcedure(String type, Date date, Patient patient, Doctor doctor, ExaminationType etx) {
+	public NextProcedure(String type, Date date, Patient patient, Doctor doctor, ExaminationType etx,int t) {
 
 		this.type = type;
 		this.date = date;
@@ -76,6 +80,7 @@ public class NextProcedure {
 		this.clinic = doctor.getClinicId();
 		this.examinationtype = etx;
 		this.arranged = false;
+		this.pickedtime = t;
 	}
 
 	public Long getId() {
@@ -140,6 +145,14 @@ public class NextProcedure {
 
 	public void setArranged(boolean arranged) {
 		this.arranged = arranged;
+	}
+
+	public int getPickedtime() {
+		return pickedtime;
+	}
+
+	public void setPickedtime(int pickedtime) {
+		this.pickedtime = pickedtime;
 	}
 	
 	
