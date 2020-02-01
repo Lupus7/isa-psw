@@ -23,22 +23,24 @@ public class ExaminInfo {
 	private Date date;
 	private String procedure;
 	private String idType;
+	private int pickedtime;
 
 	public ExaminInfo() {
 	}
 
 	public ExaminInfo(Long patientId, String desc, DiagnosisDTO diag, List<PrescriptionDTO> prescs, Date date,
-			String procedure) {
+			String procedure, int t) {
 		this.patientId = patientId;
 		this.desc = desc;
 		this.diag = diag;
 		this.prescs = prescs;
 		this.date = date;
 		this.procedure = procedure;
+		this.pickedtime = t;
 	}
 	
 	public ExaminInfo(Long patientId, String desc, DiagnosisDTO diag, List<PrescriptionDTO> prescs, Date date,
-			String procedure, String id) {
+			String procedure, String id, int t) {
 		this.patientId = patientId;
 		this.desc = desc;
 		this.diag = diag;
@@ -46,6 +48,7 @@ public class ExaminInfo {
 		this.date = date;
 		this.procedure = procedure;
 		this.idType = id;
+		this.pickedtime = t;
 	}
 
 	public Long getPatientId() {
@@ -102,6 +105,14 @@ public class ExaminInfo {
 
 	public void setIdType(String idType) {
 		this.idType = idType;
+	}
+
+	public int getPickedtime() {
+		return pickedtime;
+	}
+
+	public void setPickedtime(int pickedtime) {
+		this.pickedtime = pickedtime;
 	}
 	
 	
