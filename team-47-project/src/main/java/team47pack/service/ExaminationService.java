@@ -147,8 +147,8 @@ public class ExaminationService {
 			} else if (!examinInfo.getDate().toString().equals("") && examinInfo.getProcedure().equals(""))
 				return false;
 			else if (!examinInfo.getDate().toString().equals("") && !examinInfo.getProcedure().equals("")
-					&& pat.isPresent()) {
-				addNextProcedure(examinInfo.getDate(), examinInfo.getProcedure(), examinInfo.getIdType(), pat, doctor);
+					&& pat.isPresent() && examinInfo.getPickedtime() >= 6 && examinInfo.getPickedtime() <=21) {
+				addNextProcedure(examinInfo.getDate(), examinInfo.getProcedure(), examinInfo.getIdType(), pat, doctor,examinInfo.getPickedtime());
 			}
 		}
 
@@ -156,7 +156,7 @@ public class ExaminationService {
 	}
 
 	// @------author: Jokara
-	public void addNextProcedure(Date date, String procedure, String type, Optional<Patient> pat, String d)
+	public void addNextProcedure(Date date, String procedure, String type, Optional<Patient> pat, String d,int pickedtime)
 			throws ParseException {
 
 		Doctor doctor = doctorRepo.findByEmail(d);
@@ -164,12 +164,12 @@ public class ExaminationService {
 
 		if (dateT.compareTo(date) <= 0) {
 			if (type.equals("")) {
-				NextProcedure np = new NextProcedure(procedure, date, pat.get(), doctor);
+				NextProcedure np = new NextProcedure(procedure, date, pat.get(), doctor,pickedtime);
 				nextProcedureRepo.save(np);
 			} else {
 				Optional<ExaminationType> ext = exmTypeRepo.findById(Long.parseLong(type));
 				if (ext.isPresent()) {
-					NextProcedure np = new NextProcedure(procedure, date, pat.get(), doctor, ext.get());
+					NextProcedure np = new NextProcedure(procedure, date, pat.get(), doctor, ext.get(),pickedtime);
 					nextProcedureRepo.save(np);
 				}
 
@@ -190,7 +190,7 @@ public class ExaminationService {
 						+ " or system will automatically assign room for this request! \n \n All the best!";
 
 				for (ClinicAdmin ca : admins)
-					emailService.sendSimpleMessage(ca.getEmail(), "New " + procedure + "!", body);
+					emailService.sendSimpleMessage("mail@gmail.com", "New " + procedure + "!", body);
 
 			}
 
