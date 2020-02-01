@@ -39,6 +39,21 @@
                             </div>
                         </div>
 
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                               <label >Time:</label>
+                                 <div class="form-group">
+                                    <textarea class="form-control" v-text="changeToString(this.examReqs.pickedtime)"  disabled rows="1" style="resize:none"/>
+                                </div>
+                            </div>
+                           <div class="form-group col-md-6">
+                                <label>Select another Doctor:</label>
+                                     <select class="form-control" v-model="newDoctor">
+                                        <option v-for="(doc, index) in this.doctors" :key="index"> {{doc.firstName}} {{doc.lastName}} </option>
+                                    </select>
+                            </div>
+                        </div>
+
 
                          <div class="form-row">
                             <div class="form-group col-md-6">
@@ -49,13 +64,9 @@
                                     </select>
                                 </div>
                             </div>
-                                <div class="form-group col-md-6">
-                                <label>Select another Doctor:</label>
-                                     <select class="form-control" v-model="newDoctor">
-                                        <option v-for="(doc, index) in this.doctors" :key="index"> {{doc.firstName}} {{doc.lastName}} </option>
-                                    </select>
-                            </div>
+                                
                         </div>
+
                         
                         
                         
