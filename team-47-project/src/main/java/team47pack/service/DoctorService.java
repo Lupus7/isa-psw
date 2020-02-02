@@ -48,11 +48,7 @@ public class DoctorService {
 	private RateRepo rateRepo;
 
 	public Doctor getDoctor(String email) {
-		Doctor d = (Doctor) userRepo.findByEmail(email);
-		Doctor d1 = doctorRepo.getOne(d.getId());
-		d.setSpecialization(d1.getSpecialization());
-		d1 = (Doctor) medicalRepo.getOne(d.getId());
-		d.setOnVacation(d1.getOnVacation());
+		Doctor d = doctorRepo.findByEmail(email);
 
 		return d;
 	}
@@ -177,12 +173,11 @@ public class DoctorService {
 	public List<Doctor> getClinicDoctors(String spec, String email) {
 		String specialization = spec.replace("%20", " ");
 		ClinicAdmin ca = clinicAdminRepo.findByEmail(email);
-		if(ca == null)
+		if (ca == null)
 			return new ArrayList<>();
-		Long clinicId = Long.parseLong(""+ca.getClinic());
+		Long clinicId = Long.parseLong("" + ca.getClinic());
 
-		
-		return doctorRepo.findBySpecializationAndClinicId(specialization,clinicId);
+		return doctorRepo.findBySpecializationAndClinicId(specialization, clinicId);
 	}
 
 }
