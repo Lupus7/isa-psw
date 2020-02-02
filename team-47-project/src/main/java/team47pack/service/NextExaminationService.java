@@ -141,7 +141,7 @@ public class NextExaminationService {
 
 	// metoda koja automatski dodeljuje sobe na kraju dana
 	@Scheduled(cron = "59 59 11 * * ?")
-	// @Scheduled(cron = "0/5 * * * * ?")
+	//@Scheduled(cron = "0/5 * * * * ?")
 	public void arrangeExaminationRoomAutomatic() throws ParseException {
 
 		List<NextProcedure> nextProcedures = nextProcedureRepo.findByArrangedAndTypeAndPatientNotNull(false,
@@ -183,9 +183,28 @@ public class NextExaminationService {
 					nextProcedureRepo.save(nextProcedures.get(0));
 					roomRepo.save(r);
 
-				}
+					// ------------------------------------------------mail
+					String[] s = nextProcedures.get(0).getDate().toString().split(" ");
+					String[] s1 = s[0].split("-");
+					String dateEmail = s1[2]+"/"+s1[1]+"/"+s1[0];
 
-				/// mail
+					String type = nextProcedures.get(0).getExaminationtype().getName();
+					String bodyPatient = "Dear Sir/Madam \n \nYour examination request has been arranged for date: "
+							+ dateEmail + ", time: " + nextProcedures.get(0).getPickedtime() + ":00h and room: "
+							+ r.getName() + "!\nDoctor who is going to examin you is "
+							+ nextProcedures.get(0).getDoctor().getFirstName() + " "
+							+ nextProcedures.get(0).getDoctor().getLastName() + "!\nAll the best\n\n";
+
+					String bodyDoctor = "Dear Sir/Madam \n \nYou got a new examination.\nExamination has been arranged for date: "
+							+ dateEmail + ", time: " + nextProcedures.get(0).getPickedtime() + ":00h and in room: "
+							+ r.getName() + "!\nAll the best\n\n" + "Admin Team";
+
+					// izmena mail da radi
+					emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyPatient);
+					emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyDoctor);
+					// ------------------------------------------------------------
+
+				}
 
 			} else {
 
@@ -221,6 +240,25 @@ public class NextExaminationService {
 								fill = false;
 								t = 0;
 
+								// ------------------------------------------------mail
+								String[] s = np.getDate().toString().split(" ");
+								String[] s1 = s[0].split("-");
+								String dateEmail = s1[2]+"/"+s1[1]+"/"+s1[0];
+								String type = nextProcedures.get(0).getExaminationtype().getName();
+								String bodyPatient = "Dear Sir/Madam \n \nYour examination request has been arranged for date: "
+										+ dateEmail + ", time: " + np.getPickedtime() + ":00h and room: " + r.getName()
+										+ "!\nDoctor who is going to examin you is " + np.getDoctor().getFirstName()
+										+ " " + np.getDoctor().getLastName() + "!\nAll the best\n\n";
+
+								String bodyDoctor = "Dear Sir/Madam \n \nYou got a new examination.\nExamination has been arranged for date: "
+										+ dateEmail + ", time: " + np.getPickedtime() + ":00h and in room: "
+										+ r.getName() + "!\nAll the best\n\n" + "Admin Team";
+
+								// izmena mail da radi
+								emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyPatient);
+								emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyDoctor);
+								// ------------------------------------------------------------
+
 							} else if (!map.containsKey(intervals[t])) {
 
 								map.put(intervals[t], map.size() + 1);
@@ -235,7 +273,26 @@ public class NextExaminationService {
 								fill = false;
 								t = 0;
 
-								/// mail
+								// ------------------------------------------------mail
+								String[] s = np.getDate().toString().split(" ");
+								String[] s1 = s[0].split("-");
+								String dateEmail = s1[2]+"/"+s1[1]+"/"+s1[0];
+
+
+								String type = nextProcedures.get(0).getExaminationtype().getName();
+								String bodyPatient = "Dear Sir/Madam \n \nYour examination request has been arranged for date: "
+										+ dateEmail + ", time: " + np.getPickedtime() + ":00h and room: " + r.getName()
+										+ "!\nDoctor who is going to examin you is " + np.getDoctor().getFirstName()
+										+ " " + np.getDoctor().getLastName() + "!\nAll the best\n\n";
+
+								String bodyDoctor = "Dear Sir/Madam \n \nYou got a new examination.\nExamination has been arranged for date: "
+										+ dateEmail + ", time: " + np.getPickedtime() + ":00h and in room: "
+										+ r.getName() + "!\nAll the best\n\n" + "Admin Team";
+
+								// izmena mail da radi
+								emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyPatient);
+								emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyDoctor);
+								// ------------------------------------------------------------
 
 							} else {
 								if (t < intervals.length - 1)

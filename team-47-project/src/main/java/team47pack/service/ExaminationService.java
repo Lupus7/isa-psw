@@ -122,7 +122,8 @@ public class ExaminationService {
 				return false;
 			medFileEntry.getPrescriptions().add(new PrescriptionVerification(pat.get(), doc.get(), pres.get()));
 		}
-
+		
+		medFileEntry.setDoctor(doc.get());
 		medEntryRepo.save(medFileEntry);
 
 		if (pat.get().getMedicalFile() == null) {

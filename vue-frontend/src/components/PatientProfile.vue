@@ -30,6 +30,7 @@ export default {
             axios.get(url).then(response => { this.user = response.data;})
         },
 		checkMedicalFile(){
+            this.$router.push({name:'MedicalFile', params: {medstaff:this.user,patient:this.user}});
 
 		},
 		getRole(){
@@ -82,8 +83,11 @@ export default {
                             <div class="d-flex justify-content-start">
                                 <div class="image-container">
                                     <img class="editable img-responsive" style="width: 150px; height: 150px; margin-bottom: 5px" id="avatar2" src="../../public/assets/patient.png">
-                                    <div class="middle">
+                                    <div v-if="this.role === 'ROLE_PATIENT'" class="middle">
                                         <button type="button" class="btn btn-secondary btn-block" v-on:click="changeD">Change data </button>
+                                    </div>
+                                     <div v-if="this.role === 'ROLE_DOCTOR' || this.role === 'ROLE_NURSE'" class="middle">
+                                        <button type="button" class="btn btn btn-block" style="background:indigo; color:white" v-on:click="checkMedicalFile()">Medical File </button>
                                     </div>
                                 </div>
                                 <div class="userData ml-3">

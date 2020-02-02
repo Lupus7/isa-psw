@@ -219,7 +219,7 @@ export default {
 
                     }else if(this.doctorForm.shift == 2){
 
-                        for( var i = 7; i <= 15; i++){ 
+                        for( var i = 8; i <= 15; i++){ 
                             this.freeApps.push(this.freeAp[i])                
                         }
                     }

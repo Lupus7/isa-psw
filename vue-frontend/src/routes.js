@@ -25,6 +25,13 @@ const router = new Router({
                 import ("./components/Login")
         },
         {
+            path: "/medicalFile",
+            name: "MedicalFile",
+            props:true,
+            component: () =>
+                import ("./components/MedicalFile")
+        },
+        {
             path: "/register",
             name: "Register",
             component: () =>

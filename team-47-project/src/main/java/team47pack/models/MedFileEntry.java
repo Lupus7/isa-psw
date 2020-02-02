@@ -20,6 +20,12 @@ public class MedFileEntry {
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "diagnosis_id", referencedColumnName = "id", nullable = true)
     private Diagnosis diagnosis;
+    
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id", nullable = true)
+    private Doctor doctor;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -78,4 +84,22 @@ public class MedFileEntry {
     public void setPrescriptions(List<PrescriptionVerification> prescriptions) {
         this.prescriptions = prescriptions;
     }
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+    
+    
 }

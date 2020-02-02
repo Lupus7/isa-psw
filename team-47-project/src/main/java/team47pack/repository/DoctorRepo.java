@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import team47pack.models.Doctor;
 
-
 @Repository
 public interface DoctorRepo extends JpaRepository<Doctor, Long>, JpaSpecificationExecutor<Doctor> {
 	Doctor findByEmail(String email);
