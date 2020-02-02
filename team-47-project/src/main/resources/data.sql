@@ -229,9 +229,11 @@ insert into examinationtype (id,name,specialization,price,clinic_id) values (4,'
 insert into examinationtype (id,name,specialization,price,clinic_id) values (5,'Eyelid Surgery','Plastic surgeon',1200,2);
 insert into examinationtype (id,name,specialization,price,clinic_id) values (6,'Facelift','Plastic surgeon',3000,2);
 insert into examinationtype (id,name,specialization,price,clinic_id) values (7,'Taking out tooth','Stomatologist',12,2);
+insert into examinationtype (id,name,specialization,price,clinic_id) values (10,'Tooth Cleaning','Stomatologist',2,2);
+
+
 insert into examinationtype (id,name,specialization,price,clinic_id) values (8,'Control','General Practise',6,1);
 insert into examinationtype (id,name,specialization,price,clinic_id) values (9,'Regular check','General Practise',1.5,1);
-insert into examinationtype (id,name,specialization,price,clinic_id) values (10,'Control','Stomatologist',2,2);
 insert into examinationtype (id,name,specialization,price,clinic_id) values (11,'Build in prosthesis','Stomatologist',45,1);
 insert into examinationtype (id,name,specialization,price,clinic_id) values (12,'Eyelid Surgery','Plastic surgeon',1700,1);
 insert into examinationtype (id,name,specialization,price,clinic_id) values (13,'Facelift','Plastic surgeon',5000,1);
