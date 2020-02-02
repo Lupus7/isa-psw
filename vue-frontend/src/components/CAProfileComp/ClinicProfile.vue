@@ -34,11 +34,11 @@
                                     </div>
 
                                     <div class="middle">
-                                        <button type="button" class="btn btn-block btn-warning " @click="priceList" style=" border-radius: 6px;  color: white; padding:10px; margin-top: 15px;" >Pricelist </button>
+                                        <button type="button" class="btn btn-block " @click="priceList" style=" border-radius: 6px;  color: white; padding:10px; margin-top: 15px; background:teal" >Pricelist </button>
                                     </div>
 
                                     <div class="middle">
-                                        <button type="button" class="btn btn-block btn-secondary " @click="examRequest" style=" border-radius: 6px;  color: white; padding:10px; margin-top: 15px;" >Examination requests </button>
+                                        <button type="button" class="btn btn-block " @click="examRequest" style=" border-radius: 6px;  color: white; padding:10px; margin-top: 15px; background:indigo "  >Examination requests </button>
                                     </div>
                                    
                                 </div>
