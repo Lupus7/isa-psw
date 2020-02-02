@@ -184,8 +184,8 @@ insert into prescription (id, name) values (2, 'Brufen');
 insert into prescription (id, name) values (3, 'Probiotik');
 
 --Prvo pravim entrijeve
-insert into med_file_en(id,description,diagnosis_id) values(1,'opis bolesti 1',1);
-insert into med_file_en(id,description,diagnosis_id)  values(2,'opis bolesti 2',2);
+insert into med_file_en(id,description,diagnosis_id,doctor_id) values(1,'opis bolesti 1',1,8);
+insert into med_file_en(id,description,diagnosis_id,doctor_id)  values(2,'opis bolesti 2',2,8);
 
 --sada povezujem sa medical file
 insert into medicalfile_entries(medical_file_id,entries_id) values(2,1);
