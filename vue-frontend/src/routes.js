@@ -174,6 +174,12 @@ const router = new Router({
             component: () =>
                 import ("./components/CalendarDoctor")
         },
+        {
+            path: "/fastExamination",
+            name: "FastExamination",
+            component: () =>
+                import ("./components/CAProfileComp/FastExamination")
+        },
     ]
 });
 
