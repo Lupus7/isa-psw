@@ -24,4 +24,8 @@ public interface RoomRepo extends JpaRepository<Room, Long> {
 
 	List<Room> findByType(String string);
 
+	List<Room> findByClinicId(int i);
+
+	List<Room> findByTypeAndClinicId(String string, int clinic);
+
 }
