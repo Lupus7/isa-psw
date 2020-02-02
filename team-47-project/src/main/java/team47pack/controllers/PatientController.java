@@ -1,27 +1,39 @@
 package team47pack.controllers;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import team47pack.models.*;
-import team47pack.models.dto.DiagnosisDTO;
-import team47pack.models.dto.FilterPatientRequest;
-import team47pack.models.dto.MedicalFileDto;
-import team47pack.models.dto.SearchPatientRequest;
-import team47pack.security.TokenUtils;
-import team47pack.service.*;
-
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import team47pack.models.Clinic;
+import team47pack.models.Diagnosis;
+import team47pack.models.Doctor;
+import team47pack.models.Examination;
+import team47pack.models.ExaminationType;
+import team47pack.models.MedFileEntry;
+import team47pack.models.MedicalFile;
+import team47pack.models.Patient;
+import team47pack.models.dto.DiagnosisDTO;
+import team47pack.models.dto.FilterPatientRequest;
+import team47pack.models.dto.MedicalFileDto;
+import team47pack.models.dto.MedicalFileViewDTO;
+import team47pack.models.dto.SearchPatientRequest;
+import team47pack.security.TokenUtils;
+import team47pack.service.ClinicService;
+import team47pack.service.DiagnosisService;
+import team47pack.service.DoctorService;
+import team47pack.service.ExaminationService;
+import team47pack.service.ExaminationTypeService;
+import team47pack.service.PatientService;
 
 @RestController
 public class PatientController {
@@ -126,6 +138,13 @@ public class PatientController {
 	public Patient getPatient(@PathVariable(value = "id") String id) {
 
 		return patientService.getPatientbyID(id);
+	}
+	
+	@GetMapping(value = "patient/getMedFile/{id}")
+	@PreAuthorize("hasRole('NURSE') or hasRole('DOCTOR') ")
+	public List<MedicalFileViewDTO> getMedFile(@PathVariable(value = "id") String id, Principal user) {
+
+		return patientService.getMedFile(id,user.getName());
 	}
 
 	@PostMapping(value="patient/requests/{id}/{spec}")
