@@ -39,7 +39,11 @@
                                     </div>
 
                                     <div class="middle">                                     
-                                        <button type="button" class="btn btn-block btn-warning " @click="exmnTypes" style=" border-radius: 6px;  color: white; padding:8px; margin-top: 15px; " >Examination Types </button> 
+                                        <button type="button" class="btn btn-block  " @click="exmnTypes" style=" border-radius: 6px;  color: white; padding:8px; margin-top: 15px; background:indigo " >Examination Types </button> 
+                                    </div>
+
+                                    <div class="middle">                                     
+                                        <button type="button" class="btn btn-block " @click="fastExamination" style=" border-radius: 6px;  color: white; padding:8px; margin-top: 15px; background:teal " >Add Fast Examination </button> 
                                     </div>
 
                                    
@@ -168,6 +172,10 @@ export default {
             e.preventDefault()
             this.$router.push("/examinTypes");
         },
+        fastExamination(e){
+            e.preventDefault()
+            this.$router.push("/fastExamination");
+        }
         
     },
     created() {
