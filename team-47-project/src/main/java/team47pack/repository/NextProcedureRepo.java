@@ -19,4 +19,10 @@ public interface NextProcedureRepo extends JpaRepository<NextProcedure, Long> {
 
 	List<NextProcedure> findByArrangedAndType(boolean b, String string);
 
+	List<NextProcedure> findByPatientAndArranged(Object object, boolean b);
+
+	Page<NextProcedure> findByPatientAndArranged(Object object, boolean b, Pageable pageable);
+
+	List<NextProcedure> findByArrangedAndTypeAndPatientNotNull(boolean b, String string);
+
 }

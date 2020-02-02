@@ -141,10 +141,11 @@ public class NextExaminationService {
 
 	// metoda koja automatski dodeljuje sobe na kraju dana
 	@Scheduled(cron = "59 59 11 * * ?")
-	//@Scheduled(cron = "0/5 * * * * ?")
+	// @Scheduled(cron = "0/5 * * * * ?")
 	public void arrangeExaminationRoomAutomatic() throws ParseException {
 
-		List<NextProcedure> nextProcedures = nextProcedureRepo.findByArrangedAndType(false, "Examination");
+		List<NextProcedure> nextProcedures = nextProcedureRepo.findByArrangedAndTypeAndPatientNotNull(false,
+				"Examination");
 		if (nextProcedures.isEmpty())
 			return;
 		List<Room> rooms = roomRepo.findByType("Examination");
@@ -165,7 +166,6 @@ public class NextExaminationService {
 				System.out.println("All Examinations arranged!");
 				return;
 			}
-				
 
 			List<RoomArrange> ra = r.getTakenDates();
 
@@ -173,8 +173,9 @@ public class NextExaminationService {
 
 				if (r.getClinicId() == nextProcedures.get(0).getIdClinic() && !nextProcedures.get(0).isArranged()) {
 
-					RoomArrange raNew = new RoomArrange(r.getId(), nextProcedures.get(0).getDate(), nextProcedures.get(0).getPickedtime(), true,
-							nextProcedures.get(0).getId(), nextProcedures.get(0).getIdClinic());
+					RoomArrange raNew = new RoomArrange(r.getId(), nextProcedures.get(0).getDate(),
+							nextProcedures.get(0).getPickedtime(), true, nextProcedures.get(0).getId(),
+							nextProcedures.get(0).getIdClinic());
 					nextProcedures.get(0).setArranged(true);
 					r.getTakenDates().add(raNew);
 
@@ -193,26 +194,24 @@ public class NextExaminationService {
 
 				boolean fill = false;
 				for (NextProcedure np : nextProcedures) {
-					
-					if(!fill) {
+
+					if (!fill) {
 						map = new HashMap<>();
 						for (int i = 0; i < ra.size(); i++) {
-							if(np.getDate().equals(ra.get(0).getDate()))
+							if (np.getDate().equals(ra.get(0).getDate()))
 								map.put(ra.get(i).getTime(), i);
 						}
 						fill = true;
 					}
-					
-
 
 					while (!np.isArranged()) {
 
 						if (r.getClinicId() == np.getIdClinic() && !np.isArranged()) {
-							if(!map.containsKey(np.getPickedtime())) {
-								
+							if (!map.containsKey(np.getPickedtime())) {
+
 								map.put(np.getPickedtime(), map.size() + 1);
-								RoomArrange raNew = new RoomArrange(r.getId(), np.getDate(), np.getPickedtime(), true, np.getId(),
-										np.getIdClinic());
+								RoomArrange raNew = new RoomArrange(r.getId(), np.getDate(), np.getPickedtime(), true,
+										np.getId(), np.getIdClinic());
 								np.setArranged(true);
 								r.getTakenDates().add(raNew);
 
@@ -220,14 +219,13 @@ public class NextExaminationService {
 								nextProcedureRepo.save(np);
 								roomRepo.save(r);
 								fill = false;
-								t=0;
+								t = 0;
 
-								
-							}else if (!map.containsKey(intervals[t])) {
+							} else if (!map.containsKey(intervals[t])) {
 
 								map.put(intervals[t], map.size() + 1);
-								RoomArrange raNew = new RoomArrange(r.getId(), np.getDate(), intervals[t], true, np.getId(),
-										np.getIdClinic());
+								RoomArrange raNew = new RoomArrange(r.getId(), np.getDate(), intervals[t], true,
+										np.getId(), np.getIdClinic());
 								np.setArranged(true);
 								r.getTakenDates().add(raNew);
 
@@ -235,7 +233,7 @@ public class NextExaminationService {
 								nextProcedureRepo.save(np);
 								roomRepo.save(r);
 								fill = false;
-								t=0;
+								t = 0;
 
 								/// mail
 
