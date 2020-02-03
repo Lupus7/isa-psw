@@ -2,9 +2,12 @@ package team47pack.models;
 
 import javax.persistence.*;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 // @author: Lupus7 (Sinisa Canak)
@@ -36,6 +39,12 @@ public class MedFileEntry {
 
     @Column(name = "description", nullable = false, unique = false)
     private String description;
+    
+
+	@Column
+	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	private Date date;
 
     public MedFileEntry() {
     }
@@ -87,6 +96,16 @@ public class MedFileEntry {
 
 	public Doctor getDoctor() {
 		return doctor;
+	}
+	
+	
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public void setDoctor(Doctor doctor) {
