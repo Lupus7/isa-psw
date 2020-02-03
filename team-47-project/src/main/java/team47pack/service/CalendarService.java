@@ -9,10 +9,7 @@ import team47pack.models.Room;
 import team47pack.models.dto.CalendarEvent;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,7 +42,7 @@ public class CalendarService {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-        return examinations
+        List<CalendarEvent> retVal = examinations
                 .stream()
                 .filter(examination -> {
                     cal.setTime(examination.getDate());
@@ -53,6 +50,12 @@ public class CalendarService {
                 })
                 .map(CalendarEvent::new)
                 .collect(Collectors.toList());
+
+        if (retVal.isEmpty()) {
+            retVal.add(new CalendarEvent(new Examination("a", new Date(0), null, doctor, true)));
+        }
+
+        return retVal;
     }
 
     public boolean docHasTime(String email, String date) { // ONLY WORKS CORRECTLY IF PROCEDURES START ON FULL HOURS, NEEDS FIXING
