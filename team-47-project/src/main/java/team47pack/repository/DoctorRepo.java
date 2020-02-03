@@ -29,5 +29,9 @@ public interface DoctorRepo extends JpaRepository<Doctor, Long>, JpaSpecificatio
 
 	List<Doctor> findByClinicId(Long clinicId);
 
+	List<Doctor> findByClinicIdAndOnVacation(Long clinicId, boolean b);
+
+	List<Doctor> findBySpecializationAndClinicIdAndOnVacation(String specialization, Long clinicId, boolean b);
+
 
 }

@@ -62,7 +62,7 @@ public class NextExaminationService {
 			return new ArrayList<NextProcedure>();
 		Long clinicId = Long.parseLong("" + ca.getClinic());
 		Pageable sort = PageRequest.of(0, 15, Sort.by("date"));
-		Page<NextProcedure> page = nextProcedureRepo.findByClinicAndArranged(clinicId, false, sort);
+		Page<NextProcedure> page = nextProcedureRepo.findByClinicAndArrangedAndPatientNotNull(clinicId, false, sort);
 
 		return page.getContent();
 	}
@@ -81,13 +81,12 @@ public class NextExaminationService {
 				|| obj.get("time") == null || obj.get("idDoctorNew") == null)
 			return false;
 
-		if (obj.get("idNextProcedure").equals("") || obj.get("idRoom").equals("") || obj.get("date").equals("")
-				|| obj.get("time").equals(""))
+		if (obj.get("idNextProcedure").equals("") || obj.get("idRoom").equals("") || obj.get("date").equals(""))
 			return false;
 
 		Long idNextProcedure = obj.getLong("idNextProcedure");
 		Long idRoom = obj.getLong("idRoom");
-		int time = obj.getInt("time");
+
 		Date dateConv = new SimpleDateFormat("dd/MM/yyyy").parse(obj.getString("date"));
 
 		Optional<NextProcedure> nextP = nextProcedureRepo.findById(idNextProcedure);
@@ -101,6 +100,12 @@ public class NextExaminationService {
 		if (dateConv.compareTo(dateT) <= 0)
 			return false;
 
+		int time = 0;
+		if (!obj.get("time").equals("")) {
+			time = obj.getInt("time");
+		} else
+			time = nextP.get().getPickedtime();
+
 		Doctor doctor = nextP.get().getDoctor();
 		if (!obj.get("idDoctorNew").equals("none")) {
 			Long idDoc = obj.getLong("idDoctorNew");
@@ -109,9 +114,37 @@ public class NextExaminationService {
 				doctor = d.get();
 		}
 
+		if (doctor.getOnVacation())
+			return false;
+
+		///////////////////////////////////////////// provera za shift
+		Integer[] intervals = { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
+		HashMap<Integer, Integer> shift1 = new HashMap<>();
+		HashMap<Integer, Integer> shift2 = new HashMap<>();
+
+		for (int i = 0; i < intervals.length; i++) {
+			if (i <= 7)
+				shift1.put(intervals[i], i);
+			else
+				shift2.put(intervals[i], i);
+
+		}
+
+		if (doctor.getShift() == 1 && !shift1.containsKey(time))
+			return false;
+		else if (doctor.getShift() == 2 && !shift2.containsKey(time))
+			return false;
+
+		///////////////////////////////////////
+		NextProcedure check = nextProcedureRepo.findByDateAndPickedtimeAndArranged(dateConv, time, true);
+		if (check != null)
+			return false;
+		//////////////////////////////////////
+
 		nextP.get().setArranged(true);
 		nextP.get().setDate(dateConv);
 		nextP.get().setDoctor(doctor);
+		nextP.get().setPickedtime(time);
 		RoomArrange ra = new RoomArrange(room.get().getId(), dateConv, time, true, nextP.get().getId(), clinicId);
 		room.get().getTakenDates().add(ra);
 
@@ -141,7 +174,7 @@ public class NextExaminationService {
 
 	// metoda koja automatski dodeljuje sobe na kraju dana
 	@Scheduled(cron = "59 59 11 * * ?")
-	//@Scheduled(cron = "0/5 * * * * ?")
+	 //@Scheduled(cron = "0/5 * * * * ?")
 	public void arrangeExaminationRoomAutomatic() throws ParseException {
 
 		List<NextProcedure> nextProcedures = nextProcedureRepo.findByArrangedAndTypeAndPatientNotNull(false,
@@ -150,6 +183,15 @@ public class NextExaminationService {
 			return;
 		List<Room> rooms = roomRepo.findByType("Examination");
 		Integer[] intervals = { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
+		HashMap<Integer, Integer> shift1 = new HashMap<>();
+		HashMap<Integer, Integer> shift2 = new HashMap<>();
+		for (int i = 0; i < intervals.length; i++) {
+			if (i <= 7)
+				shift1.put(intervals[i], i);
+			else
+				shift2.put(intervals[i], i);
+
+		}
 
 		for (Room r : rooms) {
 
@@ -186,7 +228,7 @@ public class NextExaminationService {
 					// ------------------------------------------------mail
 					String[] s = nextProcedures.get(0).getDate().toString().split(" ");
 					String[] s1 = s[0].split("-");
-					String dateEmail = s1[2]+"/"+s1[1]+"/"+s1[0];
+					String dateEmail = s1[2] + "/" + s1[1] + "/" + s1[0];
 
 					String type = nextProcedures.get(0).getExaminationtype().getName();
 					String bodyPatient = "Dear Sir/Madam \n \nYour examination request has been arranged for date: "
@@ -200,8 +242,8 @@ public class NextExaminationService {
 							+ r.getName() + "!\nAll the best\n\n" + "Admin Team";
 
 					// izmena mail da radi
-					emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyPatient);
-					emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyDoctor);
+					emailService.sendSimpleMessage("mail@gmail.com", type, bodyPatient);
+					emailService.sendSimpleMessage("mail@gmail.com", type, bodyDoctor);
 					// ------------------------------------------------------------
 
 				}
@@ -243,7 +285,7 @@ public class NextExaminationService {
 								// ------------------------------------------------mail
 								String[] s = np.getDate().toString().split(" ");
 								String[] s1 = s[0].split("-");
-								String dateEmail = s1[2]+"/"+s1[1]+"/"+s1[0];
+								String dateEmail = s1[2] + "/" + s1[1] + "/" + s1[0];
 								String type = nextProcedures.get(0).getExaminationtype().getName();
 								String bodyPatient = "Dear Sir/Madam \n \nYour examination request has been arranged for date: "
 										+ dateEmail + ", time: " + np.getPickedtime() + ":00h and room: " + r.getName()
@@ -255,16 +297,19 @@ public class NextExaminationService {
 										+ r.getName() + "!\nAll the best\n\n" + "Admin Team";
 
 								// izmena mail da radi
-								emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyPatient);
-								emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyDoctor);
+								emailService.sendSimpleMessage("mail@gmail.com", type, bodyPatient);
+								emailService.sendSimpleMessage("mail@gmail.com", type, bodyDoctor);
 								// ------------------------------------------------------------
 
-							} else if (!map.containsKey(intervals[t])) {
+							} else if (!map.containsKey(intervals[t])
+									&& ((np.getDoctor().getShift() == 1 && shift1.containsKey(intervals[t]))
+											|| (np.getDoctor().getShift() == 2 && shift2.containsKey(intervals[t])))) {
 
 								map.put(intervals[t], map.size() + 1);
 								RoomArrange raNew = new RoomArrange(r.getId(), np.getDate(), intervals[t], true,
 										np.getId(), np.getIdClinic());
 								np.setArranged(true);
+								np.setPickedtime(intervals[t]);
 								r.getTakenDates().add(raNew);
 
 								roomArrangeRepo.save(raNew);
@@ -276,8 +321,7 @@ public class NextExaminationService {
 								// ------------------------------------------------mail
 								String[] s = np.getDate().toString().split(" ");
 								String[] s1 = s[0].split("-");
-								String dateEmail = s1[2]+"/"+s1[1]+"/"+s1[0];
-
+								String dateEmail = s1[2] + "/" + s1[1] + "/" + s1[0];
 
 								String type = nextProcedures.get(0).getExaminationtype().getName();
 								String bodyPatient = "Dear Sir/Madam \n \nYour examination request has been arranged for date: "
@@ -290,8 +334,8 @@ public class NextExaminationService {
 										+ r.getName() + "!\nAll the best\n\n" + "Admin Team";
 
 								// izmena mail da radi
-								emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyPatient);
-								emailService.sendSimpleMessage("stefanjokic198@gmail.com", type, bodyDoctor);
+								emailService.sendSimpleMessage("mail@gmail.com", type, bodyPatient);
+								emailService.sendSimpleMessage("mail@gmail.com", type, bodyDoctor);
 								// ------------------------------------------------------------
 
 							} else {

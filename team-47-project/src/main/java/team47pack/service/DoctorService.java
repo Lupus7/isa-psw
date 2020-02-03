@@ -178,7 +178,7 @@ public class DoctorService {
 			return new ArrayList<>();
 		Long clinicId = Long.parseLong("" + ca.getClinic());
 
-		return doctorRepo.findBySpecializationAndClinicId(specialization, clinicId);
+		return doctorRepo.findBySpecializationAndClinicIdAndOnVacation(specialization, clinicId,false);
 	}
 	
 	
