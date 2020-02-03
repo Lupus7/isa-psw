@@ -33,28 +33,28 @@ insert into patient values (6, 6);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','test7',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test7',7);
-insert into medical_staff (id,on_vacation,clinic_id) values (7,false,1);            
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (7,false,1,null,null);            
 insert into nurse values (7);
 
 ------------------------------- Doctors
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','doctor1',true,'Jovana','Jovanic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor1',8);
-insert into medical_staff (id,on_vacation,clinic_id) values (8,false,1);            
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (8,false,1,null,null);            
 insert into doctor (id,specialization,shift) values (8,'General Practise',1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','doctor2',true,'Zivko','Zivkovic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor2',12);
-insert into medical_staff (id,on_vacation,clinic_id) values (12,false,2);            
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (12,false,2,null,null);            
 insert into doctor (id,specialization,shift) values (12,'Stomatologist',1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','doctor3',true,'Nikola','Nikolic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor3',13);
-insert into medical_staff (id,on_vacation,clinic_id) values (13,false,2);            
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (13,false,2,null,null);            
 insert into doctor (id,specialization,shift) values (13,'Plastic surgeon',2);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','doctor4',true,'Milos','Panic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor4',15);
-insert into medical_staff (id,on_vacation,clinic_id) values (15,false,2);            
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (15,false,2,null,null);            
 insert into doctor (id,specialization,shift) values (15,'Plastic surgeon',2);
 
 --------------------------------
@@ -72,7 +72,7 @@ insert into clinic_centre_admin (id) values (1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','test11',true,'test','test',null,'$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test11',11);
-insert into medical_staff (id,on_vacation) values (11,false);            
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (11,false,2,null,null);            
 insert into nurse values (11);
 
 -----------------------------------------------------------------------Rooms
@@ -184,12 +184,12 @@ insert into prescription (id, name) values (2, 'Brufen');
 insert into prescription (id, name) values (3, 'Probiotik');
 
 --Prvo pravim entrijeve
-insert into med_file_en(id,description,diagnosis_id,doctor_id) values(1,'opis bolesti 1',1,8);
-insert into med_file_en(id,description,diagnosis_id,doctor_id)  values(2,'opis bolesti 2',2,8);
+insert into med_file_en(id,description,diagnosis_id,doctor_id,date) values(1,'opis bolesti 1',1,8,'05.01.2020');
+insert into med_file_en(id,description,diagnosis_id,doctor_id,date)  values(2,'opis bolesti 2',2,8,'10.01.2020');
 
 --sada povezujem sa medical file
-insert into medicalfile_entries(medical_file_id,entries_id) values(2,1);
-insert into medicalfile_entries(medical_file_id,entries_id) values(2,2);
+insert into medicalfile_entries(medical_file_id,medical_entry_id) values(1,1);
+insert into medicalfile_entries(medical_file_id,medical_entry_id) values(1,2);
 
 SELECT setval('med_en_id_seq', 6, true);
 ALTER SEQUENCE diag_id_seq RESTART WITH 10;
