@@ -1,19 +1,34 @@
 package team47pack.models;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class MedicalStaff extends User {
-	
-	@Column(name="onVacation", unique=false, nullable=false)
+
+	@Column(name = "onVacation", unique = false, nullable = false)
 	protected Boolean onVacation;
-	
-	@Column(name="clinic_id", unique=false, nullable=false)
+
+	@Column(name = "clinic_id", unique = false, nullable = false)
 	protected Long clinicId;
+
+	@Column(name = "holiday_end", nullable = true)
+	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	private Date holidayEnd;
+
+	@Column(name = "holiday_begin", nullable = true)
+	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	private Date holidayBegin;
 
 	public Boolean getOnVacation() {
 		return onVacation;
@@ -30,8 +45,21 @@ public abstract class MedicalStaff extends User {
 	public void setClinicId(Long clinicId) {
 		this.clinicId = clinicId;
 	}
-	
-	
-	
-	
+
+	public Date getHolidayEnd() {
+		return holidayEnd;
+	}
+
+	public void setHolidayEnd(Date holidayEnd) {
+		this.holidayEnd = holidayEnd;
+	}
+
+	public Date getHolidayBegin() {
+		return holidayBegin;
+	}
+
+	public void setHolidayBegin(Date holidayBegin) {
+		this.holidayBegin = holidayBegin;
+	}
+
 }

@@ -41,13 +41,13 @@ public class PatientService {
 
 	@Autowired
 	private MedicalStaffRepo msRepo;
-	
+
 	@Autowired
 	private MedEntryRepo meRepo;
 
 	public List<Patient> getAllPatients() {
 		Pageable page = PageRequest.of(0, 15);
-		return patientRepository.findAllByEnabled(true,page).getContent();
+		return patientRepository.findAllByEnabled(true, page).getContent();
 	}
 
 	public List<Clinic> getAllClinics() {
@@ -94,7 +94,7 @@ public class PatientService {
 			if (id < 1 || id == null)
 				return patients;
 
-			Optional<Patient> p = patientRepository.findByIdAndEnabled(id,true);
+			Optional<Patient> p = patientRepository.findByIdAndEnabled(id, true);
 
 			if (p.isPresent())
 				patients.add(p.get());
@@ -102,11 +102,11 @@ public class PatientService {
 
 		} else if (!req.getFirstName().equals("") && !req.getLastName().equals("") && req.getId().equals(""))
 			patients = patientRepository.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCaseAndEnabled(
-					req.getFirstName(), req.getLastName(),true);
+					req.getFirstName(), req.getLastName(), true);
 		else if (!req.getFirstName().equals("") && req.getLastName().equals("") && req.getId().equals(""))
-			patients = patientRepository.findByFirstNameContainingIgnoreCaseAndEnabled(req.getFirstName(),true);
+			patients = patientRepository.findByFirstNameContainingIgnoreCaseAndEnabled(req.getFirstName(), true);
 		else if (req.getFirstName().equals("") && !req.getLastName().equals("") && req.getId().equals(""))
-			patients = patientRepository.findByLastNameContainingIgnoreCaseAndEnabled(req.getLastName(),true);
+			patients = patientRepository.findByLastNameContainingIgnoreCaseAndEnabled(req.getLastName(), true);
 
 		return patients;
 
@@ -125,26 +125,26 @@ public class PatientService {
 
 		if (filterBy.equals("Patient ID")) {
 			Long id = Long.parseLong(value);
-			Optional<Patient> p = patientRepository.findByIdAndEnabled(id,true);
+			Optional<Patient> p = patientRepository.findByIdAndEnabled(id, true);
 			if (p.isPresent())
 				patients.add(p.get());
 			return patients;
 
 		} else if (filterBy.equals("First Name"))
-			return patientRepository.findByFirstNameContainingIgnoreCaseAndEnabled(value,true);
+			return patientRepository.findByFirstNameContainingIgnoreCaseAndEnabled(value, true);
 
 		else if (filterBy.equals("Last Name"))
-			return patientRepository.findByLastNameContainingIgnoreCaseAndEnabled(value,true);
+			return patientRepository.findByLastNameContainingIgnoreCaseAndEnabled(value, true);
 		else if (filterBy.equals("Address"))
-			return patientRepository.findByAddressContainingIgnoreCaseAndEnabled(value,true);
+			return patientRepository.findByAddressContainingIgnoreCaseAndEnabled(value, true);
 		else if (filterBy.equals("City"))
-			return patientRepository.findByCityContainingIgnoreCaseAndEnabled(value,true);
+			return patientRepository.findByCityContainingIgnoreCaseAndEnabled(value, true);
 		else if (filterBy.equals("State"))
-			return patientRepository.findByStateContainingIgnoreCaseAndEnabled(value,true);
+			return patientRepository.findByStateContainingIgnoreCaseAndEnabled(value, true);
 		else if (filterBy.equals("Telephone"))
-			return patientRepository.findByTelephoneContainingIgnoreCaseAndEnabled(value,true);
+			return patientRepository.findByTelephoneContainingIgnoreCaseAndEnabled(value, true);
 		else if (filterBy.equals("Unique Number"))
-			return patientRepository.findByUniqueNumContainingIgnoreCaseAndEnabled(value,true);
+			return patientRepository.findByUniqueNumContainingIgnoreCaseAndEnabled(value, true);
 
 		return patients;
 
@@ -160,7 +160,7 @@ public class PatientService {
 		Long id = Long.parseLong(idP);
 		if (id < 1 || id == null)
 			return null;
-		Optional<Patient> p = patientRepository.findByIdAndEnabled(id,true);
+		Optional<Patient> p = patientRepository.findByIdAndEnabled(id, true);
 		if (!p.isPresent())
 			return null;
 
@@ -175,35 +175,36 @@ public class PatientService {
 
 		if (tip == 1) {
 			Pageable sort = PageRequest.of(0, 15, Sort.by("id"));
-			Page<Patient> page = patientRepository.findByEnabled(sort,true);
+			Page<Patient> page = patientRepository.findByEnabled(sort, true);
 			return page.getContent();
 		} else if (tip == 2) {
 			Pageable sort = PageRequest.of(0, 15, Sort.by("firstName"));
-			Page<Patient> page = patientRepository.findByEnabled(sort,true);;
+			Page<Patient> page = patientRepository.findByEnabled(sort, true);
+			
 			return page.getContent();
 		} else if (tip == 3) {
 			Pageable sort = PageRequest.of(0, 15, Sort.by("lastName"));
-			Page<Patient> page = patientRepository.findByEnabled(sort,true);
+			Page<Patient> page = patientRepository.findByEnabled(sort, true);
 			return page.getContent();
 		} else if (tip == 4) {
 			Pageable sort = PageRequest.of(0, 15, Sort.by("address"));
-			Page<Patient> page = patientRepository.findByEnabled(sort,true);
+			Page<Patient> page = patientRepository.findByEnabled(sort, true);
 			return page.getContent();
 		} else if (tip == 5) {
 			Pageable sort = PageRequest.of(0, 15, Sort.by("city"));
-			Page<Patient> page = patientRepository.findByEnabled(sort,true);
+			Page<Patient> page = patientRepository.findByEnabled(sort, true);
 			return page.getContent();
 		} else if (tip == 6) {
 			Pageable sort = PageRequest.of(0, 15, Sort.by("state"));
-			Page<Patient> page = patientRepository.findByEnabled(sort,true);
+			Page<Patient> page = patientRepository.findByEnabled(sort, true);
 			return page.getContent();
 		} else if (tip == 7) {
 			Pageable sort = PageRequest.of(0, 15, Sort.by("telephone"));
-			Page<Patient> page = patientRepository.findByEnabled(sort,true);
+			Page<Patient> page = patientRepository.findByEnabled(sort, true);
 			return page.getContent();
 		} else if (tip == 8) {
 			Pageable sort = PageRequest.of(0, 15, Sort.by("uniqueNum"));
-			Page<Patient> page = patientRepository.findByEnabled(sort,true);
+			Page<Patient> page = patientRepository.findByEnabled(sort, true);
 			return page.getContent();
 		}
 
@@ -223,40 +224,40 @@ public class PatientService {
 
 		if (!mf.isPresent())
 			return new ArrayList<MedicalFileViewDTO>();
-		
+
 		boolean canWatch = false;
 		for (MedFileEntry e : mf.get().getEntries()) {
-			//for (PrescriptionVerification p : e.getPrescriptions()) {
-				if (ms instanceof Doctor) {
-					if (e.getDoctor().getId() == ms.getId()) {
+
+			if (ms instanceof Doctor) {
+				if (e.getDoctor().getId() == ms.getId()) {
+					canWatch = true;
+					break;
+				}
+
+			} else if (ms instanceof Nurse) {
+				for (PrescriptionVerification p : e.getPrescriptions()) {
+					if (p.getNurse().getId() == ms.getId()) {
 						canWatch = true;
 						break;
 					}
-
-				//} else if (ms instanceof Nurse) {
-				//	if (p.getNurse().getId() == ms.getId()) {
-				//		canWatch = true;
-				//		break;
-					}
-				//}
-			//}
+				}
+			}
 		}
 
 		if (canWatch) {
 			List<MedicalFileViewDTO> dtos = new ArrayList<>();
 			for (MedFileEntry e : mf.get().getEntries()) {
-				for (PrescriptionVerification p : e.getPrescriptions()) {
-					MedicalFileViewDTO dto = new MedicalFileViewDTO(null, p.getDoctor().getFirstName()+" "+p.getDoctor().getLastName(),
-							e.getDiagnosis().getName(), e.getDiagnosis().getName());
-					dtos.add(dto);
-					break;
-				}
+				MedicalFileViewDTO dto = new MedicalFileViewDTO(e.getDate(),
+						e.getDoctor().getFirstName() + " " + e.getDoctor().getLastName(),
+						e.getDiagnosis().getName(), e.getDiagnosis().getDesc());
+				dtos.add(dto);
+				
 			}
 
 			return dtos;
 
 		}
-		
+
 		return new ArrayList<MedicalFileViewDTO>();
 
 	}

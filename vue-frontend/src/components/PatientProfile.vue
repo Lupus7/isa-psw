@@ -30,7 +30,7 @@ export default {
             axios.get(url).then(response => { this.user = response.data;})
         },
 		checkMedicalFile(){
-            this.$router.push({name:'MedicalFile', params: {medstaff:this.user,patient:this.user}});
+            this.$router.push({name:'MedicalFile', params: {medstaff:"realno nebitno",patient:this.user}});
 
 		},
 		getRole(){

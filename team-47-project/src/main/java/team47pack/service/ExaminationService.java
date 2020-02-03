@@ -109,6 +109,7 @@ public class ExaminationService {
 
 		MedFileEntry medFileEntry = new MedFileEntry();
 		medFileEntry.setDesc(examinInfo.getDesc());
+		medFileEntry.setDate(new Date());
 
 		Optional<Diagnosis> diag = diagRepo.findById(examinInfo.getDiag().getId());
 		if (!diag.isPresent())
@@ -124,15 +125,18 @@ public class ExaminationService {
 		}
 		
 		medFileEntry.setDoctor(doc.get());
-		medEntryRepo.save(medFileEntry);
+		//medEntryRepo.save(medFileEntry);
 
 		if (pat.get().getMedicalFile() == null) {
 			MedicalFile mf = new MedicalFile(pat.get().getId(), new ArrayList<>());
 			mf.getEntries().add(medFileEntry);
 
-			medFileRepo.save(mf);
+			//medFileRepo.save(mf);
 
 			pat.get().setMedicalFile(mf);
+		}else {
+			pat.get().getMedicalFile().getEntries().add(medFileEntry);
+			//medFileRepo.save(pat.get().getMedicalFile());
 		}
 
 		patientService.insert(pat.get());

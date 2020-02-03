@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,12 +25,15 @@ public class MedicalFile {
 	@Column(name = "id")
 	private Long id;
 
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "medicalfile_entries",
+		joinColumns = @JoinColumn(name = "medical_file_id", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "medical_entry_id", referencedColumnName = "id"))
 	private List<MedFileEntry> entries = new ArrayList<>();
 
 	public MedicalFile() {
-		
+
 	}
 
 	public MedicalFile(Long id, List<MedFileEntry> entries) {

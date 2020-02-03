@@ -110,6 +110,7 @@
 
         <div class="modal-footer">
             <button class="btn btn-outline-success" v-on:click="confirm()">Confirm and end examination</button>
+            <button class="btn btn-outline-primary" v-on:click="seeMedicalFile()">See Medical File</button>
         </div> 
     </div>
 </template>
@@ -279,6 +280,10 @@ export default {
                         this.freeApps.push(freeAp[i])                
                     }
             }
+
+        },
+        seeMedicalFile(){
+            this.$router.push({name:'MedicalFile', params: {medstaff:"examination",patient:this.patient}});
 
         }
        
