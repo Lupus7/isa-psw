@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,13 +73,42 @@ public class FastExaminationService {
 			return false;
 		
 		Optional<Doctor> doctor = doctorRepo.findById(doctorId);
-		if(!doctor.isPresent())
+		if(!doctor.isPresent() || doctor.get().getOnVacation())
 			return false;
+		
+		int time = obj.getInt("time");
+
+		
+		///////////////////////////////////////////// provera za shift
+		Integer[] intervals = { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
+		HashMap<Integer, Integer> shift1 = new HashMap<>();
+		HashMap<Integer, Integer> shift2 = new HashMap<>();
+
+		for (int i = 0; i < intervals.length; i++) {
+			if (i <= 7)
+				shift1.put(intervals[i], i);
+			else
+				shift2.put(intervals[i], i);
+
+		}
+
+		if (doctor.get().getShift() == 1 && !shift1.containsKey(time))
+			return false;
+		else if (doctor.get().getShift() == 2 && !shift2.containsKey(time))
+			return false;
+
+		///////////////////////////////////////
+		
+		
 		//sredi date
 		String[] s = obj.get("date").toString().split("-");
 		String ds = s[2]+"/"+s[1]+"/"+s[0];
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse(ds);
-		int time = obj.getInt("time");
+		// da li je vreme vec zauzeo za taj datum
+		NextProcedure check = nextProcedureRepo.findByDateAndPickedtimeAndArranged(date,time,true);
+		if(check != null)
+			return false;
+	
 		
 		NextProcedure np = new NextProcedure("Examination", date, null, doctor.get(), examType.get(), time);		
 		nextProcedureRepo.save(np);
@@ -98,7 +128,7 @@ public class FastExaminationService {
 		if (ca == null)
 			return new ArrayList<>();
 		Long clinicId = Long.parseLong(""+ca.getClinic());
-		List<Doctor> doctors = doctorRepo.findByClinicId(clinicId);
+		List<Doctor> doctors = doctorRepo.findByClinicIdAndOnVacation(clinicId,false);
 		
 		return doctors;
 	}
