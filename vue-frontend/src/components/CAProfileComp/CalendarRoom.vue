@@ -170,10 +170,9 @@ export default {
             }).then(response => { 
                  if(response.status == 200){
                         funToastr("s",response.data,"Room Arrange!");
-                    }else {
+                }else {
                         funToastr("d","Error!","Room Arrange!");
-                        return;
-                    }
+                }
              }).finally(()=>{ 
 
                      setTimeout(() =>{                    
