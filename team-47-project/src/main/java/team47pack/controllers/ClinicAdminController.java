@@ -23,6 +23,7 @@ import team47pack.models.Doctor;
 import team47pack.models.HolidayTimeOff;
 import team47pack.service.ClinicAdminService;
 import team47pack.service.EmailService;
+import team47pack.service.MedicallStaffService;
 
 //@author:Jokara
 @RestController
@@ -32,6 +33,9 @@ public class ClinicAdminController {
 
 	@Autowired
 	ClinicAdminService clinicAdminService;
+
+	@Autowired
+	MedicallStaffService msService;
 
 	@Autowired
 	private EmailService emailService;
@@ -74,6 +78,14 @@ public class ClinicAdminController {
 		Long d2 = (Long) obj.get("dateE");
 		Date date1 = new Date(d1);
 		Date date2 = new Date(d2);
+		
+		if(date1.before(new Date()) || date2.before(new Date()))
+			return ResponseEntity.status(400).body("Wrong date");
+		
+		if(date2.before(date1))
+			return ResponseEntity.status(400).body("Wrong date");
+
+		
 		DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 		String dat1 = formatter.format(date1);
 		String dat2 = formatter.format(date2);
@@ -82,14 +94,16 @@ public class ClinicAdminController {
 		String body = "Dear Sir/Madam \n \nYour " + type + " request from " + dat1 + " to " + dat2
 				+ " has been accepted!" + "\n" + "Enjoy your free time." + "\n\n" + "Admin team";
 
-		System.out.println(Email);
-		System.out.println(body);
-
 		if (clinicAdminService.acceptRequest(id)) {
-			emailService.sendSimpleMessage(Email, type, body);
-			return ResponseEntity.ok("Successful");
+			if (msService.goOnHoliday(Email, date1, date2)) {
+				emailService.sendSimpleMessage("mail@gmail.com", type, body);
+				return ResponseEntity.ok("Successful");
+			}
+
 		} else
 			return ResponseEntity.status(400).body("Could not accept");
+		
+		return ResponseEntity.status(400).body("Could not accept");
 	}
 
 	@PostMapping(value = "request-list/reject")
