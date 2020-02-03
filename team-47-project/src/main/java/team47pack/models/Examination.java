@@ -1,13 +1,7 @@
 package team47pack.models;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "examination")
@@ -24,6 +18,12 @@ public class Examination extends Procedure {
 	@Column
 	private Boolean approved;
 
+	@Column(columnDefinition = "boolean default false")
+	private Boolean ratedDoctor;
+
+	@Column(columnDefinition = "boolean default false")
+	private Boolean ratedClinic;
+
 	public Examination() {
 
 	}
@@ -38,6 +38,8 @@ public class Examination extends Procedure {
 		this.patient = patient;
 		this.doctor = doc;
 		this.approved = approved;
+		this.ratedClinic = false;
+		this.ratedDoctor = false;
 	}
 
 	public Examination(String type, Date date, Patient patient, Doctor doc, Boolean approved, ExaminationType et) {
@@ -47,6 +49,8 @@ public class Examination extends Procedure {
 		this.doctor = doc;
 		this.approved = approved;
 		this.examinationtype = et;
+		this.ratedClinic = false;
+		this.ratedDoctor= false;
 	}
 
 	public Boolean getApproved() {
@@ -73,4 +77,19 @@ public class Examination extends Procedure {
 		this.examinationtype = examinationtype;
 	}
 
+	public Boolean getRatedDoctor() {
+		return ratedDoctor;
+	}
+
+	public void setRatedDoctor(Boolean ratedDoctor) {
+		this.ratedDoctor = ratedDoctor;
+	}
+
+	public Boolean getRatedClinic() {
+		return ratedClinic;
+	}
+
+	public void setRatedClinic(Boolean ratedClinic) {
+		this.ratedClinic = ratedClinic;
+	}
 }

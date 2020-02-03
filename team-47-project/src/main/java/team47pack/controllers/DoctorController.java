@@ -1,24 +1,19 @@
 package team47pack.controllers;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import team47pack.models.Doctor;
 import team47pack.models.dto.DoctorInfoRequest;
 import team47pack.models.dto.RateRequest;
 import team47pack.models.dto.SearchDoctorRequest;
 import team47pack.security.TokenUtils;
 import team47pack.service.DoctorService;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class DoctorController {
@@ -76,7 +71,7 @@ public class DoctorController {
 	@PostMapping(value = "doctor/leaveRate")
 	@PreAuthorize("hasRole('PATIENT')")
 	public void leaveRate(@RequestBody RateRequest rateRequest){
-		System.out.println(rateRequest.getId() + " " +rateRequest.getValue());
+		System.out.println(rateRequest.getId() + " " +rateRequest.getValue() +" " + rateRequest.getExamination());
 		boolean b = doctorService.leaveRate(rateRequest);
 		if(b){
 			System.out.println("USPESNO");

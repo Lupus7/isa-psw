@@ -1,31 +1,20 @@
 package team47pack.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import team47pack.models.Clinic;
-import team47pack.models.ClinicAdmin;
-import team47pack.models.Doctor;
-import team47pack.models.Rate;
-import team47pack.models.User;
+import team47pack.models.*;
 import team47pack.models.dto.DoctorInfoRequest;
 import team47pack.models.dto.RateRequest;
 import team47pack.models.dto.SearchDoctorRequest;
-import team47pack.repository.ClinicAdminRepo;
-import team47pack.repository.ClinicRepo;
-import team47pack.repository.DoctorRepo;
-import team47pack.repository.MedicalStaffRepo;
-import team47pack.repository.RateRepo;
-import team47pack.repository.UserRepo;
+import team47pack.repository.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DoctorService {
@@ -42,6 +31,8 @@ public class DoctorService {
 	@Autowired
 	private DoctorRepo doctorRepo;
 
+	@Autowired
+	private ExaminationRepo exRepo;
 	@Autowired
 	private MedicalStaffRepo medicalRepo;
 
@@ -163,6 +154,9 @@ public class DoctorService {
 	public boolean leaveRate(RateRequest rateRequest) {
 		Doctor dd = doctorRepo.getOne(rateRequest.getId());
 		Rate rate = new Rate();
+		Examination e = exRepo.getOne(rateRequest.getExamination());
+		e.setRatedDoctor(true);
+		exRepo.save(e);
 		rate.setValue(rateRequest.getValue());
 		rateRepo.save(rate);
 		dd.getRatings().add(rate);
