@@ -1,5 +1,6 @@
 package team47pack.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,5 +25,9 @@ public interface NextProcedureRepo extends JpaRepository<NextProcedure, Long> {
 	Page<NextProcedure> findByPatientAndArranged(Object object, boolean b, Pageable pageable);
 
 	List<NextProcedure> findByArrangedAndTypeAndPatientNotNull(boolean b, String string);
+
+	Page<NextProcedure> findByClinicAndArrangedAndPatientNotNull(Long clinicId, boolean b, Pageable sort);
+
+	NextProcedure findByDateAndPickedtimeAndArranged(Date date, int time, boolean b);
 
 }
