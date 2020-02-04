@@ -194,6 +194,13 @@ const router = new Router({
             component: () =>
                 import ("./components/CAProfileComp/FastExamination")
         },
+        {
+            path: "/businessReport",
+            name: "BusinessReport",
+            props: true,
+            component: () =>
+                import ("./components/CAProfileComp/BusinessReport")
+        },
     ]
 });
 

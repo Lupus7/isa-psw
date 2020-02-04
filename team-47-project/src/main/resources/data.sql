@@ -195,12 +195,13 @@ SELECT setval('med_en_id_seq', 6, true);
 ALTER SEQUENCE diag_id_seq RESTART WITH 10;
 ALTER SEQUENCE pres_id_seq RESTART WITH 10;
 
-insert into procedure (id,date,type,patient_id, room) values(1,'04.09.2020 11:00','Examination', 2, 1);
-insert into procedure (id,date,type,patient_id, room) values(2,'03.07.2018 15:00','Examination', 2, 2);
-insert into procedure (id,date,type,patient_id, room) values(3, '01.08.2020 15:00', 'Examination', 2, 8);
-insert into procedure (id,date,type,patient_id, room) values(4, '01.08.2020 17:00', 'Examination', 3, 8);
-insert into procedure (id,date,type,patient_id, room) values(5, '01.08.2020 15:00', 'Examination', 4, 9);
-insert into procedure (id,date,type,patient_id, room) values(6, '01.08.2020 17:00', 'Examination', 5, 9;
+insert into procedure (id,date,type,patient_id, room) values(1,'04.09.2020','Examination', 2, 1);
+insert into procedure (id,date,type,patient_id, room) values(2,'03.07.2018','Examination', 2, 2);
+insert into procedure (id,date,type,patient_id, room) values(3, '01.08.2020', 'Examination', 2, 8);
+insert into procedure (id,date,type,patient_id, room) values(4, '01.08.2020', 'Examination', 3, 8);
+insert into procedure (id,date,type,patient_id, room) values(5, '01.08.2020', 'Examination', 4, 9);
+insert into procedure (id,date,type,patient_id, room) values(6, '01.08.2020', 'Examination', 5, 9;
+
 
 ALTER SEQUENCE procedure_id_seq RESTART WITH 7;
 

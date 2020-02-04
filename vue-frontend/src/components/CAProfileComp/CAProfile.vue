@@ -18,6 +18,8 @@
                                     <div class="middle">              
                                         <button type="button" @click="changePassword($event)" class="btn btn-dark btn-block "  style=" border-radius: 6px;  color: white; padding:6px;" >Change password </button>
                                     </div>
+
+                                    
                                     
 
                                 </div>
@@ -44,6 +46,10 @@
 
                                     <div class="middle">                                     
                                         <button type="button" class="btn btn-block " @click="fastExamination" style=" border-radius: 6px;  color: white; padding:8px; margin-top: 15px; background:teal " >Add Fast Examination </button> 
+                                    </div>
+
+                                    <div class="middle">                                     
+                                        <button type="button" class="btn btn-block " @click="businessReport" style=" border-radius: 6px;  color: white; padding:8px; margin-top: 15px; background:red" >Business Report </button> 
                                     </div>
 
                                    
@@ -175,6 +181,9 @@ export default {
         fastExamination(e){
             e.preventDefault()
             this.$router.push("/fastExamination");
+        },
+        businessReport(){
+            this.$router.push("/businessReport");
         }
         
     },
