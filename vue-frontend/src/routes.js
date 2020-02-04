@@ -25,6 +25,13 @@ const router = new Router({
                 import ("./components/Login")
         },
         {
+            path: "/fastExams",
+            name: "FastExams",
+            component: () => 
+                import("./components/FastExaminations")
+            
+        },
+        {
             path: "/medicalFile",
             name: "MedicalFile",
             props:true,

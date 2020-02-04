@@ -253,6 +253,13 @@ export default {
         document.getElementById("blabla1").setAttribute("hidden","true")
         this.rateADoctor = false
       }).catch(error=>{funToastr("w","Unsuccessfully rated doctor!","Rate!");})
+    },
+    Decline(){
+      document.getElementById("card").setAttribute("hidden","true")
+    },
+    goToFast(){
+      console.log("yeah")
+      this.$router.push("/fastExams");
     }
     
     },
@@ -272,9 +279,17 @@ export default {
   
    <div>
       <p></p>
-     <button class="btn btn-secondary" @click="searchForDoctors()">Search for doctors</button>
-     <button class="btn btn-secondary" @click="searchForClinics()">Search for clinics</button>
-      <p></p><p></p>
+      <table>
+      <tr><td><button class="btn btn-secondary" @click="searchForDoctors()">Search for doctors</button></td>
+      <td><button class="btn btn-secondary" @click="searchForClinics()">Search for clinics</button></td>
+      <td><label></label></td><td><div id="card" class="card" style="width: 30rem;">
+        <div class="card-body">
+         <h5 class="card-title">Fast appoint examination</h5>
+            <p class="card-text">Save your time and efford of searching, just pick some of examinatin we provide to you</p>
+           <button  class="btn btn-primary" @click="goToFast">Visit</button>
+            <a href="#" class="card-link" @click="Decline">Decline</a>
+        </div></div></td></tr></table>
+      
     <div>
       <form id="doctorsearch" hidden>
         <table>
