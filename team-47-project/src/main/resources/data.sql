@@ -188,8 +188,8 @@ insert into med_file_en(id,description,diagnosis_id,doctor_id,date) values(1,'op
 insert into med_file_en(id,description,diagnosis_id,doctor_id,date)  values(2,'opis bolesti 2',2,8,'10.01.2020');
 
 --sada povezujem sa medical file
-insert into medicalfile_entries(medical_file_id,medical_entry_id) values(1,1);
-insert into medicalfile_entries(medical_file_id,medical_entry_id) values(1,2);
+insert into medicalfile_entries(medical_file_id,medical_entry_id) values(2,1);
+insert into medicalfile_entries(medical_file_id,medical_entry_id) values(2,2);
 
 SELECT setval('med_en_id_seq', 6, true);
 ALTER SEQUENCE diag_id_seq RESTART WITH 10;
@@ -241,12 +241,12 @@ insert into examinationtype (id,name,specialization,price,clinic_id) values (14,
 ALTER SEQUENCE examinationtype_id_seq RESTART WITH 15;
 
 -- add examinType to examination
-insert into examination(id,doctor_id, examinationtype_id) values(1,8,8);
-insert into examination(id,doctor_id, examinationtype_id) values(2,8,9);
-insert into examination(id,doctor_id, examinationtype_id) values(3,12,4);
-insert into examination(id,doctor_id, examinationtype_id) values(4,12,7);
-insert into examination(id,doctor_id, examinationtype_id) values(5,13,6);
-insert into examination(id,doctor_id, examinationtype_id) values(6,13,5);
+insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(1,8,8,true,false);
+insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(2,8,9,false,true);
+insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(3,12,4,false ,true);
+insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(4,12,7,true,false);
+insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(5,13,6,false,true;
+insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(6,13,5,false,false);
 
 ---- add next procedure
 insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (1,'Examination',2,'05.02.2020',12,1,1,true,6);

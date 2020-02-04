@@ -1,33 +1,19 @@
 package team47pack.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import team47pack.models.*;
+import team47pack.models.dto.FastExamDto;
+import team47pack.repository.*;
 
-import team47pack.models.ClinicAdmin;
-import team47pack.models.Doctor;
-import team47pack.models.ExaminationType;
-import team47pack.models.NextProcedure;
-import team47pack.models.Patient;
-import team47pack.models.Room;
-import team47pack.repository.ClinicAdminRepo;
-import team47pack.repository.DoctorRepo;
-import team47pack.repository.ExaminationTypeRepo;
-import team47pack.repository.NextProcedureRepo;
-import team47pack.repository.RoomRepo;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class FastExaminationService {
@@ -43,7 +29,14 @@ public class FastExaminationService {
 	
 	@Autowired
 	private DoctorRepo doctorRepo;
-	
+
+	@Autowired
+	private ClinicRepo clinicRepo;
+
+	@Autowired
+	private PatientRepo patientRepo;
+
+
 	@Autowired
 	private NextProcedureRepo nextProcedureRepo;
 
@@ -116,11 +109,28 @@ public class FastExaminationService {
 		return true;
 	}
 
-	public List<NextProcedure> getFastExaminations(String email) {
+	public List<FastExamDto> convert(List<NextProcedure> procs){
+		List<FastExamDto> ret = new ArrayList<>();
+		for(NextProcedure n : procs){
+			Long id = n.getId();
+			Clinic c = clinicRepo.getOne(n.getIdClinic());
+			String klinika = c.getName();
+			String doctor = n.getDoctor().getFirstName() + " " + n.getDoctor().getLastName();
+			String spec = n.getDoctor().getSpecialization();
+			String type = n.getType();
+			String ExamType = n.getExaminationtype().getName();
+			Date date = n.getDate();
+			FastExamDto fed = new FastExamDto(id,klinika,doctor,spec,type,ExamType,date);
+			ret.add(fed);
+		}
+		return ret;
+	}
+
+	public List<FastExamDto> getFastExaminations(String email) {
 		Pageable pageable = PageRequest.of(0, 30);
 		Page<NextProcedure> page = nextProcedureRepo.findByPatientAndArranged(null,false,pageable);		
-		return page.getContent();
-
+		List<FastExamDto>ret =convert(page.getContent());
+		return ret;
 	}
 
 	public List<Doctor> getDoctors(String email) {
@@ -151,4 +161,13 @@ public class FastExaminationService {
 		return examTypes;
 	}
 
+	public void appoint(Long id, String name) {
+		Optional<NextProcedure> next = nextProcedureRepo.findById(id);
+		if(!next.isPresent()){
+			return;
+		}
+		Patient patient = patientRepo.findByEmail(name);
+		next.get().setPatient(patient);
+		nextProcedureRepo.save(next.get());
+	}
 }
