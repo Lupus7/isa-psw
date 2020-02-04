@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import team47pack.models.ClinicAdmin;
 import team47pack.models.Doctor;
 import team47pack.models.HolidayTimeOff;
+import team47pack.models.dto.ReportDTO;
 import team47pack.service.ClinicAdminService;
 import team47pack.service.EmailService;
 import team47pack.service.MedicallStaffService;
@@ -158,5 +159,11 @@ public class ClinicAdminController {
 
 		return ResponseEntity.ok(clinicAdminService.searchDoctor(obj, user.getName()));
 
+	}
+	
+	// rates
+	@GetMapping(value = "/rates")
+	public ReportDTO businessReport(Principal user) {
+		return clinicAdminService.getReport(user.getName());
 	}
 }
