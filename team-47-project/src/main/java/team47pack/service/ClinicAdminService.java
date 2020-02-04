@@ -17,6 +17,8 @@ import team47pack.models.Doctor;
 import team47pack.models.HolidayTimeOff;
 import team47pack.models.NextProcedure;
 import team47pack.models.User;
+import team47pack.models.dto.DoctorRateDTO;
+import team47pack.models.dto.ReportDTO;
 import team47pack.repository.AuthorityRepository;
 import team47pack.repository.ClinicAdminRepo;
 import team47pack.repository.ClinicRepo;
@@ -252,5 +254,22 @@ public class ClinicAdminService {
 		}
 
 		return new ArrayList<>();
+	}
+
+	public ReportDTO getReport(String name) {
+		ClinicAdmin ca = clinicAdminRepo.findByEmail(name);
+		if (ca == null)
+			return null;
+		Optional<Clinic> clinic = clinicRepo.findById(Long.parseLong("" + ca.getClinic()));
+		if (!clinic.isPresent())
+			return null;
+		double rate = clinic.get().calculateRate();
+		ReportDTO report = new ReportDTO(clinic.get().getName(), rate);
+		for (Doctor d : clinic.get().getDoctors()) {
+			DoctorRateDTO drdto = new DoctorRateDTO(d.getFirstName() + " " + d.getLastName(), d.calculateRate());
+			report.getDoctors().add(drdto);
+		}
+
+		return report;
 	}
 }
