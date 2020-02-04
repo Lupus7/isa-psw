@@ -162,10 +162,12 @@ public class FastExaminationService {
 	}
 
 	public void appoint(Long id, String name) {
-		NextProcedure next = nextProcedureRepo.getOne(id);
+		Optional<NextProcedure> next = nextProcedureRepo.findById(id);
+		if(!next.isPresent()){
+			return;
+		}
 		Patient patient = patientRepo.findByEmail(name);
-		next.setPatient(patient);
-		nextProcedureRepo.save(next);
-
+		next.get().setPatient(patient);
+		nextProcedureRepo.save(next.get());
 	}
 }
