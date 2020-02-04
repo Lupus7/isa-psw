@@ -7,19 +7,33 @@ import java.util.Date;
 public class ExaminationDTO {
     private Long doctor_id;
     private Long patient_id;
+    private Long examinationID;
     private Boolean approved;
     private String type;
     private Date date;
+    private Boolean ratedDoctor;
+    private Boolean ratedClinic;
 
     public ExaminationDTO(Examination e) {
         this.approved = e.getApproved();
         this.date = e.getDate();
         this.type =e.getType();
+        this.examinationID = e.getId();
         this.doctor_id = e.getDoctor().getId();
         this.patient_id = e.getPatient().getId();
+        this.ratedClinic = e.getRatedClinic();
+        this.ratedDoctor = e.getRatedDoctor();
     }
 
     public ExaminationDTO() {
+    }
+
+    public Long getExaminationID() {
+        return examinationID;
+    }
+
+    public void setExaminationID(Long examinationID) {
+        this.examinationID = examinationID;
     }
 
     public Long getDoctor_id() {
@@ -60,5 +74,21 @@ public class ExaminationDTO {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Boolean getRatedDoctor() {
+        return ratedDoctor;
+    }
+
+    public void setRatedDoctor(Boolean ratedDoctor) {
+        this.ratedDoctor = ratedDoctor;
+    }
+
+    public Boolean getRatedClinic() {
+        return ratedClinic;
+    }
+
+    public void setRatedClinic(Boolean ratedClinic) {
+        this.ratedClinic = ratedClinic;
     }
 }

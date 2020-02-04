@@ -1,16 +1,14 @@
 package team47pack.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import team47pack.models.Patient;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 @Repository
 public interface PatientRepo extends JpaRepository<Patient, Long> {
@@ -33,6 +31,8 @@ public interface PatientRepo extends JpaRepository<Patient, Long> {
 	ArrayList<Patient> findByTelephoneContainingIgnoreCase(String telephone);
 
 	ArrayList<Patient> findByUniqueNumContainingIgnoreCase(String uniqueNum);
+
+	Patient findByEmail(String email);
 	
 	// new functions
 	Page<Patient> findAll(Pageable page);

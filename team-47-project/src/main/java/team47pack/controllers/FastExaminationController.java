@@ -1,25 +1,20 @@
 package team47pack.controllers;
 
-import java.security.Principal;
-import java.text.ParseException;
-import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import team47pack.models.Doctor;
 import team47pack.models.ExaminationType;
-import team47pack.models.NextProcedure;
 import team47pack.models.Room;
+import team47pack.models.dto.FastExamDto;
 import team47pack.service.FastExaminationService;
+
+import java.security.Principal;
+import java.text.ParseException;
+import java.util.List;
 
 @RestController
 public class FastExaminationController {
@@ -38,7 +33,7 @@ public class FastExaminationController {
 
 	@GetMapping(value = "/patient/getFastExaminations")
 	@PreAuthorize("hasRole('PATIENT')")
-	public List<NextProcedure> getFastExaminations(Principal user) {
+	public List<FastExamDto> getFastExaminations(Principal user) {
 		return fastExamService.getFastExaminations(user.getName());
 
 	}
@@ -55,6 +50,14 @@ public class FastExaminationController {
 	public List<Doctor> getDoctors(Principal user) {
 		return fastExamService.getDoctors(user.getName());
 
+	}
+
+	@PostMapping(value = "/patient/fastExams/{id}")
+	@PreAuthorize("hasRole('PATIENT')")
+	public Boolean appoint(@PathVariable(value="id")Long id, Principal user){
+		System.out.println(id + "*******"+user.getName());
+		fastExamService.appoint(id,user.getName());
+		return true;
 	}
 	
 	@GetMapping(value = "/ca/getExaminationTypes/{spec}")

@@ -153,6 +153,10 @@ public class ClinicService {
 	}
 
 	public boolean leaveRate(RateRequest rateRequest) {
+		System.out.println(rateRequest.getId() + rateRequest.getValue() + rateRequest.getExamination());
+		Examination e = exRepo.getOne(rateRequest.getExamination());
+		e.setRatedClinic(true);
+		exRepo.save(e);
 		List<Clinic> klinike = clinicRepo.findAll();
 		for (Clinic c : klinike) {
 			for (Doctor d : c.getDoctors()) {

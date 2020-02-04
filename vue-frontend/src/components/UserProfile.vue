@@ -147,7 +147,7 @@
                 </div>
             </div>
 
-             <div class="row" v-if="this.role === 'ROLE_PATIENT'">
+             <div class="row" v-if="this.role === 'ROLE_PATIENT' && this.user.email">
             <Calendar v-bind:doctor="this.user.email" v-bind:date="this.wantedDate"></Calendar>
         </div>
 
@@ -199,6 +199,14 @@ export default {
              })
         },
         getDoctorId(){
+            if(this.id.includes("T")){
+                let s = this.id.split("T")
+                this.idDoc=s[0]
+                this.wantedDate=s[1]
+            }else{
+                this.idDoc=this.id
+            }
+
             let url = 'http://localhost:8080/doctor/';
             url += this.idDoc
             axios.get(url).then(response => { 
@@ -211,8 +219,6 @@ export default {
                 
             })
             .catch(error=>console.log(error))
-            
-            
         },
 
         getNurse(){
@@ -275,16 +281,7 @@ export default {
         }else if(this.role === "ROLE_NURSE")
             this.getNurse();
         else if(this.role === "ROLE_PATIENT")
-             if(this.id.includes("T")){
-                let s = this.id.split("T")
-                this.idDoc=s[0]
-                this.wantedDate=s[1]
-            }else{
-                this.idDoc=this.id
-            }
-
             this.getDoctorId();
-      
         if(this.user.onVacation === true)
             this.holiday = "On holiday";
         else

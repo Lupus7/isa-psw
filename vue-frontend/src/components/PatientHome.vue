@@ -113,6 +113,7 @@ export default {
       getMedicalFiles(){
         axios.get('http://localhost:8080/patient/getMedicalFile').then(response=>{
           //this.medicalFile = zip(response.data.bolesti,response.data.opisiBolesti);
+
         console.log(response);
       this.medicalFile = response.data.dijagnoze.map(function(e, i) {
       return [e, response.data.opisi[i]];
@@ -211,7 +212,7 @@ export default {
     cancelClinicRate(){
       this.rateAClinic=false
     },
-    leaveClinicRate(event,doctor_id){
+    leaveClinicRate(event,doctor_id,examination){
       event.preventDefault()
 
       let rate = parseInt(document.getElementById("ClinicRate").value)
@@ -220,6 +221,7 @@ export default {
       .post("clinic/leaveRate",{
         "value" : rate,
         "id": doctor_id,
+        "examination": examination,
       })
       .then(response=>{
        funToastr("s","Successfuly ratted clinuic!","Rate!");
@@ -235,7 +237,7 @@ export default {
     cancelDoctorRate(){
       this.rateADoctor = false
     },
-    leaveDoctorRate(e,doctor_id){
+    leaveDoctorRate(e,doctor_id, examination){
       e.preventDefault()
       let rate = parseInt(document.getElementById("DoctorRate").value)
       console.log(rate +"   "+doctor_id)
@@ -243,6 +245,7 @@ export default {
       .post("doctor/leaveRate",{
         "value" : rate,
         "id": doctor_id,
+        "examination": examination,
       })
       .then(response=>{
         funToastr("s","Successfuly ratted doctor!","Rate!");
@@ -250,6 +253,13 @@ export default {
         document.getElementById("blabla1").setAttribute("hidden","true")
         this.rateADoctor = false
       }).catch(error=>{funToastr("w","Unsuccessfully rated doctor!","Rate!");})
+    },
+    Decline(){
+      document.getElementById("card").setAttribute("hidden","true")
+    },
+    goToFast(){
+      console.log("yeah")
+      this.$router.push("/fastExams");
     }
     
     },
@@ -269,9 +279,17 @@ export default {
   
    <div>
       <p></p>
-     <button class="btn btn-secondary" @click="searchForDoctors()">Search for doctors</button>
-     <button class="btn btn-secondary" @click="searchForClinics()">Search for clinics</button>
-      <p></p><p></p>
+      <table>
+      <tr><td><button class="btn btn-secondary" @click="searchForDoctors()">Search for doctors</button></td>
+      <td><button class="btn btn-secondary" @click="searchForClinics()">Search for clinics</button></td>
+      <td><label></label></td><td><div id="card" class="card" style="width: 30rem;">
+        <div class="card-body">
+         <h5 class="card-title">Fast appoint examination</h5>
+            <p class="card-text">Save your time and efford of searching, just pick some of examinatin we provide to you</p>
+           <button  class="btn btn-primary" @click="goToFast">Visit</button>
+            <a href="#" class="card-link" @click="Decline">Decline</a>
+        </div></div></td></tr></table>
+      
     <div>
       <form id="doctorsearch" hidden>
         <table>
@@ -394,9 +412,10 @@ export default {
         <tr v-for="e in this.examinations" :key="e.id">
           <td>{{e.type}}</td>
           <td>{{e.date}}</td>
-          <td><button id="blabla" type="button" @click="showClinicRateForm" class="btn btn-light">Rate a clinic</button></td>
-          <td v-if="rateAClinic ==true">
-            <select id="ClinicRate">
+          <td v-if="e.ratedClinic == false">
+            <button id="blabla" type="button"  @click="showClinicRateForm(e.id)" class="btn btn-light">Rate a clinic</button></td>
+          <td v-if="e.ratedClinic==false && rateAClinic==true">
+            <select id="ClinicRate" v-if="e.ratedClinic == false">
               <option value="5">5</option>
               <option value="6">6</option>
               <option value="7">7</option>
@@ -404,13 +423,14 @@ export default {
               <option value="9">9</option>
               <option value="10">10</option>
             </select>
-            <label>---></label>
-            <button @click="leaveClinicRate($event,e.doctor_id)" type="button" class="btn btn-info">Post</button>
+          </td>
+          <td v-if="e.ratedClinic==false && rateAClinic==true">
+            <button @click="leaveClinicRate($event,e.doctor_id, e.examinationID)" type="button" class="btn btn-info">Post</button>
             <button @click="cancelClinicRate($event)" type="button" class="btn btn-danger">Cancel</button>
           </td>
 
-          <td><button type="button" id="blabla1" @click="showDoctorRateForm" class="btn btn-light">Rate a doctor</button></td>
-          <td v-if="rateADoctor ==true">
+          <td><button type="button" id="blabla1" v-if="e.ratedDoctor==false" @click="showDoctorRateForm" class="btn btn-light">Rate a doctor</button></td>
+          <td v-if="e.ratedDoctor==false && rateADoctor==true">
             <select id="DoctorRate">
               <option value="5">5</option>
               <option value="6">6</option>
@@ -419,8 +439,9 @@ export default {
               <option value="9">9</option>
               <option value="10">10</option>
             </select>
-            <label>---></label>
-            <button @click="leaveDoctorRate($event,e.doctor_id)" type="button" class="btn btn-info">Post</button>
+          </td>
+          <td v-if="e.ratedDoctor==false && rateADoctor==true">
+            <button @click="leaveDoctorRate($event,e.doctor_id, e.examinationID)" type="button" class="btn btn-info">Post</button>
             <button @click="cancelDoctorRate($event)" type="button" class="btn btn-danger">Cancel</button>
           </td>
         </tr>
