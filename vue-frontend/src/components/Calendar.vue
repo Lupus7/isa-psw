@@ -42,6 +42,7 @@
             :header="calendarHeader"
             :height="'auto'"
             :defaultDate="date"
+            @eventClick="handleDateClick"
         />
     </div>
     <div v-else-if="valid == 1">
@@ -76,11 +77,11 @@ export default {
         return {
             valid: 1,
             calendarView: 'timeGridView',
-            calendarPlugins: [ timeGridPlugin, dayGridPlugin, listPlugin ],
+            calendarPlugins: [timeGridPlugin, dayGridPlugin, listPlugin],
             calendarHeader: {
                 center: 'title'
             },
-            calendarEvents: [],
+            calendarEvents: {},
             showTimes: ['05:00', '15:00'],
             shift: ['06:00', '14:00'],
 
@@ -88,7 +89,7 @@ export default {
         }
     },
     methods: {
-        getRole(){
+        getRole() {
             const lss = LocalStorageService.getService()
 
             if(lss.getAccessToken() != undefined && lss.getAccessToken() != null){          
@@ -97,6 +98,12 @@ export default {
             }
 
             return this.role
+        },
+        handleDateClick(e) {
+            if (e.event.title === "Request examination") {
+                // REQUEST HANDLER
+                console.log("aa")
+            }
         }
     },
     view: {
@@ -118,22 +125,55 @@ export default {
                     .then(response => {
                         this.calendarEvents = response.data
 
-                        if (!this.calendarEvents || this.calendarEvents.length == 0) {
-                            //this.valid = 0
-                            return;
-                        }
-
                         this.calendarView = 'timeGridDay'
                         this.calendarHeader.left = ''
                         this.calendarHeader.right= ''
 
-                        if (this.calendarEvents[0].shift === 1) {
+                        const shift = this.calendarEvents[0].shift
+
+                        if (shift === 1) {
                             this.showTimes = ['05:00', '15:00']
                             this.shift = ['06:00', '14:00']
                         }
                         else {
                             this.showTimes = ['13:00', '23:00']
                             this.shift = ['14:00', '22:00']
+                        }
+                        
+                        const base = shift === 1 ? 6 : 14;
+
+                        for (let i = 0; i < 8; i++) {
+                            let start = (i + base) + ':00'
+
+                            if (start.length === 4)
+                                start = '0' + start
+
+                            start = this.date + 'T' + start;
+
+                            let exists = false
+
+                            for (let j = 0; j < this.calendarEvents.length; j++) {
+                                if (start == this.calendarEvents[j].start) {
+                                    exists = true
+                                    break;
+                                }
+                            }
+
+                            if (!exists) {
+                                let end = (i + base + 1) + ':00'
+
+                                if (end.length === 4)
+                                    end = '0' + end
+
+                                end = this.date + 'T' + end;
+
+                                this.calendarEvents.push({
+                                    "start": start,
+                                    "end": end,
+                                    "title": "Request examination",
+                                    "backgroundColor": "#ff0"
+                                })
+                            }
                         }
 
                         this.valid = 2
