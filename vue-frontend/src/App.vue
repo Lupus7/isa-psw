@@ -10,6 +10,11 @@ import axios from 'axios'
 import LocalStorageService from './LocalStorageService'
 import NavBar from './components/NavBar'
 
+import Vue from 'vue'
+import VueGoogleCharts from 'vue-google-charts'
+
+Vue.use(VueGoogleCharts)
+
 const localStorageService = LocalStorageService.getService();
 
 export default {
