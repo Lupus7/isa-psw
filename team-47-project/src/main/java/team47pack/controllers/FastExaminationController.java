@@ -37,6 +37,12 @@ public class FastExaminationController {
 		return fastExamService.getFastExaminations(user.getName());
 
 	}
+
+	@GetMapping(value="/patient/hisExaminations")
+	@PreAuthorize("hasRole('PATIENT')")
+	public List<FastExamDto>getPatientsExaminations(Principal user){
+		return fastExamService.getPatientsExaminations(user.getName());
+	}
 	
 	@GetMapping(value = "/ca/getClinicRooms")
 	@PreAuthorize("hasRole('CADMIN')")
@@ -58,6 +64,14 @@ public class FastExaminationController {
 		System.out.println(id + "*******"+user.getName());
 		fastExamService.appoint(id,user.getName());
 		return true;
+	}
+
+	@PostMapping(value = "/patient/disarange/{id}")
+	@PreAuthorize("hasRole('PATIENT')")
+	public Boolean disarange(@PathVariable(value="id")Long id, Principal user){
+		System.out.println(id + "*******"+user.getName());
+		return fastExamService.disarange(id,user.getName());
+
 	}
 	
 	@GetMapping(value = "/ca/getExaminationTypes/{spec}")
