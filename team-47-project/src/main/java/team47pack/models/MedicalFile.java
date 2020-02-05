@@ -16,9 +16,7 @@ public class MedicalFile {
 
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "medicalfile_entries",
-		joinColumns = @JoinColumn(name = "medical_file_id", referencedColumnName = "id"),
-		inverseJoinColumns = @JoinColumn(name = "medical_entry_id", referencedColumnName = "id"))
+    @JoinColumn(name = "med_file_id", referencedColumnName = "id", nullable = false)
 	private List<MedFileEntry> entries = new ArrayList<>();
 
 	public MedicalFile() {
