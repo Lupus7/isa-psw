@@ -12,6 +12,7 @@ import team47pack.security.TokenUtils;
 import team47pack.service.*;
 
 import java.security.Principal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -159,4 +160,14 @@ public class PatientController {
 		examinationService.save(examination);
 		return ResponseEntity.ok().body("Successfully send procedure request appointment");
 	}
+
+	@PostMapping(value="/patient/requestExam", produces="application/json",consumes = "application/json")
+	public Boolean sendRequest(@RequestBody String json, Principal user) throws JSONException, ParseException {
+		JSONObject obj = new JSONObject(json);
+		if(examinationService.sendRequest(obj,user.getName())){
+			return true;
+		}
+		return false;
+	}
+
 }
