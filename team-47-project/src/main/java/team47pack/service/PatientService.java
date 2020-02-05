@@ -1,9 +1,7 @@
 package team47pack.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,23 +9,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import team47pack.models.Clinic;
-import team47pack.models.Doctor;
-import team47pack.models.MedFileEntry;
-import team47pack.models.MedicalFile;
-import team47pack.models.MedicalStaff;
-import team47pack.models.Nurse;
-import team47pack.models.Patient;
-import team47pack.models.PrescriptionVerification;
+import team47pack.models.*;
 import team47pack.models.dto.FilterPatientRequest;
 import team47pack.models.dto.MedicalFileViewDTO;
 import team47pack.models.dto.SearchPatientRequest;
-import team47pack.repository.ClinicRepo;
-import team47pack.repository.MedEntryRepo;
-import team47pack.repository.MedFileRepo;
-import team47pack.repository.MedicalStaffRepo;
-import team47pack.repository.PatientRepo;
+import team47pack.repository.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService {
@@ -35,6 +25,9 @@ public class PatientService {
 	private PatientRepo patientRepository;
 	@Autowired
 	private ClinicRepo clinicRepository;
+
+	@Autowired
+	private UserRepo userRepo;
 
 	@Autowired
 	private MedFileRepo mfRepo;
@@ -260,5 +253,37 @@ public class PatientService {
 
 		return new ArrayList<MedicalFileViewDTO>();
 
+	}
+
+    public boolean updateData(JSONObject obj, String name) throws JSONException {
+		if (obj.getString("firstName") == null || obj.getString("lastName") == null || obj.getString("address") == null
+				|| obj.getString("state") == null || obj.getString("city") == null || obj.getString("telephone") == null
+				)
+			return false;
+
+		if (obj.getString("firstName").equals("") || obj.getString("lastName").equals("")
+				|| obj.getString("address").equals("") || obj.getString("state").equals("")
+				|| obj.getString("city").equals("") || obj.getString("telephone").equals("")
+				)
+			return false;
+
+		User u = userRepo.findByEmail(name);
+		if (u == null || !(u instanceof Patient))
+			return false;
+
+		u.setFirstName(obj.getString("firstName"));
+		u.setLastName(obj.getString("lastName"));
+		u.setAddress(obj.getString("address"));
+		u.setState(obj.getString("state"));
+		u.setCity(obj.getString("city"));
+		u.setTelephone(obj.getString("telephone"));
+
+		userRepo.save(u);
+
+		return true;
+
+    }
+	public void save(Patient ca) {
+		patientRepository.save(ca);
 	}
 }

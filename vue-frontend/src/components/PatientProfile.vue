@@ -43,8 +43,9 @@ export default {
             }
             
 		},
-		changeD(){
-
+		changeD(e){
+            e.preventDefault()
+            this.$router.push('/changeData')
 		},
     },
     created(){

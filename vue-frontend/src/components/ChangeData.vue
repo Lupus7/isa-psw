@@ -49,7 +49,7 @@
                                     <input  class="form-control here" type="text"  id="tp" >
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row" v-if="this.role != 'ROLE_PATIENT'">
                                     <label class="col-4 col-form-label">Unique Number</label> 
                                     <div class="col-8">
                                     <input  class="form-control here" type="text"  id="un" >
@@ -210,9 +210,27 @@ export default {
                 document.getElementById("un").value = this.uniqueNum;
 
             })
-            
+        },
+        getPatient(){
+            axios.get('http://localhost:8080/patient/getInfo').then(response => { 
+                this.user = response.data;
+                this.firstName = this.user.firstName;
+                this.lastName= this.user.lastName;  
+                this.address = this.user.address;
+                this.city = this.user.city;
+                this.state= this.user.state;
+                this.telephone = this.user.telephone;
+                this.uniqueNum= this.user.uniqueNum;
+                this.email = this.user.email;              
 
-           
+                document.getElementById("fN").value = this.firstName;
+                document.getElementById("nN").value = this.lastName;
+                document.getElementById("add").value = this.address;
+                document.getElementById("cy").value = this.city;
+                document.getElementById("st").value = this.state;
+                document.getElementById("tp").value = this.telephone;
+                document.getElementById("un").value = this.uniqueNum;
+            })
         },
 
         cancel(e){
@@ -222,6 +240,8 @@ export default {
                 this.$router.push("/profile");
             else if(this.role == "ROLE_CADMIN")
                 this.$router.push("/caProfile");
+            else if(this.role == 'ROLE_PATIENT')
+                this.$router.push("/patientProfile")
             else
                 this.$router.push("/userProfile");
         },
@@ -235,10 +255,11 @@ export default {
             this.city = document.getElementById("cy").value;
             this.state = document.getElementById("st").value;
             this.telephone = document.getElementById("tp").value;
-            this.uniqueNum = document.getElementById("un").value;
+            // this.uniqueNum = document.getElementById("un").value;
 
             if(this.role === "ROLE_DOCTOR"){
                 this.specialization = document.getElementById("spec").value;
+                this.uniqueNum = document.getElementById("un").value;
                 if(this.firstName==="" || this.LastName==="" || this.address==="" ||this.city==="" || this.state===""  || this.telephone===""  || this.uniqueNum===""  || this.specialization==="" ){
                     funToastr("w","Fields must not be empty!","Empty fields!");
                     return;
@@ -268,6 +289,7 @@ export default {
                     
                 } 
             }else if(this.role === "ROLE_NURSE"){
+                this.uniqueNum = document.getElementById("un").value;
                 if(this.firstName==="" || this.LastName==="" || this.address==="" ||this.city==="" || this.state===""  || this.telephone===""  || this.uniqueNum==="" ){
                     funToastr("w","Fields must not be empty!","Empty fields!");
                     return;
@@ -296,6 +318,7 @@ export default {
                     })
 
             }else if(this.role === "ROLE_CCADMIN"){
+                this.uniqueNum = document.getElementById("un").value;
                 if(this.firstName==="" || this.LastName==="" || this.address==="" ||this.city==="" || this.state===""  || this.telephone===""  || this.uniqueNum==="" ){
                     funToastr("w","Fields must not be empty!","Empty fields!");
                     return;
@@ -304,12 +327,12 @@ export default {
                 axios.put('/cca/info',{
                         "firstName" : this.firstName,
                         "lastName" : this.lastName,
-                        "email" : this.email,
+                        //"email" : this.email,
                         "address":this.address,
                         "city":this.city,
                         "state" : this.state,
                         "telephone":this.telephone,
-                        "uniqueNum" : this.uniqueNum,
+                        //"uniqueNum" : this.uniqueNum,
                      
                     }).then(response => { 
                         
@@ -324,6 +347,7 @@ export default {
                     })
 
             }else if(this.role === "ROLE_CADMIN"){
+                this.uniqueNum = document.getElementById("un").value;
                 if(this.firstName==="" || this.LastName==="" || this.address==="" ||this.city==="" || this.state===""  || this.telephone===""  || this.uniqueNum==="" ){
                     funToastr("w","Fields must not be empty!","Empty fields!");
                     return;
@@ -351,8 +375,34 @@ export default {
 
                     })
 
-            }
+            }else if(this.role === "ROLE_PATIENT"){
+                if(this.firstName==="" || this.LastName==="" || this.address==="" ||this.city==="" || this.state===""  || this.telephone==="" ){
+                    funToastr("w","Fields must not be empty!","Empty fields!");
+                    return;
+                }
+                
+                axios.post('http://localhost:8080/patient/updateInfo',{
+                        "firstName" : this.firstName,
+                        "lastName" : this.lastName,
+                        //"email" : this.email,
+                        "address":this.address,
+                        "city":this.city,
+                        "state" : this.state,
+                        "telephone":this.telephone,
+                        //"uniqueNum" : this.uniqueNum,
+                     
+                    }).then(response => { 
+                        
+                    }).finally(()=>{
 
+                        funToastr("s","Data successfuly updated!","Data Updated!");
+                            setTimeout(() =>{
+                            this.$router.push("/patientProfile");
+                        },1500);
+           
+
+                    })
+            }
 
         },
 
@@ -382,6 +432,8 @@ export default {
             this.getCCAdmin();
         else if(this.role == "ROLE_CADMIN")
             this.getCAdmin();
+        else if(this.role == "ROLE_PATIENT")
+            this.getPatient()
     },
   
 }

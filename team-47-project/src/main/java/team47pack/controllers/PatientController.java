@@ -1,39 +1,20 @@
 package team47pack.controllers;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import team47pack.models.*;
+import team47pack.models.dto.*;
+import team47pack.security.TokenUtils;
+import team47pack.service.*;
+
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import team47pack.models.Clinic;
-import team47pack.models.Diagnosis;
-import team47pack.models.Doctor;
-import team47pack.models.Examination;
-import team47pack.models.ExaminationType;
-import team47pack.models.MedFileEntry;
-import team47pack.models.MedicalFile;
-import team47pack.models.Patient;
-import team47pack.models.dto.DiagnosisDTO;
-import team47pack.models.dto.FilterPatientRequest;
-import team47pack.models.dto.MedicalFileDto;
-import team47pack.models.dto.MedicalFileViewDTO;
-import team47pack.models.dto.SearchPatientRequest;
-import team47pack.security.TokenUtils;
-import team47pack.service.ClinicService;
-import team47pack.service.DiagnosisService;
-import team47pack.service.DoctorService;
-import team47pack.service.ExaminationService;
-import team47pack.service.ExaminationTypeService;
-import team47pack.service.PatientService;
 
 @RestController
 public class PatientController {
@@ -81,6 +62,15 @@ public class PatientController {
 		return patientService.getAllClinics();
 	}
 
+	@PostMapping(value = "/patient/updateInfo", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<String> changeData(@RequestBody String json, Principal user) throws JSONException {
+		JSONObject obj = new JSONObject(json);
+
+		if (patientService.updateData(obj, user.getName()))
+			return ResponseEntity.ok("Successfulty updated data!");
+		else
+			return ResponseEntity.status(400).body("Could not accept");
+	}
 
 	@GetMapping(value = "/patient/getMedicalFile")
 	@PreAuthorize("hasRole('PATIENT')")
