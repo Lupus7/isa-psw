@@ -184,12 +184,9 @@ insert into prescription (id, name) values (2, 'Brufen');
 insert into prescription (id, name) values (3, 'Probiotik');
 
 --Prvo pravim entrijeve
-insert into med_file_en(id,description,diagnosis_id,doctor_id,date) values(1,'opis bolesti 1',1,8,'05.01.2020');
-insert into med_file_en(id,description,diagnosis_id,doctor_id,date)  values(2,'opis bolesti 2',2,8,'10.01.2020');
+insert into med_file_en(id,description,diagnosis_id,doctor_id,date,med_file_id) values(1,'opis bolesti 1',1,8,'05.01.2020',1);
+insert into med_file_en(id,description,diagnosis_id,doctor_id,date,med_file_id)  values(2,'opis bolesti 2',2,8,'10.01.2020',1);
 
---sada povezujem sa medical file
-insert into medicalfile_entries(medical_file_id,medical_entry_id) values(2,1);
-insert into medicalfile_entries(medical_file_id,medical_entry_id) values(2,2);
 
 SELECT setval('med_en_id_seq', 6, true);
 ALTER SEQUENCE diag_id_seq RESTART WITH 10;
