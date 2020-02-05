@@ -87,7 +87,7 @@ public class NextExaminationService {
 		Long idNextProcedure = obj.getLong("idNextProcedure");
 		Long idRoom = obj.getLong("idRoom");
 
-		Date dateConv = new SimpleDateFormat("dd/MM/yyyy").parse(obj.getString("date"));
+		Date dateConv = new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("date"));
 
 		Optional<NextProcedure> nextP = nextProcedureRepo.findById(idNextProcedure);
 		if (!nextP.isPresent() && nextP.get().isArranged())

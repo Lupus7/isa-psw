@@ -38,8 +38,8 @@ public class Examination extends Procedure {
 		this.patient = patient;
 		this.doctor = doc;
 		this.approved = approved;
-		this.ratedClinic = false;
-		this.ratedDoctor = false;
+		//this.ratedClinic = false;
+		//this.ratedDoctor = false;
 	}
 
 	public Examination(String type, Date date, Patient patient, Doctor doc, Boolean approved, ExaminationType et) {
@@ -49,8 +49,8 @@ public class Examination extends Procedure {
 		this.doctor = doc;
 		this.approved = approved;
 		this.examinationtype = et;
-		this.ratedClinic = false;
-		this.ratedDoctor= false;
+		//this.ratedClinic = false;
+		//this.ratedDoctor= false;
 	}
 
 	public Boolean getApproved() {

@@ -37,7 +37,7 @@ public class MedicalFile {
 	}
 
 	public List<MedFileEntry> getEntries() {
-		return this.entries;
+		return entries;
 	}
 
 	public void setEntries(List<MedFileEntry> entries) {

@@ -48,8 +48,9 @@
                             </div>
                            <div class="form-group col-md-6">
                                 <label>Select another Doctor:</label>
-                                     <select class="form-control" v-model="newDoctor">
-                                        <option v-for="(doc, index) in this.doctors" :key="index"> {{doc.firstName}} {{doc.lastName}} </option>
+                                     <select class="form-control" v-model="newDoctor" @change="newDoc()" >
+                                         <option v-if="this.newDoctor !== ''" :value="this.examReqs.doctor"> {{examReqs.doctor.firstName+" "+examReqs.doctor.lastName}} </option>
+                                        <option v-for="(doc, index) in this.doctors" :key="index" :value="doc"> {{doc.firstName}} {{doc.lastName}} </option>
                                     </select>
                             </div>
                         </div>
@@ -60,7 +61,7 @@
                                <label >Free Appointments:</label>
                                  <div class="form-group">
                                     <select class="form-control" v-model="chosenAppForm">
-                                        <option v-for="(ap, index) in this.freeAp" :key="index"> {{ap}} </option>
+                                        <option v-for="(ap, index) in this.freeApps" :key="index"> {{ap}} </option>
                                     </select>
                                 </div>
                             </div>
@@ -107,7 +108,9 @@ export default {
             chosenAppForm:"",
             doctors:[],
             newDoctor:'',
-            timeID:""
+            timeID:"",
+            freeApps:[],
+           
         }
         
     },
@@ -138,12 +141,25 @@ export default {
                 }
             }
 
+            this.freeApps = []
+                if(this.examReqs.doctor.shift == 1){
+
+                    for( var j = 0; j <= 7; j++){ 
+                        this.freeApps.push(this.freeAp[j])                       
+                    }
+
+                }else if(this.examReqs.doctor.shift == 2){
+
+                    for( var i = 8; i <= 15; i++){ 
+                        this.freeApps.push(this.freeAp[i])                
+                    }
+            }
+
             for(let t of this.takenAp){
-               console.log(t)
-               for( var i = 0; i < this.freeAp.length; i++){ 
-                    if ( t === this.freeAp[i]) {
-                        this.freeAp.splice(i, 1); 
-                        i--;
+               for( var q = 0; q < this.freeApps.length; q++){ 
+                    if ( t === this.freeApps[q]) {
+                        this.freeApps.splice(q, 1); 
+                        q--;
                     }
                 }
             }
@@ -151,10 +167,10 @@ export default {
         },
         arrangeRoom(){
             let newD = this.date.split(".")
-            let newDate = newD[0]+"/"+newD[1]+"/"+newD[2] 
+            let newDate = newD[2]+"-"+newD[1]+"-"+newD[0] 
             let idDoctor = 'none';
             for( var i = 0; i < this.doctors.length; i++){ 
-                if ( this.newDoctor === (this.doctors[i].firstName+' '+this.doctors[i].lastName)) {
+                if ( (this.newDoctor.firstName+' '+this.newDoctor.lastName) === (this.doctors[i].firstName+' '+this.doctors[i].lastName)) {
                     idDoctor = this.doctors[i].id;
                     break;
                 }
@@ -277,6 +293,50 @@ export default {
           
 
         },
+        newDoc(){
+            this.freeApps = []
+
+            if(this.newDoctor !== ''){
+                if(this.newDoctor.shift == 1){
+
+                    for( var j = 0; j <= 7; j++){ 
+                        this.freeApps.push(this.freeAp[j])                       
+                    }
+
+                }else if(this.newDoctor.shift == 2){
+
+                    for( var i = 8; i <= 15; i++){ 
+                        this.freeApps.push(this.freeAp[i])                
+                    }
+                }
+
+
+
+            }else if(this.newDoctor.id === this.examReqs.doctor.id){
+                    if(this.examReqs.doctor.shift == 1){
+
+                        for( var y = 0; y <= 7; y++){ 
+                            this.freeApps.push(this.freeAp[y])                       
+                        }
+
+                    }else if(this.examReqs.doctor.shift == 2){
+
+                        for( var x = 8; x <= 15; x++){ 
+                            this.freeApps.push(this.freeAp[x])                
+                        }
+                    }
+            }
+
+
+                for(let t of this.takenAp){
+                    for( var q = 0; q < this.freeApps.length; q++){ 
+                        if ( t === this.freeApps[q]) {
+                            this.freeApps.splice(q, 1); 
+                            q--;
+                        }
+                    }
+                }
+        }
 
 
         
@@ -300,6 +360,21 @@ export default {
             let s = this.dateSearch.toLocaleString().split("/");
             this.date = s[0]+"."+s[1]+"."+s[2]
         }
+
+        this.freeApps = []
+        if(this.examReqs.doctor.shift == 1){
+
+            for( var j = 0; j <= 7; j++){ 
+                this.freeApps.push(this.freeAp[j])                       
+            }
+
+        }else if(this.examReqs.doctor.shift == 2){
+
+            for( var i = 8; i <= 15; i++){ 
+                this.freeApps.push(this.freeAp[i])                
+            }
+        }
+
         
 
         this.getFreeDates();
