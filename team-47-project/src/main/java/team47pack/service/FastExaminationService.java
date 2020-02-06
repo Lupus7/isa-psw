@@ -127,6 +127,10 @@ public class FastExaminationService {
 		return ret;
 	}
 
+	public NextProcedure getOne(Long id){
+		return nextProcedureRepo.getOne(id);
+	}
+
 	public List<FastExamDto> getFastExaminations(String email) {
 		Pageable pageable = PageRequest.of(0, 30);
 		Page<NextProcedure> page = nextProcedureRepo.findByPatientAndArranged(null,false,pageable);		

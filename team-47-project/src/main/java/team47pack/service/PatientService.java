@@ -67,11 +67,10 @@ public class PatientService {
 		Patient ret = new Patient();
 		for (Patient p : patientRepository.findAll()) {
 			if (p.getEmail().equals(email)) {
-				ret = p;
-				break;
+				return p;
 			}
 		}
-		return ret;
+		return null;
 	}
 
 	// @author:Jokara---------------------------------------------------------------
