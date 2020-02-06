@@ -89,6 +89,15 @@ export default {
       },
       goToDoctorProfile(id){
             console.log(id)
+            if(this.convertedDate==""){
+              var today = new Date();
+              var dd = String(today.getDate()).padStart(2, '0');
+              var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+              var yyyy = today.getFullYear();
+
+                today = yyyy + '-' + mm + '-' + dd;
+                this.convertedDate = today
+            }
             console.log('datum :' + this.convertedDate)
             //this.$router.push({name:'UserProfile', params: {brojic:id, dateSearch:this.convertedDate}});
             let temp = id+'T'+this.convertedDate
@@ -140,6 +149,8 @@ export default {
       let name = document.getElementById("doctorname").value 
       let surname = document.getElementById("doctorsurname").value
       let specialization = document.getElementById("doctorspecialization").value
+      let date = document.getElementById("date1").value
+      this.convertedDate = date
       this.pretiso = false
       //let date = document.getElementById("doctordate").value
       //console.log(name+" "+surname + specialization + date)
@@ -279,7 +290,7 @@ export default {
   
    <div>
       <p></p>
-      <table>
+      <table cellspacing="20">
       <tr><td><button class="btn btn-secondary" @click="searchForDoctors()">Search for doctors</button></td>
       <td><button class="btn btn-secondary" @click="searchForClinics()">Search for clinics</button></td>
       <td><label></label></td><td><div id="card" class="card" style="width: 30rem;">
@@ -289,22 +300,25 @@ export default {
            <button  class="btn btn-primary" @click="goToFast">Visit</button>
             <a href="#" class="card-link" @click="Decline">Decline</a>
         </div></div></td></tr></table>
-      
     <div>
+      <br><br>
       <form id="doctorsearch" hidden>
-        <table>
+        <table cellspacing="10">
           <tr>
             <td>Search for doctors:</td>
             <td><input type="text" id="doctorname" placeholder="Name"></td>
             <td><input type="text" id="doctorsurname" placeholder="Surname"></td>
             <td><input type="text" id="doctorspecialization" placeholder="Specialization"></td>
+            <td>
+             <input type="date" placeholder="location" id="date1">
+           </td>
             <td><button @click="goSearchDoctor()">Search</button></td>
           </tr>
         </table>
       </form>
       <p></p>
        <form id="clinicsearch" hidden>
-       <table>
+       <table cellspacing="10">
          <tr>
            <td>Search for clinics</td>
            <td>
@@ -313,7 +327,10 @@ export default {
            <td>
              <input type="text" placeholder="location" id="location">
            </td>
+         </tr>
+         <tr>
            <td>
+             Rate    
              <select name="rate" placeholder="wanted or higher" id="rate">
                <option value="0" selected disabled hidden> 
                </option>

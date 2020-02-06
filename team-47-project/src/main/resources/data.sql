@@ -243,22 +243,22 @@ insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doct
 insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(2,8,9,false,true);
 insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(3,12,4,false ,true);
 insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(4,12,7,true,false);
-insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(5,13,6,false,true;
+insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(5,13,6,false,true);
 insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(6,13,5,false,false);
 
 ---- add next procedure
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (1,'Examination',2,'05.02.2020',12,1,1,true,6);
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (2,'Examination',2,'05.02.2020',12,2,2,true,7);
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (3,'Examination',2,'06.02.2020',13,3,1,true,10);
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (4,'Examination',2,'05.02.2020',13,4,2,false,15);
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (5,'Examination',2,'05.02.2020',12,2,2,false,17);
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (6,'Examination',2,'06.02.2020',13,2,2,false,20);
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (7,'Examination',2,'07.02.2020',12,1,2,false,6);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (1,'Examination',2,'05.03.2020',12,1,1,true,6);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (2,'Examination',2,'05.03.2020',12,2,2,true,7);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (3,'Examination',2,'06.03.2020',13,3,1,true,10);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (4,'Examination',2,'05.03.2020',13,4,2,false,15);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (5,'Examination',2,'05.03.2020',12,2,2,false,17);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (6,'Examination',2,'06.03.2020',13,2,2,false,20);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (7,'Examination',2,'07.03.2020',12,1,2,false,6);
 ALTER SEQUENCE next_procedure_id_seq RESTART WITH 8;
 
-insert into roomarrange(id,room,date,time,taken,next_examination,clinic) values (1,8,'05.02.2020',15,true,1,2);
-insert into roomarrange(id,room,date,time,taken,next_examination,clinic) values (2,8,'05.02.2020',10,true,2,2);
-insert into roomarrange(id,room,date,time,taken,next_examination,clinic) values (3,8,'05.02.2020',20,true,3,2);
+insert into roomarrange(id,room,date,time,taken,next_examination,clinic) values (1,8,'05.03.2020',15,true,1,2);
+insert into roomarrange(id,room,date,time,taken,next_examination,clinic) values (2,8,'05.03.2020',10,true,2,2);
+insert into roomarrange(id,room,date,time,taken,next_examination,clinic) values (3,8,'05.03.2020',20,true,3,2);
 ALTER SEQUENCE roomarrange_id_seq RESTART WITH 4;
 
 insert into takendates values(8,1);

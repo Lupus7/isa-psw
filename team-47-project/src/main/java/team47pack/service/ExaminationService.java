@@ -1,5 +1,14 @@
 package team47pack.service;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import team47pack.models.*;
+import team47pack.models.dto.ExaminInfo;
+import team47pack.models.dto.PrescriptionDTO;
+import team47pack.repository.*;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,38 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
-import team47pack.models.Clinic;
-import team47pack.models.ClinicAdmin;
-import team47pack.models.Diagnosis;
-import team47pack.models.Doctor;
-import team47pack.models.Examination;
-import team47pack.models.ExaminationType;
-import team47pack.models.MedFileEntry;
-import team47pack.models.MedicalFile;
-import team47pack.models.NextProcedure;
-import team47pack.models.Patient;
-import team47pack.models.Prescription;
-import team47pack.models.PrescriptionVerification;
-import team47pack.models.dto.ExaminInfo;
-import team47pack.models.dto.PrescriptionDTO;
-import team47pack.repository.ClinicAdminRepo;
-import team47pack.repository.ClinicRepo;
-import team47pack.repository.DiagnosisRepo;
-import team47pack.repository.DoctorRepo;
-import team47pack.repository.ExaminationRepo;
-import team47pack.repository.ExaminationTypeRepo;
-import team47pack.repository.MedEntryRepo;
-import team47pack.repository.MedFileRepo;
-import team47pack.repository.NextProcedureRepo;
-import team47pack.repository.PrescriptionRepo;
 
 @Service
 public class ExaminationService {
@@ -62,7 +39,13 @@ public class ExaminationService {
 	private EmailService emailService;
 	@Autowired
 	private ClinicRepo clinicRepo;
-	
+
+	@Autowired
+	private ClinicService clinicService;
+
+	@Autowired
+	private ExaminationTypeService examinationTypeService;
+
 	@Autowired
 	private ClinicAdminRepo caRepo;
 
@@ -207,4 +190,27 @@ public class ExaminationService {
 		return examinationRepo.findAllByRoomId(id);
 	}
 
+	public boolean sendRequest(JSONObject obj, String name) throws JSONException, ParseException {
+		System.out.println(obj.getString("date") + "  " +obj.getString("doctor"));
+		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = inputFormat.parse(obj.getString("date"));
+
+		System.out.println("DATUUUM : " + date);
+		Patient p = patientService.getPatient(name);
+		Doctor doc = doctorRepo.findByEmail(obj.getString("doctor"));
+		Clinic c = clinicService.getClinicByDoktorID(doc.getId()) ;
+		List<ExaminationType> ex = examinationTypeService.findByClinicID(c.getId());
+		ExaminationType temp = new ExaminationType();
+		for(ExaminationType e: ex){
+			if(e.getSpecialization().equals(doc.getSpecialization()) && !e.getName().equals("Control")){
+				temp = e;
+				System.out.println("This is examination type: " + e.getName() + e.getSpecialization());
+				break;
+			}
+		}
+		Examination e = new Examination(doc.getSpecialization(),date,p,doc,false,temp);
+		examinationRepo.save(e);
+		return  true;
+	}
 }
