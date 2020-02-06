@@ -3,7 +3,13 @@ package team47pack.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Entity
 @Table(name="procedure")
@@ -29,6 +35,9 @@ public abstract class Procedure {
     @DateTimeFormat(pattern="dd.MM.yyyy hh:mm")
     protected Date date;
 
+	@Column
+	protected Integer time;
+
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="patient_id",referencedColumnName = "id",nullable = true)
     protected Patient patient;
@@ -37,10 +46,23 @@ public abstract class Procedure {
 		
 	}
 
-	public Procedure(Long id, String type, Date date, Patient patient, Room room) {
+	public Procedure(Long id, String type, Date date, Patient patient, Room room) throws ParseException {
+		this.id = id;
+		this.type = type;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
+		this.date = sdf.parse(date.toString());
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		this.time = calendar.get(Calendar.HOUR_OF_DAY);
+		this.patient = patient;
+		this.room = room;
+	}
+
+	public Procedure(Long id, String type, Date date, Integer time, Patient patient, Room room) {
 		this.id = id;
 		this.type = type;
 		this.date = date;
+		this.time = time;
 		this.patient = patient;
 		this.room = room;
 	}
@@ -84,8 +106,12 @@ public abstract class Procedure {
 	public void setRoom(Room room) {
 		this.room = room;
 	}
-	
-	
-    
 
+	public Integer getTime() {
+		return time;
+	}
+
+	public void setTime(Integer time) {
+		this.time = time;
+	}
 }
