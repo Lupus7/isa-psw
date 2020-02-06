@@ -100,9 +100,14 @@ export default {
             return this.role
         },
         handleDateClick(e) {
+            const role = this.getRole()
+
             if (e.event.title === "Request examination") {
                 // REQUEST HANDLER
                 console.log("aa")
+            }
+            else if (role === "ROLE_DOCTOR") {
+                this.$router.push('/examination/' + e.event.extendedProps.patient);
             }
         }
     },
