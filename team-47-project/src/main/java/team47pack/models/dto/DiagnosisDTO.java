@@ -16,6 +16,8 @@ public class DiagnosisDTO {
     @NotBlank(message = "Diagnosis description not valid!")
     String description;
 
+    String date;
+
     public DiagnosisDTO() {
     }
 
@@ -49,6 +51,14 @@ public class DiagnosisDTO {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public void setDescription(String description) {

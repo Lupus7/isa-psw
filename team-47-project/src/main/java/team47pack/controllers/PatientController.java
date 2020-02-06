@@ -87,10 +87,13 @@ public class PatientController {
 		List<MedFileEntry> entrijevi = mf.getEntries();
 		for(MedFileEntry m: entrijevi){
 			System.out.println("OPIS ENTRIJA: " + m.getDesc());
+
 			opisi.add(m.getDesc());
 			Diagnosis d = diagnosisService.findOneById(m.getDiagnosis().getId());
 			System.out.println("Nasao dijagnozu: " + d.getName()+d.getDesc());
-			dijagnoze.add(new DiagnosisDTO(d));
+			DiagnosisDTO dt = new DiagnosisDTO(d);
+			dt.setDate(m.getDate().toString());
+			dijagnoze.add(dt);
 		}
 		MedicalFileDto mfd = new MedicalFileDto();
 		mfd.setDijagnoze(dijagnoze);
