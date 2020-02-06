@@ -33,29 +33,29 @@ insert into patient values (6, 6);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','test7',true,'test','test','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test7',7);
-insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (7,false,1,null,null);            
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end,shift) values (7,false,1,null,null,1);
 insert into nurse values (7);
 
 ------------------------------- Doctors
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','doctor1',true,'Jovana','Jovanic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor1',8);
-insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (8,false,1,null,null);            
-insert into doctor (id,specialization,shift) values (8,'General Practise',1);
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end,shift) values (8,false,1,null,null,1);
+insert into doctor (id,specialization) values (8,'General Practise');
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','doctor2',true,'Zivko','Zivkovic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor2',12);
-insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (12,false,2,null,null);            
-insert into doctor (id,specialization,shift) values (12,'Stomatologist',1);
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end,shift) values (12,false,2,null,null,1);
+insert into doctor (id,specialization) values (12,'Stomatologist');
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','doctor3',true,'Nikola','Nikolic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor3',13);
-insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (13,false,2,null,null);            
-insert into doctor (id,specialization,shift) values (13,'Plastic surgeon',2);
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end,shift) values (13,false,2,null,null,2);
+insert into doctor (id,specialization) values (13,'Plastic surgeon');
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','doctor4',true,'Milos','Panic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor4',15);
-insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (15,false,2,null,null);            
-insert into doctor (id,specialization,shift) values (15,'Plastic surgeon',2);
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end,shift) values (15,false,2,null,null,2);
+insert into doctor (id,specialization) values (15,'Plastic surgeon');
 
 --------------------------------
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
@@ -72,7 +72,7 @@ insert into clinic_centre_admin (id) values (1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','test11',true,'test','test',null,'$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','test11',11);
-insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end) values (11,false,2,null,null);            
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end,shift) values (11,false,2,null,null,2);
 insert into nurse values (11);
 
 -----------------------------------------------------------------------Rooms
@@ -192,12 +192,12 @@ SELECT setval('med_en_id_seq', 6, true);
 ALTER SEQUENCE diag_id_seq RESTART WITH 10;
 ALTER SEQUENCE pres_id_seq RESTART WITH 10;
 
-insert into procedure (id,date,type,patient_id, room) values(1,'04.09.2020','Examination', 2, 1);
-insert into procedure (id,date,type,patient_id, room) values(2,'03.07.2018','Examination', 2, 2);
-insert into procedure (id,date,type,patient_id, room) values(3, '01.08.2020', 'Examination', 2, 8);
-insert into procedure (id,date,type,patient_id, room) values(4, '01.08.2020', 'Examination', 3, 8);
-insert into procedure (id,date,type,patient_id, room) values(5, '01.08.2020', 'Examination', 4, 9);
-insert into procedure (id,date,type,patient_id, room) values(6, '01.08.2020', 'Examination', 5, 9;
+insert into procedure (id,date,type,patient_id, room, time) values(1,'04.09.2020','Examination', 2, 1, 9);
+insert into procedure (id,date,type,patient_id, room, time) values(2,'03.07.2018','Examination', 2, 2, 11);
+insert into procedure (id,date,type,patient_id, room, time) values(3, '01.08.2020', 'Examination', 2, 8, 12);
+insert into procedure (id,date,type,patient_id, room, time) values(4, '01.08.2020', 'Examination', 3, 8, 8);
+insert into procedure (id,date,type,patient_id, room, time) values(5, '01.08.2020', 'Examination', 4, 9, 12);
+insert into procedure (id,date,type,patient_id, room, time) values(6, '01.08.2020', 'Examination', 5, 9, 8;
 
 
 ALTER SEQUENCE procedure_id_seq RESTART WITH 7;
