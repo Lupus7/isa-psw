@@ -10,6 +10,7 @@ import team47pack.models.dto.CalendarEvent;
 import team47pack.service.CalendarService;
 
 import java.security.Principal;
+import java.text.ParseException;
 import java.util.List;
 
 // @author: Lupus7 (Sinisa Canak)
@@ -22,13 +23,13 @@ public class CalendarController {
 
     @GetMapping(value="/schedule")
     @PreAuthorize("hasRole('DOCTOR') or hasRole('NURSE')")
-    public List<CalendarEvent> schedule() {
-        return null;
+    public List<CalendarEvent> schedule(Principal user) throws ParseException {
+        return calendarService.schedule(user.getName());
     }
 
     @GetMapping(value="/doc-info/{email}/{date}")
     @PreAuthorize("hasRole('PATIENT')")
-    public List<CalendarEvent> docInfo(@PathVariable(value="email") String email, @PathVariable(value="date") String date) {
+    public List<CalendarEvent> docInfo(@PathVariable(value="email") String email, @PathVariable(value="date") String date) throws ParseException {
         return calendarService.docInfo(email, date);
     }
 

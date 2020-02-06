@@ -1,6 +1,7 @@
 package team47pack.controllers;
 
 import java.security.Principal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -149,7 +150,7 @@ public class PatientController {
 
 	@PostMapping(value="patient/requests/{id}/{spec}")
 	@PreAuthorize("hasRole('PATIENT')")
-	public ResponseEntity<String> sendRequest(@PathVariable(value = "id") Long id, @PathVariable(value = "spec")String spec,Principal user) {
+	public ResponseEntity<String> sendRequest(@PathVariable(value = "id") Long id, @PathVariable(value = "spec")String spec,Principal user) throws ParseException {
 		System.out.println(id + spec);
 
 		Patient pat = patientService.getPatient(user.getName());
