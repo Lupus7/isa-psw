@@ -25,7 +25,7 @@
                                     </div>
                                 </div>
                                 <div class="ml-auto" style="margin-top: -2vh">
-                                    <div class="middle" v-if=" this.role === 'ROLE_DOCTOR' || this.role === 'ROLE_NURSE' ">
+                                    <div class="middle" v-if=" this.role === 'ROLE_DOCTOR' || this.role === 'ROLE_NURSE'">
                                         <br>
                                         <button  type="button" class="btn btn-success btn-block " @click="changeD" style=" border-radius: 6px; padding:8px ">Change data </button>
                                     </div>

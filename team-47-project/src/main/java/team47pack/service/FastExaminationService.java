@@ -1,5 +1,6 @@
 package team47pack.service;
 
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,5 +170,37 @@ public class FastExaminationService {
 		Patient patient = patientRepo.findByEmail(name);
 		next.get().setPatient(patient);
 		nextProcedureRepo.save(next.get());
+	}
+
+	public List<FastExamDto> getPatientsExaminations(String name) {
+		Pageable pageable = PageRequest.of(0, 30);
+		Patient patient = patientRepo.findByEmail(name);
+		Page<NextProcedure> page = nextProcedureRepo.findByPatientAndArranged(patient,false,pageable);
+		List<FastExamDto> ret =convert(page.getContent());
+		return ret;
+	}
+
+	public Boolean disarange(Long id, String name) {
+		Optional<NextProcedure> next = nextProcedureRepo.findById(id);
+		if(!next.isPresent()){
+			return false;
+		}
+//		Instant now = Instant.now();
+//		Boolean isWithinPrior24Hours =
+//				( ! next.get().getDate().toInstant().isBefore( now.minus( 24 , ChronoUnit.HOURS) ) )
+//						&&
+//						( next.get().getDate().toInstant().isBefore( now )
+//						) ;
+		boolean isBeforeYesterday = new DateTime(next.get().getDate()).isBefore( DateTime.now().minusDays(1) );
+		if(isBeforeYesterday)
+		{
+			System.out.println("CAN NOT DISARAGNE!!!!");
+			return false;
+		}
+
+		Patient patient = patientRepo.findByEmail(name);
+		next.get().setPatient(null);
+		nextProcedureRepo.save(next.get());
+		return true;
 	}
 }

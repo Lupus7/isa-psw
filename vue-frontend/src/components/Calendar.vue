@@ -57,7 +57,7 @@
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import LocalStorageService from "../LocalStorageService";
-
+import {funToastr} from "../toastr.js"
 import FullCalendar from '@fullcalendar/vue'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -102,7 +102,20 @@ export default {
         handleDateClick(e) {
             if (e.event.title === "Request examination") {
                 // REQUEST HANDLER
-                console.log("aa")
+                console.log(e.event.start)
+                console.log(this.doctor)
+                axios
+                .post("/patient/requestExam",{
+                    "date":e.event.start,
+                    "doctor":this.doctor,
+                })
+                .then(response=>{
+                    funToastr("s","Successfuly appointed Examination!");
+                    this.$router.push("/")
+                })
+                .catch(error=>{
+                    console.log(error)
+                })
             }
         }
     },
