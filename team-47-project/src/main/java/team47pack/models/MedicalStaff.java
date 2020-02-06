@@ -12,7 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class MedicalStaff extends User {
+public class MedicalStaff extends User {
 
 	@Column(name = "onVacation", unique = false, nullable = false)
 	protected Boolean onVacation;
@@ -29,6 +29,9 @@ public abstract class MedicalStaff extends User {
 	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date holidayBegin;
+
+	@Column(name = "shift", unique = false, nullable = false)
+	protected int shift;
 
 	public Boolean getOnVacation() {
 		return onVacation;
@@ -62,4 +65,11 @@ public abstract class MedicalStaff extends User {
 		this.holidayBegin = holidayBegin;
 	}
 
+	public int getShift() {
+		return shift;
+	}
+
+	public void setShift(int shift) {
+		this.shift = shift;
+	}
 }
