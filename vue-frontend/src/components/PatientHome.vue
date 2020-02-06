@@ -123,8 +123,9 @@ export default {
         axios.get('http://localhost:8080/patient/getMedicalFile').then(response=>{
           //this.medicalFile = zip(response.data.bolesti,response.data.opisiBolesti);
 
-        console.log(response);
+       
       this.medicalFile = response.data.dijagnoze.map(function(e, i) {
+      
       return [e, response.data.opisi[i]];
       });
 
@@ -271,7 +272,8 @@ export default {
     goToFast(){
       console.log("yeah")
       this.$router.push("/fastExams");
-    }
+    },
+  
     
     },
     
@@ -280,6 +282,9 @@ export default {
         this.getClinics()
         this.getExamination()
         this.getMedicalFiles()
+       
+        
+        
     }
 }
 
@@ -473,6 +478,7 @@ export default {
       <th scope="col">Examination description</th>
       <th scope="col">Diagnosis</th>
       <th scope="col">Diagnosis description</th>
+      <th scope="col">Date</th>
     </tr>
   </thead>
   <tbody>
@@ -480,6 +486,7 @@ export default {
       <td>{{d[1]}}</td>
       <td>{{d[0].name}}</td>
       <td>{{d[0].description}}</td>
+      <td>{{d[0].date}}</td>
     </tr>
     </tbody>
       </table>
