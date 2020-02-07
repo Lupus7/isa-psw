@@ -194,7 +194,7 @@ public class ExaminationService {
 		return examinationRepo.findAllByRoomId(id);
 	}
 
-	public boolean sendRequest(JSONObject obj, String name) throws JSONException, ParseException {
+	public Boolean sendRequest(JSONObject obj, String name) throws JSONException, ParseException {
 		System.out.println(obj.getString("date") + "  " +obj.getString("doctor"));
 		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
