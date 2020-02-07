@@ -104,7 +104,28 @@
                 </div>
             </div>
         </div>
+
+        <template>
+            <yandex-map 
+                :coords= pos
+                zoom="12"
+                style="width: auto; height: 400px;"
+                map-type="map"
+                >
+
+                <ymap-marker 
+                    markerId = "1"
+                    marker-type="placemark"
+                    :coords= pos
+                    :hint-content = clinicAddress
+                ></ymap-marker>
+
+            </yandex-map>
+        </template>
+
     </div>
+
+
     
     
 </template>
@@ -117,13 +138,34 @@ export default {
    data() {
         return {
             clinic : [],
+            clinicAddress:'',
+            pos:[50,50]
            
         }
     },
     methods:{
 
         getClinic(){
-            axios.get('http://localhost:8080/clinic/getInfo').then(response => { this.clinic = response.data; })
+            axios.get('http://localhost:8080/clinic/getInfo').then(response => { 
+                this.clinic = response.data;
+                this.clinicAddress = this.clinic.address
+                console.log(this.clinicAddress)
+                let s=this.clinic.address.split(",");
+                console.log(s)
+                let adr = s[0]+" "+s[1]+" "+s[2]
+                
+                let url='https://geocoder.api.here.com/6.2/geocode.json?app_id=aJx1PxrXFwpMDT0M30rJ&app_code=am23BxvdgXkXf2c15NUZgw&searchtext='+adr.replace(/ /g,'+');
+
+                fetch(url,{
+                  headers:{}  
+                }).then(res => res.json()).then(res => {
+                    console.log(res)
+                    this.pos = []
+                    let lat = res.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
+                    let lon = res.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
+                    this.pos= [lat,lon]
+                })
+             })
         },
 
         doctors(e){
@@ -146,7 +188,8 @@ export default {
         examRequest(e){
             e.preventDefault()
             this.$router.push("/examRequests");
-        }
+        },
+       
     },
     created() {
         this.getClinic();
