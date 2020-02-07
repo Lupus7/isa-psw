@@ -17,6 +17,17 @@ Vue.use(VueGoogleCharts)
 
 const localStorageService = LocalStorageService.getService();
 
+const settings = {
+  apiKey: '68f27d0d-4416-406a-8570-ec7b43f271a6',
+  lang: 'en_US',
+  coordorder: 'latlong',
+  version: '2.1'
+}
+
+import YmapPlugin from 'vue-yandex-maps'
+Vue.use(YmapPlugin,settings)
+
+
 export default {
     name: 'app',
     components: {
