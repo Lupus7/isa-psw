@@ -172,10 +172,7 @@ public class PatientController {
 	@PostMapping(value="/patient/requestExam", produces="application/json",consumes = "application/json")
 	public Boolean sendRequest(@RequestBody String json, Principal user) throws JSONException, ParseException {
 		JSONObject obj = new JSONObject(json);
-		if(examinationService.sendRequest(obj,user.getName())){
-			return true;
-		}
-		return false;
+		System.out.println("JSON : " + json + " USER : " + user.getName());
+		return examinationService.sendRequest(obj, user.getName());
 	}
-
 }

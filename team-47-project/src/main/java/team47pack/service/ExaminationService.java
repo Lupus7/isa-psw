@@ -62,6 +62,10 @@ public class ExaminationService {
 		return examinationRepo.findByPatientId(id);
 	}
 
+	public Examination findOne(Long id){
+		return examinationRepo.getOne(id);
+	}
+
 	public List<Examination> getByDoctorId(Long id) {
 		return examinationRepo.findAllByDoctorId(id);
 	}
@@ -190,7 +194,7 @@ public class ExaminationService {
 		return examinationRepo.findAllByRoomId(id);
 	}
 
-	public boolean sendRequest(JSONObject obj, String name) throws JSONException, ParseException {
+	public Boolean sendRequest(JSONObject obj, String name) throws JSONException, ParseException {
 		System.out.println(obj.getString("date") + "  " +obj.getString("doctor"));
 		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -198,12 +202,21 @@ public class ExaminationService {
 
 		System.out.println("DATUUUM : " + date);
 		Patient p = patientService.getPatient(name);
+		if(p == null){
+			return false;
+		}
 		Doctor doc = doctorRepo.findByEmail(obj.getString("doctor"));
+        if(doc == null){
+        	return false;
+		}
 		Clinic c = clinicService.getClinicByDoktorID(doc.getId()) ;
-		List<ExaminationType> ex = examinationTypeService.findByClinicID(c.getId());
-		ExaminationType temp = new ExaminationType();
+		if(c == null){
+			return false;
+		}
+        List<ExaminationType> ex = examinationTypeService.findByClinicID(c.getId());
+        ExaminationType temp = new ExaminationType();
 		for(ExaminationType e: ex){
-			if(e.getSpecialization().equals(doc.getSpecialization()) && !e.getName().equals("Control")){
+		    if(e.getSpecialization().equals(doc.getSpecialization()) ){
 				temp = e;
 				System.out.println("This is examination type: " + e.getName() + e.getSpecialization());
 				break;
