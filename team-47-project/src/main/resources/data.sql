@@ -127,9 +127,9 @@ insert into user_authority (user_id, authority_id) values (11,3);
 insert into user_authority (user_id, authority_id) values (14,4);
 insert into user_authority (user_id, authority_id) values (15,2);
 
-insert into clinic(id,name,address,description) values (1,'klinika1','dr.andre','lepa bas onako');
-insert into clinic(id,name,address,description) values (2,'klinika2','Ulica 2','nije najsrecnija');
-insert into clinic(id,name,address,description) values (3,'klinika3','Ulica 3','odlicna');
+insert into clinic(id,name,address,description) values (1,'klinika1','Beograd,Ljutice Bogdana,1','lepa bas onako');
+insert into clinic(id,name,address,description) values (2,'klinika2','Novi Sad,Danila Kisa,40','nije najsrecnija');
+insert into clinic(id,name,address,description) values (3,'klinika3','Beograd,Humska,1','odlicna');
 
 --- all users 
 insert into user_authority (user_id, authority_id) values (1,6);
