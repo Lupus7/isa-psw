@@ -12,9 +12,6 @@ public class Doctor extends MedicalStaff {
 	@Column(name = "specialization", unique = false, nullable = false)
 	private String specialization;
 
-	@Column(name = "shift", unique = false, nullable = false)
-	private int shift;
-
 	//@Author bokimilinkovic
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -52,14 +49,6 @@ public class Doctor extends MedicalStaff {
 
 	public void setSpecialization(String specialization) {
 		this.specialization = specialization;
-	}
-
-	public int getShift() {
-		return shift;
-	}
-
-	public void setShift(int shift) {
-		this.shift = shift;
 	}
 
 	public List<Rate> getRatings() {

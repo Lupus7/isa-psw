@@ -107,4 +107,11 @@ public class MedicallStaffService {
 
 	}
 
+	public MedicalStaff getStaff(String mail) {
+		return medicallRepo.findByEmail(mail);
+	}
+
+	public List<HolidayTimeOff> getTimeOff(MedicalStaff medicalStaff) {
+		return holidayTimeRepo.findAllByStaffId(medicalStaff.getId());
+	}
 }

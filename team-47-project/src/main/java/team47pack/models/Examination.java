@@ -1,7 +1,11 @@
 package team47pack.models;
 
 import javax.persistence.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Entity
 @Table(name = "examination")
@@ -32,9 +36,13 @@ public class Examination extends Procedure {
 		this.doctor = doctor;
 	}
 
-	public Examination(String type, Date date, Patient patient, Doctor doc, Boolean approved) {
+	public Examination(String type, Date date, Patient patient, Doctor doc, Boolean approved) throws ParseException {
 		this.type = type;
-		this.date = date;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
+		this.date = sdf.parse(date.toString());
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		this.time = calendar.get(Calendar.HOUR_OF_DAY);
 		this.patient = patient;
 		this.doctor = doc;
 		this.approved = approved;
@@ -42,9 +50,13 @@ public class Examination extends Procedure {
 		//this.ratedDoctor = false;
 	}
 
-	public Examination(String type, Date date, Patient patient, Doctor doc, Boolean approved, ExaminationType et) {
+	public Examination(String type, Date date, Patient patient, Doctor doc, Boolean approved, ExaminationType et) throws ParseException {
 		this.type = type;
-		this.date = date;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
+		this.date = sdf.parse(date.toString());
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		this.time = calendar.get(Calendar.HOUR_OF_DAY);
 		this.patient = patient;
 		this.doctor = doc;
 		this.approved = approved;

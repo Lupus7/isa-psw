@@ -1,9 +1,6 @@
 package team47pack.models.dto;
 
-import team47pack.models.Doctor;
-import team47pack.models.Examination;
-import team47pack.models.Patient;
-import team47pack.models.Room;
+import team47pack.models.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,8 +28,22 @@ public class CalendarEvent {
     public CalendarEvent(Examination examination, String type) {
         if (type.contentEquals("CADMIN_ROOM"))
             initForCAdmin(examination);
+        else if (type.contentEquals("FOR_STAFF"))
+            initForStaff(examination);
         else
             initForPatient(examination);
+    }
+
+    public CalendarEvent(HolidayTimeOff holidayTimeOff) {
+        this.title = holidayTimeOff.getStaff().getFirstName() + " " + holidayTimeOff.getStaff().getLastName() + " on " + holidayTimeOff.getType();
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        cal.setTime(holidayTimeOff.getBeginDate());
+        this.start = format.format(cal.getTime());
+        cal.setTime(holidayTimeOff.getEndDate());
+        this.end = format.format(cal.getTime());
+        this.backgroundColor = "#5f5";
+        this.textColor = "#505";
     }
 
     private void initForPatient(Examination examination) {
@@ -40,12 +51,28 @@ public class CalendarEvent {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         cal.setTime(examination.getDate());
+        cal.add(Calendar.HOUR_OF_DAY, examination.getTime());
         this.start = format.format(cal.getTime());
         cal.add(Calendar.HOUR_OF_DAY, 1);
         this.end = format.format(cal.getTime());
         this.backgroundColor = "#aaf";
         this.textColor = "#000";
         this.shift = examination.getDoctor().getShift();
+    }
+
+    private void initForStaff(Examination examination) {
+        this.title = examination.getPatient().getFirstName() + " " + examination.getPatient().getLastName();
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        cal.setTime(examination.getDate());
+        cal.add(Calendar.HOUR_OF_DAY, examination.getTime());
+        this.start = format.format(cal.getTime());
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        this.end = format.format(cal.getTime());
+        this.backgroundColor = "#aaf";
+        this.textColor = "#000";
+        this.shift = examination.getDoctor().getShift();
+        this.patient = examination.getPatient().getId().toString();
     }
 
     public void initForCAdmin(Examination examination) {
@@ -58,6 +85,7 @@ public class CalendarEvent {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         cal.setTime(examination.getDate());
+        cal.add(Calendar.HOUR_OF_DAY, examination.getTime());
         this.start = format.format(cal.getTime());
         cal.add(Calendar.HOUR_OF_DAY, 1);
         this.end = format.format(cal.getTime());

@@ -22,4 +22,5 @@ public interface HolidayTimeOffRepository extends JpaRepository<HolidayTimeOff, 
     @Query("delete from HolidayTimeOff where id = ?1")
     int rejectRequest(Long id);
 
+    List<HolidayTimeOff> findAllByStaffId(Long id);
 }
