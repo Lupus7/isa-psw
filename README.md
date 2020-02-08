@@ -1,8 +1,9 @@
 # Pokretanje aplikacije
 
 ## Backend:
-1. Importovati team-47-project u IntelliJ IDEA Community Edition i odraditi Build
-2. Desni klik na Klasu Team47ProjectApplication.java i odabrati opciju Run
+1. Potrebno je instalirati program PostgreSQL
+2. Importovati team-47-project u IntelliJ IDEA Community Edition i odraditi Build
+3. Desni klik na Klasu Team47ProjectApplication.java i odabrati opciju Run
 
 ## Frontend:
 1. Importovati vue-frontend u Visual Studio Code
