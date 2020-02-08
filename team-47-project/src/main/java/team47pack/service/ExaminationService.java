@@ -41,6 +41,11 @@ public class ExaminationService {
 	private ClinicRepo clinicRepo;
 
 	@Autowired
+	private OperationRepo operationRepo;
+	@Autowired
+	private OperationTypeRepo operationTypeRepo;
+
+	@Autowired
 	private ClinicService clinicService;
 
 	@Autowired
@@ -134,17 +139,53 @@ public class ExaminationService {
 			if (examinInfo.getDate().toString().equals("") && !examinInfo.getProcedure().equals("")) {
 				if (examinInfo.getProcedure().equals("Examination") && examinInfo.getIdType().equals(""))
 					return false;
-				else if (examinInfo.getProcedure().equals("Operation") && !examinInfo.getIdType().equals(""))
+				else if (examinInfo.getProcedure().equals("Operation") && examinInfo.getIdType().equals(""))
 					return false;
 			} else if (!examinInfo.getDate().toString().equals("") && examinInfo.getProcedure().equals(""))
 				return false;
 			else if (!examinInfo.getDate().toString().equals("") && !examinInfo.getProcedure().equals("")
 					&& pat.isPresent() && examinInfo.getPickedtime() >= 6 && examinInfo.getPickedtime() <=21) {
-				addNextProcedure(examinInfo.getDate(), examinInfo.getProcedure(), examinInfo.getIdType(), pat, doctor,examinInfo.getPickedtime());
+				if (examinInfo.getProcedure().equals("Examination"))
+					addNextProcedure(examinInfo.getDate(), examinInfo.getProcedure(), examinInfo.getIdType(), pat, doctor,examinInfo.getPickedtime());
+				else
+					addNextOperation(examinInfo, pat.get(), doc.get());
 			}
 		}
 
 		return true;
+	}
+
+	// @author: Lupus7 (Sinisa Canak)
+	public void addNextOperation(ExaminInfo examinInfo, Patient pat, Doctor doctor) {
+		Date dateT = new Date();
+
+		if (dateT.compareTo(examinInfo.getDate()) <= 0) {
+			Optional<OperationType> opt = operationTypeRepo.findById(Long.parseLong(examinInfo.getIdType()));
+			if (opt.isPresent()) {
+				Operation op = new Operation(opt.get(), examinInfo.getDate(), pat, null, examinInfo.getPickedtime());
+				Operation savedOp = operationRepo.save(op);
+
+				if (savedOp == null)
+					return;
+
+				Optional<Clinic> clinic = clinicRepo.findById(doctor.getClinicId());
+				if (clinic.isPresent()) {
+
+					List<ClinicAdmin> admins = (List<ClinicAdmin>) clinic.get().getClinicAdmins();
+
+					DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+					String dateE = formatter.format(examinInfo.getDate());
+					String body = "Dear Sir/Madam \n \nYou have new " + examinInfo.getProcedure() + " request made by doctor:  "
+							+ doctor.getFirstName() + " " + doctor.getLastName() + "!\n" + "Select a room for this "
+							+ examinInfo.getProcedure() + " until " + dateE
+							+ " or system will automatically assign room for this request! \n \n All the best!";
+
+					for (ClinicAdmin ca : admins)
+						emailService.sendSimpleMessage("mail@gmail.com", "New " + examinInfo.getProcedure() + "!", body);
+
+				}
+			}
+		}
 	}
 
 	// @------author: Jokara
