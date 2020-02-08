@@ -38,11 +38,13 @@ public class Examination extends Procedure {
 
 	public Examination(String type, Date date, Patient patient, Doctor doc, Boolean approved) throws ParseException {
 		this.type = type;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
-		this.date = sdf.parse(date.toString());
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(date);
 		this.time = calendar.get(Calendar.HOUR_OF_DAY);
+		this.date = date;
+		this.date.setHours(0);
+		this.date.setMinutes(0);
+		this.date.setSeconds(0);
 		this.patient = patient;
 		this.doctor = doc;
 		this.approved = approved;
@@ -52,11 +54,13 @@ public class Examination extends Procedure {
 
 	public Examination(String type, Date date, Patient patient, Doctor doc, Boolean approved, ExaminationType et) throws ParseException {
 		this.type = type;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
-		this.date = sdf.parse(date.toString());
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(date);
 		this.time = calendar.get(Calendar.HOUR_OF_DAY);
+		this.date = date;
+		this.date.setHours(0);
+		this.date.setMinutes(0);
+		this.date.setSeconds(0);
 		this.patient = patient;
 		this.doctor = doc;
 		this.approved = approved;
