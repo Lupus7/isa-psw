@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import team47pack.models.Clinic;
 import team47pack.models.ClinicAdmin;
@@ -69,10 +70,11 @@ public class NextExaminationService {
 		return page.getContent();
 	}
 
-	//@Transactional
+	//@Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public boolean arrangeExamination(String json, String email) throws JSONException, ParseException {
+				
 		JSONObject obj = new JSONObject(json);
-
+		
 		ClinicAdmin ca = caRepo.findByEmail(email);
 		if (ca == null)
 			return false;
@@ -95,10 +97,10 @@ public class NextExaminationService {
 		Date dateConv = new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("date"));
 
 		Optional<NextProcedure> nextP = nextProcedureRepo.findById(idNextProcedure);
-		if (!nextP.isPresent() && nextP.get().isArranged())
+		if (!nextP.isPresent() || nextP.get().isArranged())
 			return false;
 		Optional<Room> room = roomRepo.findById(idRoom);
-		if (!room.isPresent() && room.get().getType().equals("Operation"))
+		if (!room.isPresent() || room.get().getType().equals("Operation"))
 			return false;
 
 		Date dateT = new Date();
@@ -119,7 +121,7 @@ public class NextExaminationService {
 				doctor = d.get();
 		}
 
-		if (doctor.getOnVacation())
+		if (doctor.getOnVacation(dateConv))
 			return false;
 
 		///////////////////////////////////////////// provera za shift
