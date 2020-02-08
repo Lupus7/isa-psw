@@ -2,6 +2,7 @@ package team47pack.models;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -17,12 +18,12 @@ public class PrescriptionVerification {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "verification_id_seq")
     protected Long id;
     
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnore
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="patient_id",referencedColumnName = "id")
     protected Patient patient;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnore
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="doctor_id",referencedColumnName = "id")
     protected Doctor doctor;
