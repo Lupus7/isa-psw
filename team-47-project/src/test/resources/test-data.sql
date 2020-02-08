@@ -20,7 +20,7 @@ insert into clinic_admin (id,clinic) values (14, 1);
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
             values(true,'test','test','doctor2',true,'Zivko','Zivkovic','2019-11-18 20:56:47.814768','$2a$10$2ArNPfLsmoNZ3x9QeUKIQuawAL/7MJQjtq/8OJUZL8s45iXWDtcJG','test','test','doctor2',12);
-insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end,shift) values (12,false,1,'06.03.2020','15.03.2020',1);
+insert into medical_staff (id,on_vacation,clinic_id,holiday_begin,holiday_end,shift) values (12,false,1,null,null,1);
 insert into doctor (id,specialization) values (12,'Stomatologist');
 
 insert into users (is_accepted, address, city, email, enabled, first_name, last_name, last_password_reset_date, password, state, telephone, unique_num, id)
@@ -62,6 +62,7 @@ insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doct
 
 --next procedure
 insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (1,'Examination',1,'05.03.2020',12,1,1,true,6);
-insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,arranged,pickedtime,patient) values (2,'Examination',1,'05.03.2020',12,1,false,6,1);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,arranged,pickedtime,patient_id) values (2,'Examination',1,'05.03.2020',12,1,false,6,null);
+insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,arranged,pickedtime,patient_id) values (3,'Examination',1,'05.03.2020',12,1,false,6,null);
 
 insert into roomarrange(id,room,date,time,taken,next_examination,clinic) values (1,1,'05.03.2020',15,true,1,1);

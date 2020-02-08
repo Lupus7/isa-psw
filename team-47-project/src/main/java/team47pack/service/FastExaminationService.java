@@ -128,7 +128,7 @@ public class FastExaminationService {
 	}
 
 	public NextProcedure getOne(Long id){
-		return nextProcedureRepo.getOne(id);
+		return nextProcedureRepo.findById(id).get();
 	}
 
 	public List<FastExamDto> getFastExaminations(String email) {
@@ -172,7 +172,11 @@ public class FastExaminationService {
 			return;
 		}
 		Patient patient = patientRepo.findByEmail(name);
+		if(patient == null){
+			return;
+		}
 		next.get().setPatient(patient);
+		System.out.println(next.get().getPatient().getUsername());
 		nextProcedureRepo.save(next.get());
 	}
 
