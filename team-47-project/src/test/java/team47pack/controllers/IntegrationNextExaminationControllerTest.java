@@ -1,8 +1,5 @@
 package team47pack.controllers;
 
-import java.text.ParseException;
-import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -12,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import team47pack.models.NextProcedure;
 import team47pack.service.NextExaminationService;
+
+import java.text.ParseException;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -50,7 +50,7 @@ public class IntegrationNextExaminationControllerTest {
 	}
 
 	// 3.18 Appoinment Already Taken Arrange NextExamination
-	@Test
+	@Test(expected = NoSuchElementException.class)
 	public void testAppoinmentAlreadyTakenArrangeNextExamiantion() throws JSONException, ParseException {
 
 		JSONObject obj = new JSONObject();
@@ -66,7 +66,7 @@ public class IntegrationNextExaminationControllerTest {
 	}
 
 	// 3.18 Wrong Doctor Shift
-	@Test
+	@Test(expected = NoSuchElementException.class)
 	public void testWrongDoctorShiftNextExamiantion() throws JSONException, ParseException {
 
 		JSONObject obj = new JSONObject();

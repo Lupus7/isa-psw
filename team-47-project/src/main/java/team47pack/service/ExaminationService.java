@@ -214,7 +214,7 @@ public class ExaminationService {
 			return false;
 		}
         List<ExaminationType> ex = examinationTypeService.findByClinicID(c.getId());
-        ExaminationType temp = new ExaminationType();
+        ExaminationType temp = null;
 		for(ExaminationType e: ex){
 		    if(e.getSpecialization().equals(doc.getSpecialization()) ){
 				temp = e;
