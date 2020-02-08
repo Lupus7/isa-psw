@@ -50,7 +50,7 @@ public class IntegrationNextExaminationControllerTest {
 	}
 
 	// 3.18 Appoinment Already Taken Arrange NextExamination
-	@Test(expected = NoSuchElementException.class)
+	@Test()
 	public void testAppoinmentAlreadyTakenArrangeNextExamiantion() throws JSONException, ParseException {
 
 		JSONObject obj = new JSONObject();
@@ -66,7 +66,7 @@ public class IntegrationNextExaminationControllerTest {
 	}
 
 	// 3.18 Wrong Doctor Shift
-	@Test(expected = NoSuchElementException.class)
+	@Test()
 	public void testWrongDoctorShiftNextExamiantion() throws JSONException, ParseException {
 
 		JSONObject obj = new JSONObject();
