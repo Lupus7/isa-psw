@@ -1,10 +1,10 @@
-Pokretanje aplikacije
+# Pokretanje aplikacije
 
-Backend:
+## Backend:
 1. Importovati team-47-project u IntelliJ IDEA Community Edition i odraditi Build
 2. Desni klik na Klasu Team47ProjectApplication.java i odabrati opciju Run
 
-Frontend:
+## Frontend:
 1. Importovati vue-frontend u Visual Studio Code
 2. Potrebno je otvoriti terminal klikom na dugme Terminal, pa izabrati opciju New Terminal
 3. ukucati naredbu 'npm install' da se instaliraju node modules (potrebno je imati instaliran Node.js)
