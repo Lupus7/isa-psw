@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +69,10 @@ public class NextExaminationService {
 		return page.getContent();
 	}
 
-	public boolean arrangeExamination(JSONObject obj, String email) throws JSONException, ParseException {
+	//@Transactional
+	public boolean arrangeExamination(String json, String email) throws JSONException, ParseException {
+		JSONObject obj = new JSONObject(json);
+
 		ClinicAdmin ca = caRepo.findByEmail(email);
 		if (ca == null)
 			return false;
