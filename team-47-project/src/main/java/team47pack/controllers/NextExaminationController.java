@@ -47,14 +47,8 @@ public class NextExaminationController {
     @PostMapping(value = "/ca/arrangeExamination")
 	@PreAuthorize("hasRole('CADMIN')")
 	public ResponseEntity<String> arrangeExamination(@RequestBody String json, Principal user) throws JSONException, ParseException {
-		JSONObject obj = new JSONObject(json);
-		if (obj == null)
-			return ResponseEntity.status(400).body("Could not accept!");
 
-		if (obj.equals(""))
-			return ResponseEntity.status(400).body("Could not accept!");
-
-		if (!nextExamService.arrangeExamination(obj, user.getName()))
+		if (!nextExamService.arrangeExamination(json, user.getName()))
 			return ResponseEntity.status(400).body("Unsuccessful!!");
 
 		return ResponseEntity.ok("Room was successfuly arranged for examination!");

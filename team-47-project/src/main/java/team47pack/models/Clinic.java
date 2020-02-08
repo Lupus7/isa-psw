@@ -63,6 +63,11 @@ public class Clinic {
 
     public Clinic() {
     }
+    
+    public Clinic(String name) {
+    	this.name = name;
+    }
+
 
     public Clinic(ClinicRegister reg) {
         this.name = reg.getName();

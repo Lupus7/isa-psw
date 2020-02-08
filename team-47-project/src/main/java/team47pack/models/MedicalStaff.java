@@ -1,6 +1,8 @@
 package team47pack.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,6 +37,26 @@ public class MedicalStaff extends User {
 
 	public Boolean getOnVacation() {
 		return onVacation;
+	}
+	
+	public Boolean getOnVacation(Date t) {
+		if(holidayEnd == null || holidayBegin == null)
+			return false;
+		List<Date> dates = new ArrayList<>();
+		long interval = 24 * 1000 * 60 * 60;
+		long endTime = holidayEnd.getTime();
+		long curTime = holidayBegin.getTime();
+		while (curTime <= endTime) {
+			dates.add(new Date(curTime));
+			curTime += interval;
+		}
+		
+		for(Date d :dates) {
+			if(d.equals(t))
+				return true;
+		}
+
+		return false;
 	}
 
 	public void setOnVacation(Boolean onVacation) {

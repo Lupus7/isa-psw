@@ -42,6 +42,10 @@ public class Doctor extends MedicalStaff {
 	public Doctor() {
 
 	}
+	
+	public Doctor(String s) {
+		this.specialization = s;
+	}
 
 	public String getSpecialization() {
 		return specialization;

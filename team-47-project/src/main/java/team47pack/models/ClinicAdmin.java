@@ -33,6 +33,12 @@ public class ClinicAdmin extends User{
 	public ClinicAdmin() {
 
 	}
+	
+	public ClinicAdmin(String firstName,String lastName, String email) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}
 
 	public ClinicAdmin(RegisterRequest req, int i) {
 		this.firstName = req.getFirstName();
