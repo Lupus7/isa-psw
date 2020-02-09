@@ -18,7 +18,8 @@ public interface OperationRepo extends JpaRepository<Operation, Long> {
 
     List<Operation> findAllByApproved(boolean b);
 
+	List<Operation> findByDateAndApproved(Date d, boolean b);
+
     List<Operation> findAllByPatientId(Long id);
 
-	List<Operation> findByDateAndApproved(Date d, boolean b);
 }
