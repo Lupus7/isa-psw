@@ -146,6 +146,15 @@ public class PatientController {
 		return patientService.getMedFile(id,user.getName());
 	}
 
+	@PostMapping(value = "patient/saveMedFile/{id}")
+	@PreAuthorize("hasRole('NURSE') or hasRole('DOCTOR') ")
+	public ResponseEntity<String> saveMedFile(@PathVariable(value = "id") String id, @RequestBody List<MedicalFileViewDTO> mf, Principal user) {
+		if (patientService.saveMedFile(id,mf,user.getName()))
+			return ResponseEntity.ok().body("Successful");
+		else
+			return ResponseEntity.badRequest().body("Invalid data!");
+	}
+
 	@PostMapping(value="patient/requests/{id}/{spec}")
 	@PreAuthorize("hasRole('PATIENT')")
 	public ResponseEntity<String> sendRequest(@PathVariable(value = "id") Long id, @PathVariable(value = "spec")String spec,Principal user) throws ParseException {
