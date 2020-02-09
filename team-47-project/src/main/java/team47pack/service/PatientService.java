@@ -285,4 +285,12 @@ public class PatientService {
 	public void save(Patient ca) {
 		patientRepository.save(ca);
 	}
+
+	public Patient getPatientbyID(Long idP) {
+		Optional<Patient> p = patientRepository.findById(idP);
+		if (!p.isPresent())
+			return null;
+
+		return p.get();
+	}
 }
