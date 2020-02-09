@@ -42,6 +42,12 @@ public class LoginService {
         BCryptPasswordEncoder enc = new BCryptPasswordEncoder();
         String hash = enc.encode(p.getPassword());
         p.setPassword(hash);
+        List<Authority> authorities = new ArrayList<>();
+        authorities.add(authorityRepository.findByName("ROLE_PATIENT"));
+        authorities.add(authorityRepository.findByName("ROLE_USER"));
+
+        p.setAuthorities(authorities);
+
         userRepo.save(p);
 
         return true;
