@@ -36,12 +36,14 @@
                 <tr>
                     <th>Med. ID</th>
                     <th>Name</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(row, index) in prescs" :key="index">
                     <td>{{row.id}}</td>
                     <td>{{row.name}}</td>
+                    <td style="text-align: right;"> <button  class="btn btn-outline-danger" v-on:click="removePres(row.id)">Remove</button> </td>
                 </tr>
             </tbody>
         </table>
@@ -203,13 +205,19 @@ export default {
             try{
                 this.presSel.forEach(pres => {
                     if (pres.id == this.selPres) {
-                        this.prescs.push(pres)
-                        throw BreakException
+                        let filtered=this.prescs.filter(item=>item.id==pres.id)
+                        if(filtered.length===0){
+                            this.prescs.push(pres)
+                            throw BreakException
+                        }
                     }
                 })
             } catch(e) {
                 return
             }
+        },
+        removePres(id) {
+            this.prescs=this.prescs.filter(item=>item.id!==id)
         },
         confirm() {
             let reqData = { 
