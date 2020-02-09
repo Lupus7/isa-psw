@@ -38,7 +38,7 @@
                                     </div>
 
                                     <div class="middle">
-                                        <button type="button" class="btn btn-block " @click="examRequest" style=" border-radius: 6px;  color: white; padding:10px; margin-top: 15px; background:indigo "  >Examination requests </button>
+                                        <button type="button" id="examButtoon" class="btn btn-block " @click="examRequest" style=" border-radius: 6px;  color: white; padding:10px; margin-top: 15px; background:indigo "  >Examination requests </button>
                                     </div>
                                    
                                 </div>

@@ -17,11 +17,13 @@ import org.springframework.stereotype.Service;
 
 import team47pack.models.ClinicAdmin;
 import team47pack.models.Examination;
+import team47pack.models.Operation;
 import team47pack.models.Procedure;
 import team47pack.models.dto.DayReportDTO;
 import team47pack.models.dto.MonthDTO;
 import team47pack.models.dto.WeekDTO;
 import team47pack.repository.ClinicAdminRepo;
+import team47pack.repository.OperationRepo;
 import team47pack.repository.ProcedureRepo;
 
 @Service
@@ -32,6 +34,9 @@ public class ReportService {
 
 	@Autowired
 	ProcedureRepo procedureRepo;
+
+	@Autowired
+	OperationRepo operatioRepo;
 
 	public List<DayReportDTO> dayReport(JSONObject obj, String name) throws JSONException, ParseException {
 
@@ -65,18 +70,33 @@ public class ReportService {
 
 		for (Date d : dates) {
 			List<Procedure> procedures = procedureRepo.findByDate(d);
+			List<Operation> operations = operatioRepo.findByDateAndApproved(d, true);
+
 			List<Procedure> real = new ArrayList<>();
+			List<Operation> realO = new ArrayList<>();
+
 			for (Procedure p : procedures) {
 				if (p.getRoom().getClinicId() == ca.getClinic()) {
 					real.add(p);
 				}
 			}
+
+			for (Operation o : operations) {
+				if (o.getRoom().getClinicId() == ca.getClinic()) {
+					realO.add(o);
+				}
+			}
+
 			DayReportDTO dto = new DayReportDTO();
 			dto.setDate(d);
-			if (real.isEmpty()) {
+			if (real.isEmpty() && realO.isEmpty()) {
 				dto.setProcedures(0);
-			} else {
+			} else if (!real.isEmpty() && realO.isEmpty()) {
 				dto.setProcedures(real.size());
+			} else if (real.isEmpty() && !realO.isEmpty()) {
+				dto.setProcedures(realO.size());
+			} else if (!real.isEmpty() && !realO.isEmpty()) {
+				dto.setProcedures(real.size() + realO.size());
 			}
 			dtos.add(dto);
 		}
@@ -138,7 +158,13 @@ public class ReportService {
 			List<Procedure> real = new ArrayList<>();
 			for (Procedure p : procedures) {
 				if (p.getRoom().getClinicId() == ca.getClinic()) {
-					real.add(p);
+					if (p.getType().equals("Operation")) {
+						Operation o = (Operation) p;
+						if (o.getApproved()) {
+							real.add(p);
+						}
+					} else
+						real.add(p);
 				}
 			}
 			weekP1 += real.size();
@@ -154,7 +180,13 @@ public class ReportService {
 			List<Procedure> real = new ArrayList<>();
 			for (Procedure p : procedures) {
 				if (p.getRoom().getClinicId() == ca.getClinic()) {
-					real.add(p);
+					if (p.getType().equals("Operation")) {
+						Operation o = (Operation) p;
+						if (o.getApproved()) {
+							real.add(p);
+						}
+					} else
+						real.add(p);
 				}
 			}
 			weekP2 += real.size();
@@ -186,7 +218,13 @@ public class ReportService {
 			List<Procedure> real = new ArrayList<>();
 			for (Procedure p : procedures) {
 				if (p.getRoom().getClinicId() == ca.getClinic()) {
-					real.add(p);
+					if (p.getType().equals("Operation")) {
+						Operation o = (Operation) p;
+						if (o.getApproved()) {
+							real.add(p);
+						}
+					} else
+						real.add(p);
 				}
 			}
 			weekP4 += real.size();
@@ -202,7 +240,13 @@ public class ReportService {
 			List<Procedure> real = new ArrayList<>();
 			for (Procedure p : procedures) {
 				if (p.getRoom().getClinicId() == ca.getClinic()) {
-					real.add(p);
+					if (p.getType().equals("Operation")) {
+						Operation o = (Operation) p;
+						if (o.getApproved()) {
+							real.add(p);
+						}
+					} else
+						real.add(p);
 				}
 			}
 			weekP5 += real.size();
@@ -263,7 +307,13 @@ public class ReportService {
 				List<Procedure> real = new ArrayList<>();
 				for (Procedure p : procedures) {
 					if (p.getRoom().getClinicId() == ca.getClinic()) {
-						real.add(p);
+						if (p.getType().equals("Operation")) {
+							Operation o = (Operation) p;
+							if (o.getApproved()) {
+								real.add(p);
+							}
+						} else
+							real.add(p);
 					}
 				}
 				ukupno += real.size();
@@ -325,6 +375,7 @@ public class ReportService {
 
 		for (Date d : dates) {
 			List<Procedure> procedures = procedureRepo.findByDate(d);
+
 			List<Procedure> real = new ArrayList<>();
 			for (Procedure p : procedures) {
 				if (p.getRoom().getClinicId() == ca.getClinic()) {
@@ -342,10 +393,13 @@ public class ReportService {
 					if (p.getType().equals("Examination")) {
 						Examination e = (Examination) p;
 						ukupno += e.getExaminationtype().getPrice();
-					} // else if(p.getType().equals("Operation")) {
-						// Operation o = (Operation) p;
-						// ukupno += // o.getOperationType().getPrice();
-						// }
+					} else if (p.getType().equals("Operation")) {
+						Operation o = (Operation) p;
+						if (o.getApproved()) {
+							ukupno += o.getOperationtype().getPrice();
+						}
+
+					}
 				}
 				dto.setProcedures(ukupno);
 			}

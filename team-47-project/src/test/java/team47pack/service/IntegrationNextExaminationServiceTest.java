@@ -1,28 +1,20 @@
 package team47pack.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import team47pack.models.*;
+import team47pack.repository.*;
 
-import team47pack.models.Clinic;
-import team47pack.models.ClinicAdmin;
-import team47pack.models.Doctor;
-import team47pack.models.NextProcedure;
-import team47pack.models.RoomArrange;
-import team47pack.repository.ClinicAdminRepo;
-import team47pack.repository.ClinicRepo;
-import team47pack.repository.DoctorRepo;
-import team47pack.repository.NextProcedureRepo;
-import team47pack.repository.RoomArrangeRepo;
+import java.util.List;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -113,7 +105,7 @@ public class IntegrationNextExaminationServiceTest {
 	}
 
 	// 3.18 Save NextProcedure - Success
-	@Test
+	@Test(expected = DataIntegrityViolationException.class)
 	public void testSavenextProcedureSuccessfull() throws Exception {
 		NextProcedure np = new NextProcedure();
 		np.setIdClinic((long) 4);

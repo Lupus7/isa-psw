@@ -1,12 +1,12 @@
 package team47pack.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import team47pack.models.NextProcedure;
-import team47pack.models.Operation;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import team47pack.models.Operation;
 
 public interface OperationRepo extends JpaRepository<Operation, Long> {
     Optional<Operation> findById(Long id);
@@ -17,6 +17,5 @@ public interface OperationRepo extends JpaRepository<Operation, Long> {
     Operation findByDateAndTimeAndApproved(Date dateConv, int time, boolean b);
 
     List<Operation> findAllByApproved(boolean b);
-
     List<Operation> findAllByPatientId(Long id);
 }

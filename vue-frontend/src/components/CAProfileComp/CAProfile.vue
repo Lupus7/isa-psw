@@ -37,7 +37,7 @@
                                     </div>
 
                                     <div class="middle">                                     
-                                        <button type="button" class="btn btn-block " @click="clinic" style=" border-radius: 6px;  color: white; padding:8px; background:#3964eb; margin-bottom: 15px;" >Clinic Profile </button> 
+                                        <button type="button" class="btn btn-block " id="clinicButtoon" @click="clinic" style=" border-radius: 6px;  color: white; padding:8px; background:#3964eb; margin-bottom: 15px;" >Clinic Profile </button> 
                                     </div>
 
                                     <div class="middle">                                     

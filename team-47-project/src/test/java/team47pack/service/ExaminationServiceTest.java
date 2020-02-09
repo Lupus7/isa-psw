@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -106,20 +105,4 @@ public class ExaminationServiceTest {
 
         assertThat(reserved).isEqualTo(false);
     }
-
-    @Test(expected = DataIntegrityViolationException.class)
-    @Transactional
-    @Rollback
-    public void testSendRequestWithinvalidClinicBeingNull() throws JSONException,ParseException{
-        JSONObject obj = new JSONObject();
-        obj.put("date", "2011-11-02T02:50:12.208Z");
-        obj.put("doctor", "doctor3");
-        String name = "test1";
-        Boolean reserved = false;
-
-        reserved = examinationService.sendRequest(obj, name);
-
-        assertThat(reserved).isEqualTo(false);
-    }
-
 }
