@@ -45,6 +45,10 @@
                                     </div>
 
                                     <div class="middle">                                     
+                                        <button type="button" class="btn btn-block  " @click="operTypes" style=" border-radius: 6px;  color: white; padding:8px; margin-top: 15px; background:navy " >Operation Types </button> 
+                                    </div>
+
+                                    <div class="middle">                                     
                                         <button type="button" class="btn btn-block " @click="fastExamination" style=" border-radius: 6px;  color: white; padding:8px; margin-top: 15px; background:teal " >Add Fast Examination </button> 
                                     </div>
 
@@ -177,6 +181,10 @@ export default {
         exmnTypes(e){
             e.preventDefault()
             this.$router.push("/examinTypes");
+        },
+        operTypes(e){
+            e.preventDefault()
+            this.$router.push("/operationTypes");
         },
         fastExamination(e){
             e.preventDefault()

@@ -41,7 +41,7 @@ export default {
         verify(id) {
             axios
                 .post(`/nurse/prescription/${id}`, {}, { crossdomain: true })
-                .then(this.getPrescriptions())
+                .then(this.prescriptions=this.prescriptions.filter(item=>item.id!=id))
         }
     },
     created() {

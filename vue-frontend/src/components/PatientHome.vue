@@ -30,7 +30,7 @@ export default {
 
     methods:{
         getClinics(){
-            axios.get('http://localhost:8080/patient/getAllClinics').then(response => { this.clinics = response.data;}).catch(error=>{console.log(error)})
+            axios.get('/patient/getAllClinics').then(response => { this.clinics = response.data;}).catch(error=>{console.log(error)})
         },
     
         sortTable(n){
@@ -107,7 +107,7 @@ export default {
         },
 
       getExamination(){
-        axios.get('http://localhost:8080/patient/getAllExaminations').then(response => { 
+        axios.get('/patient/getAllExaminations').then(response => { 
           this.examinations = response.data;
             for(var i=0;i<this.examinations.length;i++){
               let c=this.examinations[i]
@@ -120,7 +120,7 @@ export default {
           }).catch(error=>{console.log("ne mere" + error)})
       },
       getMedicalFiles(){
-        axios.get('http://localhost:8080/patient/getMedicalFile').then(response=>{
+        axios.get('/patient/getMedicalFile').then(response=>{
           //this.medicalFile = zip(response.data.bolesti,response.data.opisiBolesti);
 
        
@@ -156,7 +156,7 @@ export default {
       //let date = document.getElementById("doctordate").value
       //console.log(name+" "+surname + specialization + date)
       axios
-      .post("http://localhost:8080/doctor/searchDoctor",{
+      .post("/doctor/searchDoctor",{
         "name":name,
         "surname":surname,
         "specialization":specialization,
@@ -181,7 +181,7 @@ export default {
       console.log(rate)
       console.log(examination + location+" " + date)
       axios 
-      .post("http://localhost:8080/clinic/search",{
+      .post("/clinic/search",{
         "location" : location,
         "examination":examination,
         "date":date,
@@ -204,7 +204,7 @@ export default {
 
     seeAvailableDoctors(id){
       console.log(id)
-      let url = 'http://localhost:8080/clinic/'+ id +'/getAvailableDoctors'
+      let url = '/clinic/'+ id +'/getAvailableDoctors'
       console.log(url)
       axios
       .get(url).then(response=>{

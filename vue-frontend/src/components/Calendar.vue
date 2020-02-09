@@ -108,7 +108,7 @@ export default {
                 console.log(this.doctor)
                 axios
                 .post("/patient/requestExam",{
-                    "date":e.event.start,
+                    "date": e.event.end,
                     "doctor":this.doctor,
                 })
                 .then(response=>{
@@ -120,7 +120,10 @@ export default {
                 })
             }
             else if (role === "ROLE_DOCTOR") {
-                this.$router.push('/examination/' + e.event.extendedProps.patient);
+                if (e.event.backgroundColor === "#aaf")
+                    this.$router.push('/examination/' + e.event.extendedProps.patient);
+                else
+                    this.$router.push('/operation/' + e.event.extendedProps.patient);
             }
         }
     },
