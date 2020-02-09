@@ -222,8 +222,12 @@ public class ExaminationService {
 						+ procedure + " until " + dateE
 						+ " or system will automatically assign room for this request! \n \n All the best!";
 
-				for (ClinicAdmin ca : admins)
-					emailService.sendSimpleMessage("mail@gmail.com", "New " + procedure + "!", body);
+				for (ClinicAdmin ca : admins) {
+					try {
+						emailService.sendSimpleMessage(ca.getEmail(), "New " + procedure + "!", body);
+					} catch (Exception e) {
+					}
+				}
 
 			}
 
