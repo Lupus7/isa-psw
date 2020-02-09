@@ -3,6 +3,7 @@ package team47pack.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import team47pack.models.Examination;
 import team47pack.models.NextProcedure;
 
 import java.util.Date;
@@ -31,4 +32,5 @@ public interface NextProcedureRepo extends JpaRepository<NextProcedure, Long> {
 
 	NextProcedure findByDateAndPickedtimeAndArranged(Date date, int time, boolean b);
 
+	List<NextProcedure> findByDoctorIdAndArranged(Long id, boolean b);
 }
