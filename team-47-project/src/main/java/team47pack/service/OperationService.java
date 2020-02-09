@@ -39,6 +39,9 @@ public class OperationService {
     @Autowired
     OperationTypeRepo operationTypeRepo;
 
+    @Autowired
+    PatientService patientService;
+
     public List<Operation> getNextOper(String email) {
         ClinicAdmin ca = caRepo.findByEmail(email);
 
@@ -166,5 +169,13 @@ public class OperationService {
         } catch (Exception e) {}
 
         return true;
+    }
+
+    public List<Operation> getByPatientId(Long id) {
+        Patient patient = patientService.getPatientbyID(id);
+        if (patient == null)
+            return new ArrayList<>();
+
+        return operationRepo.findAllByPatientId(id);
     }
 }

@@ -39,6 +39,9 @@ public class DoctorService {
 	@Autowired
 	private RateRepo rateRepo;
 
+	@Autowired
+	private OperationRepo opRepo;
+
 	public Doctor getDoctor(String email) {
 		Doctor d = doctorRepo.findByEmail(email);
 
@@ -154,9 +157,15 @@ public class DoctorService {
 	public boolean leaveRate(RateRequest rateRequest) {
 		Doctor dd = doctorRepo.getOne(rateRequest.getId());
 		Rate rate = new Rate();
-		Examination e = exRepo.getOne(rateRequest.getExamination());
-		e.setRatedDoctor(true);
-		exRepo.save(e);
+		try {
+			Examination e = exRepo.getOne(rateRequest.getExamination());
+			e.setRatedDoctor(true);
+			exRepo.save(e);
+		} catch (Exception e) {
+			Optional<Operation> o = opRepo.findById(rateRequest.getExamination());
+			o.get().setRatedDoctor(true);
+			opRepo.save(o.get());
+		}
 		rate.setValue(rateRequest.getValue());
 		rateRepo.save(rate);
 		dd.getRatings().add(rate);
