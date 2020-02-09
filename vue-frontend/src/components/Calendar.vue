@@ -214,7 +214,7 @@ export default {
                         }
 
                         this.calendarView = 'timeGridWeek'
-                        this.calendarHeader.left = 'dayGridMonth,timeGridWeek,timeGridDay'
+                        this.calendarHeader.left = 'dayGridMonth,timeGridWeek'
                         this.calendarHeader.right= 'prev,today,next'
                         this.showTimes = ['05:00', '23:00']
                         this.shift = ['06:00', '22:00']
@@ -232,7 +232,7 @@ export default {
                         this.calendarEvents = response.data
 
                         this.calendarView = 'timeGridWeek'
-                        this.calendarHeader.left = 'dayGridMonth,timeGridWeek,timeGridDay, listWeek'
+                        this.calendarHeader.left = 'dayGridMonth,timeGridWeek,listWeek'
                         this.calendarHeader.right= 'prev,today,next'
 
                         if (this.calendarEvents[0].shift === 1) {

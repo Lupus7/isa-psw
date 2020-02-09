@@ -239,11 +239,14 @@ public class PatientService {
 		if (canWatch) {
 			List<MedicalFileViewDTO> dtos = new ArrayList<>();
 			for (MedFileEntry e : mf.get().getEntries()) {
+				boolean canChange = false;
+				if (e.getDoctor().getId() == ms.getId())
+					canChange = true;
+
 				MedicalFileViewDTO dto = new MedicalFileViewDTO(e.getDate(),
 						e.getDoctor().getFirstName() + " " + e.getDoctor().getLastName(),
-						e.getDiagnosis().getName(), e.getDiagnosis().getDesc());
+						e.getDiagnosis().getName(), e.getDiagnosis().getDesc(), e.getDesc(), canChange, e.getId());
 				dtos.add(dto);
-				
 			}
 
 			return dtos;
@@ -284,5 +287,32 @@ public class PatientService {
     }
 	public void save(Patient ca) {
 		patientRepository.save(ca);
+	}
+
+	public Patient getPatientbyID(Long idP) {
+		Optional<Patient> p = patientRepository.findById(idP);
+		if (!p.isPresent())
+			return null;
+
+		return p.get();
+	}
+
+	public boolean saveMedFile(String id, List<MedicalFileViewDTO> mf, String name) {
+		Optional<Patient> p = patientRepository.findById(Long.parseLong(id));
+		if (!p.isPresent())
+			return false;
+
+		List<MedFileEntry> mfEntries = p.get().getMedicalFile().getEntries();
+
+		for (MedFileEntry mfe : mfEntries) {
+			for (MedicalFileViewDTO mfv : mf) {
+				if(mfe.getId() == mfv.getId())
+					mfe.setDesc(mfv.getDesc());
+			}
+		}
+
+		patientRepository.save(p.get());
+
+		return true;
 	}
 }

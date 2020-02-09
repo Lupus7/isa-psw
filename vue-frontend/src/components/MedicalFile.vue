@@ -7,7 +7,7 @@
 
                 <tr  class="thead-dark">
                     <th colspan="2" > <center> <h2> Medical File </h2> </center> </th> 
-                    <th colspan="2"> <center> <h3> Patient: {{patient.firstName+" "+patient.lastName}} </h3> </center> </th>                  
+                    <th colspan="3"> <center> <h3> Patient: {{patient.firstName+" "+patient.lastName}} </h3> </center> </th>                  
                 </tr>
 
                 <tr class="table-secondary">
@@ -16,6 +16,7 @@
                     <th type="link" align="justify"  style="font-size:18px" >Doctor</th>
                     <th type="link"  align="justify" style="font-size:18px" >Date</th>
                     <th type="link"  align="justify" style="font-size:18px" >Diagnosis description</th>
+                    <th type="link"  align="justify" style="font-size:18px" >Procedure description</th>
                 </tr>
                 </thead>
 
@@ -26,6 +27,9 @@
                         <td  align="justify">{{file.doctorName}}</td>
                         <td  align="justify" v-on="convertDate(file.date)">{{dateConv}}</td>
                         <td  align="justify">{{file.diagnosisDesc}}</td>
+                        <td  align="justify">
+                            <textarea class="form-control" rows="5" placeholder="Enter a description..." style="height: 38px; min-height: 38px; max-height: 124px;" v-model="file.desc"></textarea>
+                        </td>
                     </tr>       
                     </tbody>
                 </template>
@@ -37,6 +41,7 @@
         </div>
         <br>
         <div v v-if="this.medstaff==='examination'" class="modal-footer">
+            <button class="btn btn-outline-success" v-on:click="saveFile()">Save changes</button>
             <button class="btn btn-outline-primary" v-on:click="goBack()">Go back to Examination</button>
         </div>
 
@@ -90,6 +95,10 @@ export default {
         goBack(){
             this.$router.push({name:'Examination', params: {id:""+this.patient.id}});
 
+        },
+        saveFile() {
+            let url = 'patient/saveMedFile/' + this.patient.id;
+            axios.post(url, this.medFile);
         }
     },
     created(){
