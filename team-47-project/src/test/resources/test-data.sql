@@ -40,6 +40,7 @@ insert into user_authority (user_id, authority_id) values (14,6);
 
 -- clinic
 insert into clinic(id,name,address,description) values (1,'klinika1','dr.andre','lepa bas onako');
+insert into clinic(id,name,address,description) values (2,'klinika2','Novi Sad,Danila Kisa,40','lepa samo');
 
 --clinic staff
 insert into clinic_admins values(1,14);
