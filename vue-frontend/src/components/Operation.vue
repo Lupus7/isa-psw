@@ -11,41 +11,6 @@
             <label>Report:</label>
             <textarea class="form-control" rows="5" placeholder="Enter examination report..." style="max-height: 124px; resize: none;" v-model="examDesc"></textarea>
         </div>
-        <div class="form-group">
-            <label>Diagnosis:</label>
-            <select class="form-control" id="sel" v-model="selDiag">
-                <option value=0>--- Select a diagnosis ---</option>
-                <option v-for="(row, index) in diagSel" :key="index" v-bind:value=row.id>{{row.name}}</option>
-            </select>
-            <label style="margin-top: 10px" v-if="selDiag != 0">Description:</label>
-            <p v-if="selDiag != 0"><em>{{diagDesc}}</em></p>
-        </div>
-        <div class="separator"> </div>
-        <label>Prescription:</label>
-        <div class="input-group">
-            <select class="form-control" id="sel" v-model="selPres">
-                <option value=0>--- Select a prescription ---</option>
-                <option v-for="(row, index) in presSel" :key="index" v-bind:value=row.id>{{row.name}}</option>
-            </select>
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" v-on:click="addPres()">Add prescription</button>
-            </div>
-        </div>
-        <table class="table table-striped" style="margin-top: 10px" v-if="prescs.length > 0">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Med. ID</th>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(row, index) in prescs" :key="index">
-                    <td>{{row.id}}</td>
-                    <td>{{row.name}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="separator"> </div>
             <!-- TODO: NEW EXAMINATION-OPERATION FORM -->
             
             <div>
@@ -101,10 +66,6 @@
                                     </select>
                                 </div>
                             </div>
-
-
-
-
                             <br>
                             <div class="modal-footer" style=" border-top: 2px dashed #5f5f5f;" >
                             </div>      
@@ -131,14 +92,7 @@ export default {
     data() {
         return {
             doctorArr: [],
-            selDiag: 0,
-            selPres: 0,
-            diagDesc: "",
             patient: null,
-            diagSel: [],
-            presSel: [],
-            prescs: [],
-            diag: null,
             examDesc: "",
 
             procedure :"",
@@ -161,11 +115,9 @@ export default {
         getExamTypes(){
             axios.get('/ca/getNextExmType').then(response => { this.examTypes = response.data; })
         },
-
         getOperTypes(){
             axios.get('/ca/getOperTypes').then(response => { this.operTypes = response.data; })
         },
-
         getPatiendData() {
             axios
                 .get('/patient/' + this.id)
@@ -173,8 +125,6 @@ export default {
                     this.patient = response.data;
                 })
         },
-
-        
         getDoctorData() {
             axios
                 .get('/doctor/getInfo')
@@ -183,40 +133,12 @@ export default {
                     this.setTime(this.doctorArr.shift);
                 })
         },
-        
-        getCodebookData() {
-            axios
-                .get('/codebook/diagnosis')
-                .then(response => { 
-                    this.diagSel = response.data;
-                })
-
-            axios
-                .get('/codebook/prescription')
-                .then(response => { 
-                    this.presSel = response.data;
-                })
-        },
-        addPres() {
-            let BreakException = {};
-
-            try{
-                this.presSel.forEach(pres => {
-                    if (pres.id == this.selPres) {
-                        this.prescs.push(pres)
-                        throw BreakException
-                    }
-                })
-            } catch(e) {
-                return
-            }
-        },
         confirm() {
             let reqData = { 
                 patientId: this.patient.id,
                 desc: this.examDesc,
-                diag: this.diag,
-                prescs: this.prescs,
+                diag: {id: 0, name: "OPERATION", desc:"", date: this.date},
+                prescs: [],
                 procedure: this.procedure,
                 date: this.date,
                 idType: this.type.id,
@@ -291,7 +213,6 @@ export default {
         },
         seeMedicalFile(){
             this.$router.push({name:'MedicalFile', params: {medstaff:"examination",patient:this.patient}});
-
         }
        
     },
@@ -300,30 +221,9 @@ export default {
     created() {
         this.getDoctorData();
         this.getPatiendData();
-        this.getCodebookData();
         this.getExamTypes();
         this.getOperTypes();
 
-    },
-    watch: {
-        selDiag: {
-            handler(val) {
-                let BreakException = {};
-
-                try{
-                    this.diagSel.forEach(diag => {
-                        if (diag.id == val) {
-                            this.diagDesc = diag.description
-                            this.diag = diag
-                            throw BreakException
-                        }
-                    })
-                } catch(e) {
-                    return
-                }
-            },
-            deep: true
-        }
     }
 }
 </script>

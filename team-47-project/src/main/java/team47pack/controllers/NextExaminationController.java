@@ -43,7 +43,14 @@ public class NextExaminationController {
         return doctorService.getClinicDoctors(spec,user.getName());
  
     }
-    
+
+    @GetMapping(value="/ca/getClinicDoctorsOp")
+    @PreAuthorize("hasRole('CADMIN')")
+    public List<Doctor> getClinicDoctors(Principal user){
+        return doctorService.getClinicDoctors(user.getName());
+
+    }
+
     @PostMapping(value = "/ca/arrangeExamination")
 	@PreAuthorize("hasRole('CADMIN')")
 	public ResponseEntity<String> arrangeExamination(@RequestBody String json, Principal user) throws JSONException, ParseException {

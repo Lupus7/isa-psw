@@ -25,6 +25,8 @@ public class CalendarEvent {
         initForPatient(examination);
     }
 
+    public CalendarEvent(Operation operation) { initForPatient(operation); }
+
     public CalendarEvent(Examination examination, String type) {
         if (type.contentEquals("CADMIN_ROOM"))
             initForCAdmin(examination);
@@ -32,6 +34,15 @@ public class CalendarEvent {
             initForStaff(examination);
         else
             initForPatient(examination);
+    }
+
+    public CalendarEvent(Operation operation, String type) {
+        if (type.contentEquals("CADMIN_ROOM"))
+            initForCAdmin(operation);
+        else if (type.contentEquals("FOR_STAFF"))
+            initForStaff(operation);
+        else
+            initForPatient(operation);
     }
 
     public CalendarEvent(HolidayTimeOff holidayTimeOff) {
@@ -60,6 +71,20 @@ public class CalendarEvent {
         this.shift = examination.getDoctor().getShift();
     }
 
+    private void initForPatient(Operation operation) {
+        this.title = "";
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        cal.setTime(operation.getDate());
+        cal.add(Calendar.HOUR_OF_DAY, operation.getTime());
+        this.start = format.format(cal.getTime());
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        this.end = format.format(cal.getTime());
+        this.backgroundColor = "#faa";
+        this.textColor = "#000";
+        this.shift = operation.getDoctors().get(0).getShift();
+    }
+
     private void initForStaff(Examination examination) {
         this.title = examination.getPatient().getFirstName() + " " + examination.getPatient().getLastName();
         Calendar cal = Calendar.getInstance();
@@ -73,6 +98,21 @@ public class CalendarEvent {
         this.textColor = "#000";
         this.shift = examination.getDoctor().getShift();
         this.patient = examination.getPatient().getId().toString();
+    }
+
+    private void initForStaff(Operation operation) {
+        this.title = operation.getPatient().getFirstName() + " " + operation.getPatient().getLastName();
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        cal.setTime(operation.getDate());
+        cal.add(Calendar.HOUR_OF_DAY, operation.getTime());
+        this.start = format.format(cal.getTime());
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        this.end = format.format(cal.getTime());
+        this.backgroundColor = "#faa";
+        this.textColor = "#000";
+        this.shift = operation.getDoctors().get(0).getShift();
+        this.patient = operation.getPatient().getId().toString();
     }
 
     public void initForCAdmin(Examination examination) {
@@ -92,6 +132,25 @@ public class CalendarEvent {
         this.backgroundColor = "#aaf";
         this.textColor = "#000";
         this.shift = examination.getDoctor().getShift();
+    }
+
+    public void initForCAdmin(Operation operation) {
+        Doctor doctor = operation.getDoctors().get(0);
+        Patient patient = operation.getPatient();
+        Room room = operation.getRoom();
+        this.title = "Doctor " + doctor.getFirstName() + " " + doctor.getLastName() +
+                " has operation appointed for " + patient.getFirstName() + " " + patient.getLastName() +
+                " in room number: " + room.getNumber() + ", \"" + room.getName() + "\".";
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        cal.setTime(operation.getDate());
+        cal.add(Calendar.HOUR_OF_DAY, operation.getTime());
+        this.start = format.format(cal.getTime());
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        this.end = format.format(cal.getTime());
+        this.backgroundColor = "#faa";
+        this.textColor = "#000";
+        this.shift = operation.getDoctors().get(0).getShift();
     }
 
     public String getTitle() {

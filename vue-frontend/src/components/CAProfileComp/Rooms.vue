@@ -328,10 +328,12 @@ export default {
 
         },
         roomCalendar(r){
+            const route = 'CalendarRoom' + ((r.type === 'Operation') ? 'Operation' : '')
+
             if(this.convertedDate !== '')
-                this.$router.push({name:'CalendarRoom', params: {room:r,dateSearch:this.convertedDate,examReqs: this.examReq}});
+                this.$router.push({name:route, params: {room:r,dateSearch:this.convertedDate,examReqs: this.examReq}});
             else
-                this.$router.push({name:'CalendarRoom', params: {room:r,dateSearch:"none",examReqs: this.examReq}});
+                this.$router.push({name:route, params: {room:r,dateSearch:"none",examReqs: this.examReq}});
 
         },
         filterConfirm(e){

@@ -14,4 +14,5 @@ public interface ClinicRepo extends JpaRepository<Clinic, Long>, JpaSpecificatio
         @Query(nativeQuery=true, value="SELECT * FROM Clinic WHERE address=?1")
         ArrayList<Clinic> findByAddress(String address);
 
+        Clinic findByDoctorsId(Long Id);
 }

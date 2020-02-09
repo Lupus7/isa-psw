@@ -173,8 +173,13 @@ public class NextExaminationService {
 				+ "Admin Team";
 
 		// izmena mail da radi
-		emailService.sendSimpleMessage("mail@gmail.com", type, bodyPatient);
-		emailService.sendSimpleMessage("mail@gmail.com", type, bodyDoctor);
+		try {
+		emailService.sendSimpleMessage(nextP.get().getPatient().getUsername(), type, bodyPatient);
+		} catch (Exception e) {}
+
+		try {
+		emailService.sendSimpleMessage(nextP.get().getDoctor().getUsername(), type, bodyDoctor);
+		} catch (Exception e) {}
 
 		return true;
 	}

@@ -113,6 +113,13 @@ const router = new Router({
                 import ("./components/CAProfileComp/ExaminTypes")
         },
         {
+            path: "/operationTypes",
+            name: "OperationTypes",
+
+            component: () =>
+                import ("./components/CAProfileComp/OperationTypes")
+        },
+        {
             path: "/changeData",
             name: "ChangeData",
             component: () =>
@@ -140,6 +147,13 @@ const router = new Router({
             name: "Examination",
             component: () =>
                 import ("./components/Examination")
+        },
+        {
+            path: "/operation/:id",
+            props: true,
+            name: "Operation",
+            component: () =>
+                import ("./components/Operation")
         },
         {
             path: '/holiday',
@@ -181,6 +195,13 @@ const router = new Router({
             props: true,
             component: () =>
                 import ("./components/CAProfileComp/CalendarRoom")
+        },
+        {
+            path: "/calendarRoomOperation",
+            name: "CalendarRoomOperation",
+            props: true,
+            component: () =>
+                import ("./components/CAProfileComp/CalendarRoomOperation")
         },
         {
             path: "/calendarDoctor",

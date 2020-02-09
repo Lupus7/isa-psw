@@ -174,8 +174,14 @@ public class DoctorService {
 
 		return doctorRepo.findBySpecializationAndClinicIdAndOnVacation(specialization, clinicId,false);
 	}
-	
-	
 
 
+	public List<Doctor> getClinicDoctors(String email) {
+		ClinicAdmin ca = clinicAdminRepo.findByEmail(email);
+		if (ca == null)
+			return new ArrayList<>();
+		Long clinicId = Long.parseLong("" + ca.getClinic());
+
+		return doctorRepo.findByClinicIdAndOnVacation(clinicId,false);
+	}
 }

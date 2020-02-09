@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team47pack.models.*;
 import team47pack.models.dto.CalendarEvent;
+import team47pack.repository.OperationRepo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,6 +30,9 @@ public class CalendarService {
     @Autowired
     private MedicallStaffService medicallStaffService;
 
+    @Autowired
+    private OperationRepo operationRepo;
+
     public List<CalendarEvent> docInfo(String email, String date) throws ParseException {
         if (email == null || date == null)
             return null;
@@ -37,8 +41,11 @@ public class CalendarService {
         if (doctor == null)
             return null;
 
-        List<Examination> examinations = examinationService.getByDoctorId(doctor.getId()); // TODO: ADD OPERATIONS
-        if (examinations == null)
+        List<Examination> examinations = examinationService.getByDoctorId(doctor.getId());
+
+        List<Operation> operations = operationRepo.findAllByDoctorsIdAndApproved(doctor.getId(), true);
+
+        if (examinations == null && operations == null)
             return null;
 
         Calendar cal = Calendar.getInstance();
@@ -53,9 +60,20 @@ public class CalendarService {
                 .map(CalendarEvent::new)
                 .collect(Collectors.toList());
 
+        retVal.addAll(
+                operations
+                    .stream()
+                    .filter(operation -> {
+                        cal.setTime(operation.getDate());
+                        return date.contentEquals(format.format(cal.getTime()));
+                    })
+                    .map(CalendarEvent::new)
+                    .collect(Collectors.toList())
+        );
+
         List<HolidayTimeOff> holidayTimeOffs = medicallStaffService.getTimeOff(doctor);
 
-        for (HolidayTimeOff h : holidayTimeOffs) {  // TODO: filter by date
+        for (HolidayTimeOff h : holidayTimeOffs) {
             CalendarEvent ce = new CalendarEvent(h);
             ce.setShift(doctor.getShift());
             retVal.add(ce);
@@ -68,7 +86,7 @@ public class CalendarService {
         return retVal;
     }
 
-    public boolean docHasTime(String email, String date) throws ParseException { // ONLY WORKS CORRECTLY IF PROCEDURES START ON FULL HOURS, NEEDS FIXING
+    public boolean docHasTime(String email, String date) throws ParseException {
         List<CalendarEvent> events = docInfo(email, date);
 
         int sumHr = 0;
@@ -95,10 +113,16 @@ public class CalendarService {
         List<CalendarEvent> events = new ArrayList<>();
 
         rooms.forEach(room -> {
-            List<Examination> examinations = examinationService.findAllByRoom(room.getId()); // TODO: ADD OPERATIONS
+            List<Examination> examinations = examinationService.findAllByRoom(room.getId());
 
             examinations.forEach(examination -> {
                 events.add(new CalendarEvent(examination, "CADMIN_ROOM"));
+            });
+
+            List<Operation> operations = operationRepo.findAllByRoomIdAndApproved(room.getId(), true);
+
+            operations.forEach(operation -> {
+                events.add(new CalendarEvent(operation, "CADMIN_ROOM"));
             });
         });
 
@@ -116,15 +140,29 @@ public class CalendarService {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-        List<Examination> examinations = examinationService.getByDoctorId(ms.getId()); // TODO: ADD OPERATIONS + NURSES
-        if (examinations == null)
-            return null;
+        List<CalendarEvent> retVal = new ArrayList<>();
 
-        List<CalendarEvent> retVal = examinations
-                .stream()
-                .map(examination -> new CalendarEvent(examination, "FOR_STAFF"))
-                .collect(Collectors.toList());
+        if (ms instanceof Doctor) {
+            List<Examination> examinations = examinationService.getByDoctorId(ms.getId());
+            if (examinations == null)
+                return null;
 
+            retVal = examinations
+                    .stream()
+                    .map(examination -> new CalendarEvent(examination, "FOR_STAFF"))
+                    .collect(Collectors.toList());
+
+            List<Operation> operations = operationRepo.findAllByDoctorsIdAndApproved(ms.getId(), true);
+            if (operations == null)
+                return null;
+
+            retVal.addAll(
+                operations
+                    .stream()
+                    .map(operation -> new CalendarEvent(operation, "FOR_STAFF"))
+                    .collect(Collectors.toList())
+            );
+        }
 
         List<HolidayTimeOff> holidayTimeOffs = medicallStaffService.getTimeOff(ms);
 

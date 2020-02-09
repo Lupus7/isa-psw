@@ -39,6 +39,42 @@
             </tbody>
             </template>
         </table>
+
+        <table class="table table-striped table-hoover" >
+            <thead >
+                
+                <tr class="thead-dark">
+                    <th colspan="8"> <center> <h2> Operation Requests </h2> </center> </th>                  
+                </tr>
+
+                <tr class="table-secondary">
+                    <th align="justify"  style="font-size:18px">Id</th>
+                    <th align="justify"  style="font-size:18px">Operation Type</th>
+                    <th align="justify"  style="font-size:18px">Patient</th>
+                    <th align="justify"  style="font-size:18px">Date</th>
+                    <th> </th>
+                </tr>
+            </thead>
+
+            <template v-if="operations != null && operations.length !== 0" >
+            <tbody>
+                
+                <tr v-for="(ex, index) in operations" :key="index">
+                
+                    <td>{{ex.id}}</td>
+                    <td>{{ex.operationtype.name}}</td>
+                    <td>{{ex.patient.firstName}} {{ex.patient.lastName}} </td>
+                    <td v-on="dateConvert(ex.date)">{{dateConv}}</td>
+
+                    <td style="max-width: 80px">
+                        <button type="button" class="btn btn-primary" @click="arrangeRoom(ex)" style="padding-right:32px;padding-left:32px; font-size:17px">Arrange Room</button>
+                    </td>
+
+
+                </tr>
+            </tbody>
+            </template>
+        </table>
         </div>
     </div>
 </template>
@@ -50,6 +86,7 @@ export default {
       data() {
         return {
            examins:[],
+           operations:[],
            dateConv:"",
            
         }
@@ -57,6 +94,9 @@ export default {
     methods:{
         getNextExamins(){
             axios.get('http://localhost:8080/ca/getNextExamins').then(response => { this.examins = response.data; })
+        },
+        getNextOperations(){
+            axios.get('http://localhost:8080/ca/getNextOperations').then(response => { this.operations = response.data; })
         },
         dateConvert(d){
             let dat = new Date(d);  
@@ -78,6 +118,7 @@ export default {
     },
     created(){
         this.getNextExamins();
+        this.getNextOperations();
     }
 }
 </script>
