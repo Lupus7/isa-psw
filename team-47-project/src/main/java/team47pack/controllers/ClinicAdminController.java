@@ -79,14 +79,13 @@ public class ClinicAdminController {
 		Long d2 = (Long) obj.get("dateE");
 		Date date1 = new Date(d1);
 		Date date2 = new Date(d2);
-		
-		if(date1.before(new Date()) || date2.before(new Date()))
-			return ResponseEntity.status(400).body("Wrong date");
-		
-		if(date2.before(date1))
+
+		if (date1.before(new Date()) || date2.before(new Date()))
 			return ResponseEntity.status(400).body("Wrong date");
 
-		
+		if (date2.before(date1))
+			return ResponseEntity.status(400).body("Wrong date");
+
 		DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 		String dat1 = formatter.format(date1);
 		String dat2 = formatter.format(date2);
@@ -97,13 +96,17 @@ public class ClinicAdminController {
 
 		if (clinicAdminService.acceptRequest(id)) {
 			if (msService.goOnHoliday(Email, date1, date2)) {
-				emailService.sendSimpleMessage("mail@gmail.com", type, body);
+				try {
+					emailService.sendSimpleMessage(Email, type, body);
+				} catch (Exception e) {
+				}
 				return ResponseEntity.ok("Successful");
+
 			}
 
 		} else
 			return ResponseEntity.status(400).body("Could not accept");
-		
+
 		return ResponseEntity.status(400).body("Could not accept");
 	}
 
@@ -125,7 +128,10 @@ public class ClinicAdminController {
 				+ "Reason for rejecting: " + expl + "\nAll the best!" + "\n\n" + "Admin team";
 
 		if (clinicAdminService.rejectRequest(id)) {
-			emailService.sendSimpleMessage(email, type, body);
+			try {
+				emailService.sendSimpleMessage(email, type, body);
+			} catch (Exception e) {
+			}
 			return ResponseEntity.ok("Successful");
 		} else
 			return ResponseEntity.status(400).body("Could not accept");
@@ -160,7 +166,7 @@ public class ClinicAdminController {
 		return ResponseEntity.ok(clinicAdminService.searchDoctor(obj, user.getName()));
 
 	}
-	
+
 	// rates
 	@GetMapping(value = "/rates")
 	public ReportDTO businessReport(Principal user) {
