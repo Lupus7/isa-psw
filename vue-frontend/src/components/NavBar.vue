@@ -5,7 +5,7 @@
             {{ userEmail }}
         </button>
         <a v-if=" this.firstLogin === false" class="navbar-brand" v-on:click="homepage" href="#">Home</a>
-        <a v-if=" this.firstLogin === false && this.userEmail !=='' " class="navbar-brand" v-on:click="profile" href="#" >Profile</a>
+        <a v-if=" this.firstLogin === false && this.userEmail !=='' " id="homeProfile" class="navbar-brand" v-on:click="profile" href="#" >Profile</a>
         <a v-if=" this.userEmail ==='' " class="navbar-brand" v-on:click="login" href="#"  >Log in</a>
         <a v-if=" this.userEmail ==='' "  class="navbar-brand" v-on:click="register" href="#"  >Register</a>
         <a v-if=" this.userEmail !==''  " class="navbar-brand" v-on:click="logout" href="#"  >Log out</a>

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team47pack.models.NextProcedure;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 //import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,13 +37,23 @@ public class FastExaminationServiceTest {
         Assert.assertNotNull(next);
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test(expected = NoSuchElementException.class)
     @Transactional
     @Rollback
     public void testAppointNextProcedureNotPresent() throws  EntityNotFoundException{
-        fastExaminationService.appoint((long)3,"test1");
+        fastExaminationService.appoint((long)7,"test1");
         //check if in the database now
-        NextProcedure next = fastExaminationService.getOne((long)3);
+        NextProcedure next = fastExaminationService.getOne((long)7);
+        Assert.assertNull(next);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    @Transactional
+    @Rollback
+    public void testAppointNextPatientDoesntExit() throws  EntityNotFoundException{
+        fastExaminationService.appoint((long)5,"test14");
+        //check if in the database now
+        NextProcedure next = fastExaminationService.getOne((long)5);
         Assert.assertNull(next);
     }
 
