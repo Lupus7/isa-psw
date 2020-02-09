@@ -1,6 +1,7 @@
 package selenium;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,6 +13,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import team47pack.pages.SearchPage;
 
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.AssertJUnit.assertNotNull;
@@ -48,7 +50,7 @@ public class RouterTest {
         searchPage = PageFactory.initElements(browser, SearchPage.class);
 
     }
-
+    // 3.12
     @Test
     public void ArrangeAndDisarangeExamination() {
         //this.browser.get("http://localhost:8081/#/login");
@@ -80,61 +82,55 @@ public class RouterTest {
         WebElement clickToArrange = this.browser.findElement(By.xpath("//*[@id=\"app\"]/div[2]/table/tbody/tr/td[7]/button"));
         clickToArrange.click();
 
+
     }
+    // 3.13
+    @Test
+    public void serachClinicsAndArrangeExams() throws AWTException, InterruptedException {
+        //this.browser.get("http://localhost:8081/#/login");
+
+        WebElement element = this.browser.findElement(By.name("email"));
+        assertNotNull(element);
+        element.sendKeys("test2");
+        WebElement element2 = this.browser.findElement(By.name("password"));
+        element2.sendKeys("test");
+        WebElement button = this.browser.findElement(By.xpath("//*[@id=\"app\"]/div[2]/div[2]/form/fieldset/center/input"));
+        button.click();
+        browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        WebElement element3 = this.browser.findElement(By.xpath("//*[@id=\"app\"]/div[1]/nav/a[1]"));
+        element3.click();
+        browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        Action clinicSearch = builder.moveToElement(this.browser.findElement(By.xpath("//*[@id=\"app\"]/div[2]/div/table[1]/tr/td[2]/button"))).build();
+        WebElement clinicSearchButton = this.browser.findElement(By.xpath("//*[@id=\"app\"]/div[2]/div/table[1]/tr/td[2]/button"));
+        clinicSearch.perform();
+        clinicSearchButton.click();
+        //
+        WebElement typeOFExaminationINputField = this.browser.findElement(By.xpath("//*[@id=\"type\"]"));
+        typeOFExaminationINputField.sendKeys("Co");
+        WebElement searchButton = this.browser.findElement(By.xpath("//*[@id=\"clinicsearch\"]/table/tr[2]/td[3]/button"));
+        searchButton.click();
+        WebElement seeAvailableDoctorsButton = this.browser.findElement(By.xpath("//*[@id=\"clinics\"]/tbody/tr[1]/td[5]/button"));
+        Point coordinates = seeAvailableDoctorsButton.getLocation();
+        Robot robot = new Robot();
+        robot.mouseMove(coordinates.getX(),coordinates.getY()+120);
+        Actions a = new Actions(this.browser);
+        a.moveToElement(seeAvailableDoctorsButton);
+        seeAvailableDoctorsButton.click();
+
+        WebElement visitDoctorButton = this.browser.findElement(By.xpath("//*[@id=\"doctorresult\"]/tbody/tr/td[6]/button"));
+        visitDoctorButton.click();
+        //wait to render
+        browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        WebElement clickOnCalendar = this.browser.findElement(By.xpath("        //*[@id=\"app\"]/div[2]/div/div[2]/div/div/div[2]/div/table/tbody/tr/td/div/div/div[3]/table/tbody/tr/td[2]/div/div[2]/a[6]/div/div[2]\n"));
+        clickOnCalendar.click();
+
+    }
+
 
     @AfterMethod
     public void tearDown() {
         browser.close();
     }
-
-//    @Test
-//    public void testSearchRouteInvalidInput() {
-//
-//        searchPage.ensureIsDisplayed();
-//
-//        searchPage.getInputFrom().sendKeys("Belgerudveien 1 (Oslo)");
-//        searchPage.getInputTo().sendKeys("Bergerveien (Asker)");
-//        //searchPage.getButtonFind().click();
-//
-//        searchPage.ensureIsDisplayedError();
-//
-//        assertEquals(searchPage.getSpanError().getText(),
-//                "Invalid stop or name in 'from' field. Make sure you spelled it correctly.");
-//
-//    }
-//
-//    @Test
-//    public void testSearchRoute() {
-//        searchPage.ensureIsDisplayed();
-//
-//        searchPage.getInputFrom().sendKeys("Belgerudveien");
-//        (new WebDriverWait(browser, 10))
-//                .until(ExpectedConditions.visibilityOfElementLocated(By
-//                        .cssSelector("#suggestionlist-for-origin_destination_from0")));
-//        browser.findElements(By.cssSelector("#suggestionlist-for-origin_destination_from0")).get(0).click();
-//
-//
-//        searchPage.getInputTo().sendKeys("Bergerveien");
-//        (new WebDriverWait(browser, 10))
-//                .until(ExpectedConditions.visibilityOfElementLocated(By
-//                        .cssSelector("#suggestionlist-for-origin_destination_to0")));
-//        browser.findElements(By.cssSelector("#suggestionlist-for-origin_destination_to0")).get(0).click();
-//
-//        //searchPage.getButtonFind().click();
-//
-//        (new WebDriverWait(browser, 10))
-//                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"labeltravelTime\"]")));
-//
-//        (new WebDriverWait(browser, 10))
-//                .until(ExpectedConditions.visibilityOfElementLocated(By
-//                        .cssSelector("li.TripPattern:nth-child(1) > div:nth-child(1)")));
-//
-//        List<WebElement> routes = browser.findElements(By.cssSelector("div.Clickable.TripPattern__summary"));
-//        assertEquals(routes.size(), 5);
-//
-//        routes.get(0).click();
-//
-//    }
 
 
 }
