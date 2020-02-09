@@ -14,6 +14,7 @@ export default {
         return{
             clinics:[],
             examinations:[],
+            operations:[],
             medicalFile:[],
             doctorSearch: false,
             doctorSearchResult:[],
@@ -116,6 +117,19 @@ export default {
                 //alert(myDate.toUTCString());
                 var mytime=myDate.toUTCString()
                 this.examinations[i].date = mytime
+            }
+          }).catch(error=>{console.log("ne mere" + error)})
+      },
+      getOperation(){
+        axios.get('/patient/getAllOperations').then(response => { 
+          this.operations = response.data;
+            for(var i=0;i<this.operations.length;i++){
+              let c=this.operations[i]
+              //  alert(c.type)
+                var myDate = new Date( c.date );
+                //alert(myDate.toUTCString());
+                var mytime=myDate.toUTCString()
+                this.operations[i].date = mytime
             }
           }).catch(error=>{console.log("ne mere" + error)})
       },
@@ -237,9 +251,12 @@ export default {
       })
       .then(response=>{
        funToastr("s","Successfuly ratted clinuic!","Rate!");
-        document.getElementById("ClinicRate").setAttribute("hidden","true")
-        document.getElementById("blabla").setAttribute("hidden","true")
+        // document.getElementById("ClinicRate").setAttribute("hidden","true")
+        // document.getElementById("blabla").setAttribute("hidden","true")
         this.rateAClinic = false
+
+        this.getExamination()
+        this.getOperation()
       }).catch(error=>{funToastr("w","Unsuccessfully rated clinic!","Rate!");})
     },
     showDoctorRateForm(){
@@ -261,9 +278,12 @@ export default {
       })
       .then(response=>{
         funToastr("s","Successfuly ratted doctor!","Rate!");
-        document.getElementById("DoctorRate").setAttribute("hidden","true")
-        document.getElementById("blabla1").setAttribute("hidden","true")
+        // document.getElementById("DoctorRate").setAttribute("hidden","true")
+        // document.getElementById("blabla1").setAttribute("hidden","true")
         this.rateADoctor = false
+        
+        this.getExamination()
+        this.getOperation()
       }).catch(error=>{funToastr("w","Unsuccessfully rated doctor!","Rate!");})
     },
     Decline(){
@@ -281,6 +301,7 @@ export default {
     created(){
         this.getClinics()
         this.getExamination()
+        this.getOperation()
         this.getMedicalFiles()
        
         
@@ -452,6 +473,56 @@ export default {
           </td>
 
           <td><button type="button" id="blabla1" v-if="e.ratedDoctor==false" @click="showDoctorRateForm" class="btn btn-light">Rate a doctor</button></td>
+          <td v-if="e.ratedDoctor==false && rateADoctor==true">
+            <select id="DoctorRate">
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </td>
+          <td v-if="e.ratedDoctor==false && rateADoctor==true">
+            <button @click="leaveDoctorRate($event,e.doctor_id, e.examinationID)" type="button" class="btn btn-info">Post</button>
+            <button @click="cancelDoctorRate($event)" type="button" class="btn btn-danger">Cancel</button>
+          </td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+
+    <div id="operations" v-if="operations != null && operations.length > 0">
+      <h3>Operations:</h3>
+      <table class="table" id="tabela2">
+          <thead>
+          <tr>
+            <th scope="col" v-on:click="sortTable(0)">Type</th>
+            <th scope="col" v-on:click="sortTable(1)">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="e in this.operations" :key="e.id">
+          <td>{{e.type}}</td>
+          <td>{{e.date}}</td>
+          <td v-if="e.ratedClinic == false">
+            <button id="blabla" type="button2"  @click="showClinicRateForm(e.id)" class="btn btn-light">Rate a clinic</button></td>
+          <td v-if="e.ratedClinic==false && rateAClinic==true">
+            <select id="ClinicRate" v-if="e.ratedClinic == false">
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </td>
+          <td v-if="e.ratedClinic==false && rateAClinic==true">
+            <button @click="leaveClinicRate($event,e.doctor_id, e.examinationID)" type="button" class="btn btn-info">Post</button>
+            <button @click="cancelClinicRate($event)" type="button" class="btn btn-danger">Cancel</button>
+          </td>
+
+          <td><button type="button" id="blabla2" v-if="e.ratedDoctor==false" @click="showDoctorRateForm" class="btn btn-light">Rate a doctor</button></td>
           <td v-if="e.ratedDoctor==false && rateADoctor==true">
             <select id="DoctorRate">
               <option value="5">5</option>
