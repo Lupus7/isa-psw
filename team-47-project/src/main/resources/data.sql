@@ -91,7 +91,6 @@ insert into room (id,name,number,clinic_id,roomtype) values (12, 'room12','12',3
 
 ALTER SEQUENCE room_id_seq RESTART WITH 13;
 
-
 ------------------------------------------------------------------------
 
 SELECT setval('hibernate_id_seq', 21, true);
@@ -174,7 +173,7 @@ insert into clinic_rooms values(3,11);
 insert into clinic_rooms values(3,12);
 -------------------------------------------
 
-
+insert into diagnosis (id, description, name) values (0, 'OPERATION', '/');
 insert into diagnosis (id, description, name) values (1, 'Antibiotici, il operacija jbg', 'Upala krajnika');
 insert into diagnosis (id, description, name) values (2, 'Fervex i kapi za nos', 'Prehlada');
 insert into diagnosis (id, description, name) values (3, 'Mirovanje, cajevi, krompir u carapu', 'Temperatura, grip');
@@ -197,10 +196,13 @@ insert into procedure (id,date,type,patient_id, room, time) values(2,'03.07.2018
 insert into procedure (id,date,type,patient_id, room, time) values(3, '01.08.2020', 'Examination', 2, 8, 12);
 insert into procedure (id,date,type,patient_id, room, time) values(4, '01.08.2020', 'Examination', 3, 8, 8);
 insert into procedure (id,date,type,patient_id, room, time) values(5, '01.08.2020', 'Examination', 4, 9, 12);
-insert into procedure (id,date,type,patient_id, room, time) values(6, '01.08.2020', 'Examination', 5, 9, 8;
+insert into procedure (id,date,type,patient_id, room, time) values(6, '01.08.2020', 'Examination', 5, 9, 8);
+insert into procedure (id,date,type,patient_id, room, time) values(7, '04.09.2020', 'Operation', 5, 9, 8);
+insert into procedure (id,date,type,patient_id, room, time) values(8, '04.09.2020', 'Operation', 3, 1, 9);
+insert into procedure (id,date,type,patient_id, room, time) values(9, '04.09.2020', 'Operation', 4, 2, 10);
 
 
-ALTER SEQUENCE procedure_id_seq RESTART WITH 7;
+ALTER SEQUENCE procedure_id_seq RESTART WITH 8;
 
 --Adding ratings
 insert into rate(id,value) values(1,5);
@@ -238,6 +240,19 @@ insert into examinationtype (id,name,specialization,price,clinic_id) values (13,
 insert into examinationtype (id,name,specialization,price,clinic_id) values (14,'Taking out tooth','Stomatologist',7.55,1);
 ALTER SEQUENCE examinationtype_id_seq RESTART WITH 15;
 
+--Add operation types
+insert into operationtype (id,name,specialization,price,clinic_id) values (1,'Build in prosthesis','Stomatologist',72,2);
+insert into operationtype (id,name,specialization,price,clinic_id) values (2,'Eyelid Surgery','Plastic surgeon',1200,2);
+insert into operationtype (id,name,specialization,price,clinic_id) values (3,'Facelift','Plastic surgeon',3000,2);
+insert into operationtype (id,name,specialization,price,clinic_id) values (4,'Taking out tooth','Stomatologist',12,2);
+insert into operationtype (id,name,specialization,price,clinic_id) values (5,'Tooth Cleaning','Stomatologist',2,2);
+
+insert into operationtype (id,name,specialization,price,clinic_id) values (6,'Build in prosthesis','Stomatologist',45,1);
+insert into operationtype (id,name,specialization,price,clinic_id) values (7,'Eyelid Surgery','Plastic surgeon',1700,1);
+insert into operationtype (id,name,specialization,price,clinic_id) values (8,'Facelift','Plastic surgeon',5000,1);
+insert into operationtype (id,name,specialization,price,clinic_id) values (9,'Taking out tooth','Stomatologist',7.55,1);
+ALTER SEQUENCE operationtype_id_seq RESTART WITH 10;
+
 -- add examinType to examination
 insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(1,8,8,true,false);
 insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(2,8,9,false,true);
@@ -245,6 +260,14 @@ insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doct
 insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(4,12,7,true,false);
 insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(5,13,6,false,true);
 insert into examination(id,doctor_id, examinationtype_id,rated_clinic,rated_doctor) values(6,13,5,false,false);
+
+insert into operation(id, operationtype_id, rated_clinic, rated_doctor, approved) values(7, 1, false, false, true);
+insert into operation(id, operationtype_id, rated_clinic, rated_doctor, approved) values(8, 2, false, false, false);
+insert into operation(id, operationtype_id, rated_clinic, rated_doctor, approved) values(9, 6, false, false, false);
+
+insert into oper_doc values(7, 12);
+insert into oper_doc values(7, 13);
+insert into oper_doc values(7, 15);
 
 ---- add next procedure
 insert into next_procedure (id,type,clinic,date,doctor_id,examinationtype_id,patient_id,arranged,pickedtime) values (1,'Examination',2,'05.03.2020',12,1,1,true,6);
