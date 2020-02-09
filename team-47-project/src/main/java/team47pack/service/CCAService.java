@@ -43,24 +43,35 @@ public class CCAService {
 
     public boolean acceptRequest(Long id) {
         if(userService.acceptUser(id)) {
+            Patient p=patientService.getPatientbyID(id.toString());
+            String message="Dear "+ p.getFirstName()+ " "+p.getLastName()+",\n";
+            message+="Your registration has been accepted. Thank you for using our services!";
+            message+="\nSincerely,\nAdmin team";
             emailService.sendSimpleMessage(
-                patientService.getPatient(id.toString()).getUsername(),
-                "Registration accepted",
-                "Welcome to our clinic!"); // TODO: Refine and add "Complete registration" link
+                    p.getUsername(),
+                    "Registration accepted",
+                    message);
             return true;
         }
         return false;
     }
 
     public boolean rejectRequest(Long id, String reason) {
-        if(userService.rejectUser(id)) {
-            emailService.sendSimpleMessage(
-                patientService.getPatient(id.toString()).getUsername(),
+        Patient p=patientService.getPatientbyID(id);
+        if(p==null)
+            return false;
+
+        String message="Dear "+ p.getFirstName()+ " "+p.getLastName()+",\n";
+        message+="We are sorry to inform you that your registration request has been rejected.";
+        message+="Reason for rejection is:\n"+reason;
+        message+="\nSincerely,\nAdmin team";
+        emailService.sendSimpleMessage(
+                p.getUsername(),
                 "Registration rejected",
-                "Reason for rejection: \n" + reason);
-            return true;
-        }
-        return false;
+                message);
+
+        return userService.rejectUser(id);
+
     }
 
     public UserInfo findByEmail(String email) {

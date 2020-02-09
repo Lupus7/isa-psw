@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import org.springframework.web.util.NestedServletException;
 import team47pack.models.Clinic;
 import team47pack.models.ClinicAdmin;
 import team47pack.models.dto.ClinicSearchRequest;
@@ -76,6 +77,26 @@ public class UnitClinicControllerTest {
 
 	}
 
+	// 3.13 SearchForClinics Not Authorized
+	@Test(expected = NestedServletException.class)
+	@WithMockUser(username = "doctor2", password = "test", roles = "DOCTOR")
+	public void testSearchForClinicsNotAuthorized() throws Exception {
+		ClinicSearchRequest req = new ClinicSearchRequest();
+		req.setLocation("dr.andre");
+
+		JSONObject obj = new JSONObject();
+		obj.put("location", "dr.andre");
+		String json = obj.toString();
+
+		Principal mockPrincipal = Mockito.mock(Principal.class);
+
+		Mockito.when(mockPrincipal.getName()).thenReturn("doctor2");
+		Mockito.when(clinicService.search(req)).thenReturn(null);
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/clinic/search").principal(mockPrincipal).content(json)
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isForbidden());
+
+	}
+
 	// 3.13 Get Clinic Successfull
 	@Test
 	@WithMockUser(username = "cadmin", password = "test", roles = "CADMIN")
@@ -91,5 +112,33 @@ public class UnitClinicControllerTest {
 
 	}
 
+	// 3.13 Get Clinic Successfull Not Authorized
+	@Test(expected = NestedServletException.class)
+	@WithMockUser(username = "test1", password = "test", roles = "PATIENT")
+	public void testGetClinicNotAuthorized() throws Exception {
+		String json = "";
 
+		Principal mockPrincipal = Mockito.mock(Principal.class);
+
+		Mockito.when(mockPrincipal.getName()).thenReturn("test1");
+		Mockito.when(clinicService.getClinicInfo(null)).thenReturn(null);
+		this.mockMvc
+				.perform(MockMvcRequestBuilders.get("/clinic/getInfo").principal(mockPrincipal).content(json)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isForbidden());
+
+	}
+
+	// 3.13 Get Clinic Doctors Bad request
+	@Test(expected = NestedServletException.class)
+	@WithMockUser(username = "test1", password = "test", roles = "PATIENT")
+	public void testGetClinicDoctorsBadRequest() throws Exception {
+		Principal mockPrincipal = Mockito.mock(Principal.class);
+		Mockito.when(mockPrincipal.getName()).thenReturn("cadmin");
+		Mockito.when(clinicService.getClinic((long) 20)).thenReturn(null);
+		this.mockMvc
+				.perform(MockMvcRequestBuilders.get("/clinic/{id}/getAvailableDoctors", 20).principal(mockPrincipal))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+	}
 }
