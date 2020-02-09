@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import team47pack.models.Examination;
 import team47pack.models.NextProcedure;
+import team47pack.models.Operation;
 import team47pack.models.Patient;
 import team47pack.models.dto.ExaminInfo;
 import team47pack.models.dto.ExaminationDTO;
 import team47pack.service.ExaminationService;
+import team47pack.service.OperationService;
 import team47pack.service.PatientService;
 
 import java.security.Principal;
@@ -27,6 +29,8 @@ public class ExaminationController {
     private ExaminationService examinationService;
     @Autowired
     private PatientService patientService;
+    @Autowired
+    private OperationService operationService;
 
     @GetMapping(value="/patient/getAllExaminations")
     @PreAuthorize("hasRole('PATIENT')")
@@ -39,6 +43,25 @@ public class ExaminationController {
         }
         return ret;
     }
+
+    @GetMapping(value="/patient/getAllOperations")
+    @PreAuthorize("hasRole('PATIENT')")
+    public List<ExaminationDTO> getAllOper(Principal user){
+        List<ExaminationDTO> ret = new ArrayList<>();
+        Patient patient = patientService.getPatient(user.getName());
+        if (patient == null)
+            return new ArrayList<>();
+        List<Operation> list =  operationService.getByPatientId(patient.getId());
+        if (list == null)
+            return new ArrayList<>();
+
+        for(Operation o : list){
+            if (o.getDoctors() != null && o.getDoctors().size() != 0)
+                ret.add(new ExaminationDTO(o));
+        }
+        return ret;
+    }
+
     @GetMapping(value="/patient/getAll")
     @PreAuthorize("hasRole('PATIENT')")
     public List<Examination> getAll(Principal user){

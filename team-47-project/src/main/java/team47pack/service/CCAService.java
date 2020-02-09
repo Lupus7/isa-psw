@@ -47,10 +47,13 @@ public class CCAService {
             String message="Dear "+ p.getFirstName()+ " "+p.getLastName()+",\n";
             message+="Your registration has been accepted. Thank you for using our services!";
             message+="\nSincerely,\nAdmin team";
-            emailService.sendSimpleMessage(
-                    p.getUsername(),
-                    "Registration accepted",
-                    message);
+
+            try {
+                emailService.sendSimpleMessage(
+                        p.getUsername(),
+                        "Registration accepted",
+                        message);
+            } catch (Exception e) {}
             return true;
         }
         return false;
@@ -65,10 +68,13 @@ public class CCAService {
         message+="We are sorry to inform you that your registration request has been rejected.";
         message+="Reason for rejection is:\n"+reason;
         message+="\nSincerely,\nAdmin team";
-        emailService.sendSimpleMessage(
-                p.getUsername(),
-                "Registration rejected",
-                message);
+
+        try {
+            emailService.sendSimpleMessage(
+                    p.getUsername(),
+                    "Registration rejected",
+                    message);
+        } catch (Exception e) {}
 
         return userService.rejectUser(id);
 

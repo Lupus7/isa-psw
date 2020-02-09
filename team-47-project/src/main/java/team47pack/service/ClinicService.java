@@ -36,6 +36,9 @@ public class ClinicService {
 	@Autowired
 	ClinicAdminRepo clinicAdminRepo;
 
+	@Autowired
+	OperationRepo opRepo;
+
 	// @author: Lupus7 (Sinisa Canak)
 	public List<ClinicAndAdmin> getClinics() {
 		List<Clinic> clinics = clinicRepo.findAll();
@@ -154,9 +157,16 @@ public class ClinicService {
 
 	public boolean leaveRate(RateRequest rateRequest) {
 		System.out.println(rateRequest.getId() + rateRequest.getValue() + rateRequest.getExamination());
-		Examination e = exRepo.getOne(rateRequest.getExamination());
-		e.setRatedClinic(true);
-		exRepo.save(e);
+
+		try {
+			Examination e = exRepo.getOne(rateRequest.getExamination());
+			e.setRatedClinic(true);
+			exRepo.save(e);
+		} catch (Exception e){
+			Optional<Operation> o = opRepo.findById(rateRequest.getExamination());
+			o.get().setRatedClinic(true);
+			opRepo.save(o.get());
+		}
 		List<Clinic> klinike = clinicRepo.findAll();
 		for (Clinic c : klinike) {
 			for (Doctor d : c.getDoctors()) {

@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team47pack.models.*;
 import team47pack.models.dto.CalendarEvent;
+import team47pack.repository.NextProcedureRepo;
 import team47pack.repository.OperationRepo;
+import team47pack.repository.RoomArrangeRepo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,7 +21,7 @@ public class CalendarService {
     private DoctorService doctorService;
 
     @Autowired
-    private ExaminationService examinationService;
+    private NextProcedureRepo nextProcedureRepo;
 
     @Autowired
     private ClinicAdminService clinicAdminService;
@@ -33,6 +35,9 @@ public class CalendarService {
     @Autowired
     private OperationRepo operationRepo;
 
+    @Autowired
+    private RoomArrangeRepo roomArrangeRepo;
+
     public List<CalendarEvent> docInfo(String email, String date) throws ParseException {
         if (email == null || date == null)
             return null;
@@ -41,7 +46,7 @@ public class CalendarService {
         if (doctor == null)
             return null;
 
-        List<Examination> examinations = examinationService.getByDoctorId(doctor.getId());
+        List<NextProcedure> examinations = nextProcedureRepo.findByDoctorIdAndArranged(doctor.getId(), true);
 
         List<Operation> operations = operationRepo.findAllByDoctorsIdAndApproved(doctor.getId(), true);
 
@@ -57,7 +62,13 @@ public class CalendarService {
                     cal.setTime(examination.getDate());
                     return date.contentEquals(format.format(cal.getTime()));
                 })
-                .map(CalendarEvent::new)
+                .map(ex -> {
+                    Examination e = new Examination();
+                    e.setDoctor(ex.getDoctor());
+                    e.setDate(ex.getDate());
+                    e.setTime(ex.getPickedtime());
+                    return new CalendarEvent(e);
+                })
                 .collect(Collectors.toList());
 
         retVal.addAll(
@@ -86,24 +97,6 @@ public class CalendarService {
         return retVal;
     }
 
-    public boolean docHasTime(String email, String date) throws ParseException {
-        List<CalendarEvent> events = docInfo(email, date);
-
-        int sumHr = 0;
-
-        for (CalendarEvent event : events) {
-            if (event.getBackgroundColor().contentEquals("#aaf"))
-                sumHr += 1;
-            else if (event.getBackgroundColor().contentEquals("#afa"))
-                sumHr += 2;
-            else
-                sumHr += 8;
-        }
-
-        return sumHr <= 7;
-    }
-
-
     public List<CalendarEvent> roomInfo(String adminMail) {
         List<Room> rooms = roomService.getRooms(adminMail);
 
@@ -113,10 +106,19 @@ public class CalendarService {
         List<CalendarEvent> events = new ArrayList<>();
 
         rooms.forEach(room -> {
-            List<Examination> examinations = examinationService.findAllByRoom(room.getId());
+            List<RoomArrange> roomArrange = roomArrangeRepo.findByRoom(room.getId());
 
-            examinations.forEach(examination -> {
-                events.add(new CalendarEvent(examination, "CADMIN_ROOM"));
+            roomArrange.forEach(ra -> {
+                Optional<NextProcedure> ex = nextProcedureRepo.findById(ra.getNextExamination());
+                if (ex.isPresent()) {
+                    Examination e = new Examination();
+                    e.setDoctor(ex.get().getDoctor());
+                    e.setDate(ex.get().getDate());
+                    e.setTime(ex.get().getPickedtime());
+                    e.setPatient(ex.get().getPatient());
+                    e.setRoom(room);
+                    events.add(new CalendarEvent(e, "CADMIN_ROOM"));
+                }
             });
 
             List<Operation> operations = operationRepo.findAllByRoomIdAndApproved(room.getId(), true);
@@ -143,13 +145,20 @@ public class CalendarService {
         List<CalendarEvent> retVal = new ArrayList<>();
 
         if (ms instanceof Doctor) {
-            List<Examination> examinations = examinationService.getByDoctorId(ms.getId());
+            List<NextProcedure> examinations = nextProcedureRepo.findByDoctorIdAndArranged(ms.getId(), true);
             if (examinations == null)
                 return null;
 
             retVal = examinations
                     .stream()
-                    .map(examination -> new CalendarEvent(examination, "FOR_STAFF"))
+                    .map(ex-> {
+                        Examination e = new Examination();
+                        e.setDoctor(ex.getDoctor());
+                        e.setDate(ex.getDate());
+                        e.setTime(ex.getPickedtime());
+                        e.setPatient(ex.getPatient());
+                        return new CalendarEvent(e, "FOR_STAFF");
+                    })
                     .collect(Collectors.toList());
 
             List<Operation> operations = operationRepo.findAllByDoctorsIdAndApproved(ms.getId(), true);

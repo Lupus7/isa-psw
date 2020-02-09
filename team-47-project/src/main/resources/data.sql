@@ -192,7 +192,7 @@ ALTER SEQUENCE diag_id_seq RESTART WITH 10;
 ALTER SEQUENCE pres_id_seq RESTART WITH 10;
 
 insert into procedure (id,date,type,patient_id, room, time) values(1,'04.09.2020','Examination', 2, 1, 9);
-insert into procedure (id,date,type,patient_id, room, time) values(2,'03.07.2018','Examination', 2, 2, 11);
+insert into procedure (id,date,type,patient_id, room, time) values(2,'03.07.2020','Examination', 2, 2, 11);
 insert into procedure (id,date,type,patient_id, room, time) values(3, '01.08.2020', 'Examination', 2, 8, 12);
 insert into procedure (id,date,type,patient_id, room, time) values(4, '01.08.2020', 'Examination', 3, 8, 8);
 insert into procedure (id,date,type,patient_id, room, time) values(5, '01.08.2020', 'Examination', 4, 9, 12);
@@ -202,7 +202,7 @@ insert into procedure (id,date,type,patient_id, room, time) values(8, '04.09.202
 insert into procedure (id,date,type,patient_id, room, time) values(9, '04.09.2020', 'Operation', 4, 2, 10);
 
 
-ALTER SEQUENCE procedure_id_seq RESTART WITH 8;
+ALTER SEQUENCE procedure_id_seq RESTART WITH 10;
 
 --Adding ratings
 insert into rate(id,value) values(1,5);

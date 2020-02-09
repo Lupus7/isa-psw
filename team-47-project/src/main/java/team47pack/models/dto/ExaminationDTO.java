@@ -1,6 +1,7 @@
 package team47pack.models.dto;
 
 import team47pack.models.Examination;
+import team47pack.models.Operation;
 
 import java.util.Date;
 
@@ -26,6 +27,20 @@ public class ExaminationDTO {
     }
 
     public ExaminationDTO() {
+    }
+
+    public ExaminationDTO(Operation o) {
+        this.approved = o.getApproved();
+        this.date = o.getDate();
+        this.type = o.getType();
+        this.examinationID = o.getId();
+        if (o.getDoctors() == null || o.getDoctors().size() == 0)
+            this.doctor_id = -1L;
+        else
+            this.doctor_id = o.getDoctors().get(0).getId();
+        this.patient_id = o.getPatient().getId();
+        this.ratedClinic = o.getRatedClinic();
+        this.ratedDoctor = o.getRatedDoctor();
     }
 
     public Long getExaminationID() {
