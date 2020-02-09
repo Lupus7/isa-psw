@@ -136,18 +136,19 @@ public class RouterTest {
         element2.sendKeys("test");
         WebElement button = this.browser.findElement(By.xpath("//*[@id=\"app\"]/div[2]/div[2]/form/fieldset/center/input"));
         button.click();
-        browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        WebElement element3 = this.browser.findElement(By.xpath("//*[@id=\\\"app\\\"]/div[1]/nav/a[2]"));
+        browser.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
+        WebElement element3 = this.browser.findElement(By.id("homeProfile"));
         element3.click();
         
         browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        Action mousetoVisit = builder.moveToElement(this.browser.findElement(By.id("clinicButton"))).build();
+        Action mousetoVisit = builder.moveToElement(this.browser.findElement(By.id("clinicButtoon"))).build();
         WebElement visitButton = this.browser.findElement(By.xpath("//*[@id=\"clinicButtoon\"]"));
         mousetoVisit.perform();
         visitButton.click();
         
-        browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        Action mousetoVisit1 = builder.moveToElement(this.browser.findElement(By.id("examButton"))).build();
+        browser.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        Action mousetoVisit1 = builder.moveToElement(this.browser.findElement(By.id("examButtoon"))).build();
         WebElement visitButton1 = this.browser.findElement(By.xpath("//*[@id=\"examButtoon\"]"));
         mousetoVisit1.perform();
         visitButton1.click();
@@ -157,12 +158,15 @@ public class RouterTest {
         visitButton2.click();
         
         browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        WebElement visitButton3 = this.browser.findElement(By.xpath("//*[@id=\"app\"]/div[2]/div/table/tbody/tr[2]/td[7]/button"));
-        visitButton3.click();
+        //WebElement visitButton3 = this.browser.findElement(By.xpath("//*[@id=\"app\"]/div[2]/div/table[1]/tbody/tr[3]/td[6]/button"));
+        //visitButton3.click();
         
         browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        WebElement visitButton4 = this.browser.findElement(By.xpath("//*[@id=\"app\"]/div[2]/div/div[2]/div/div[2]/form/center[1]/button"));
+        WebElement visitButton4 = this.browser.findElement(By.xpath("//*[@id=\"app\"]/div[2]/div/table/tbody/tr[2]/td[7]/button"));
         visitButton4.click();
+
+        WebElement arrangeButton = this.browser.findElement(By.xpath("//*[@id=\"app\"]/div[2]/div/div[2]/div/div[2]/form/center[1]/button"));
+        arrangeButton.click();
         
         browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
