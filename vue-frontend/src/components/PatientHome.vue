@@ -302,7 +302,7 @@ export default {
         <div class="card-body">
          <h5 class="card-title">Fast appoint examination</h5>
             <p class="card-text">Save your time and efford of searching, just pick some of examinatin we provide to you</p>
-           <button  class="btn btn-primary" @click="goToFast">Visit</button>
+           <button  id="smrdljivodugme" class="btn btn-primary" @click="goToFast">Visit</button>
             <a href="#" class="card-link" @click="Decline">Decline</a>
         </div></div></td></tr></table>
     <div>
